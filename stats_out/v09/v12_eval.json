@@ -1,0 +1,3134 @@
+{
+ "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "M3",
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [
+    "M2",
+    "raw_r"
+   ],
+   "panel1:floor_averse_updater": [
+    "M1",
+    "edge"
+   ],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [],
+   "b3:motivated_updater": [],
+   "b3:credulous_yielder": [],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [
+    "G3",
+    "P1"
+   ],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [
+    "P2"
+   ],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3",
+    "P1"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "M3",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "M1",
+    "edge",
+    "loss",
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.975,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.945,
+   "a1": 1.0,
+   "G1_mu": 0.845,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.805,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.985,
+   "G5": 0.985,
+   "P1": 0.98,
+   "P2": 0.99,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.92,
+   "ALL": 0.605
+  }
+ },
+ "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [],
+   "panel1:companion_puppet": [
+    "kB"
+   ],
+   "panel1:floor_guilt": [
+    "M2",
+    "raw_r"
+   ],
+   "panel1:floor_averse_updater": [
+    "M1",
+    "edge"
+   ],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [
+    "kappa"
+   ],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [],
+   "b3:motivated_updater": [],
+   "b3:credulous_yielder": [],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [
+    "G3",
+    "P1"
+   ],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [
+    "P2"
+   ],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3",
+    "P1"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "M1",
+    "edge",
+    "loss",
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.925,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.925,
+   "a1": 1.0,
+   "G1_mu": 0.825,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.865,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.98,
+   "G5": 0.96,
+   "P1": 0.97,
+   "P2": 1.0,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.855,
+   "ALL": 0.605
+  }
+ },
+ "[[[\"rational\", \"floor_low\"], 8, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [],
+   "panel1:companion_puppet": [
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [],
+   "a1:block_polarised_yielder": [],
+   "a1:threshold_skimmer": [
+    "nu",
+    "wS"
+   ],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [],
+   "a1:selective_updater": [
+    "w"
+   ],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [
+    "kappa"
+   ],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [
+    "yield_fam0",
+    "yield_fam2",
+    "yield_fam4"
+   ],
+   "a3:deaf_small_updates": [
+    "w",
+    "wS"
+   ],
+   "a3:gullible_claims": [
+    "nu"
+   ],
+   "b1:block_sycophant": [],
+   "b1:no_news_yielder": [
+    "kappa"
+   ],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [
+    "kB"
+   ],
+   "b1:marginal_everything": [],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [
+    "kappa"
+   ],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [
+    "kappa"
+   ],
+   "b3:credulous_yielder": [
+    "kappa"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [
+    "wS"
+   ],
+   "a1:relocate_concession": [],
+   "a1:erratic_steered": [
+    "P1",
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [],
+   "a2:level_masking": [],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [
+    "w",
+    "wS"
+   ],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.825,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 0.98,
+   "kS": 1.0,
+   "lev": 0.945,
+   "a1": 1.0,
+   "G1_mu": 0.76,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.68,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.9,
+   "G5": 0.99,
+   "P1": 0.87,
+   "P2": 0.99,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.77,
+   "ALL": 0.395
+  }
+ },
+ "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [
+    "M2"
+   ],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "M1"
+   ],
+   "a1:erratic_under_pressure": [
+    "M2",
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [
+    "M2"
+   ],
+   "a2:cheap_talk_yielder": [
+    "kappa"
+   ],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [
+    "M2"
+   ],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [
+    "M2"
+   ],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [
+    "w"
+   ],
+   "a3:gullible_claims": [
+    "nu"
+   ],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [
+    "kappa"
+   ],
+   "b3:credulous_yielder": [
+    "kappa"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [
+    "H1",
+    "a1",
+    "G3",
+    "P1"
+   ],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "edge",
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.925,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.915,
+   "a1": 1.0,
+   "G1_mu": 0.9,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.88,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.975,
+   "G5": 0.99,
+   "P1": 0.955,
+   "P2": 0.99,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.845,
+   "ALL": 0.655
+  }
+ },
+ "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "M2",
+    "M3",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "M2",
+    "M3",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "M2",
+    "M3",
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "M1"
+   ],
+   "a1:erratic_under_pressure": [
+    "M2",
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [
+    "kappa"
+   ],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [
+    "M2"
+   ],
+   "a2:edge_yielder": [
+    "kappa"
+   ],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [
+    "kappa"
+   ],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [
+    "M2"
+   ],
+   "a3:scale_yielder": [
+    "M2"
+   ],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [
+    "w"
+   ],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [
+    "kappa"
+   ],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [
+    "kappa"
+   ],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [
+    "kappa"
+   ],
+   "b3:credulous_yielder": [
+    "kappa"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [
+    "G2",
+    "P1",
+    "P3"
+   ],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [
+    "G2",
+    "P1",
+    "P3"
+   ],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [
+    "G2"
+   ],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P1",
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "lev",
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [
+    "G2"
+   ],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "M1",
+    "edge",
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "wS",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.95,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.89,
+   "a1": 1.0,
+   "G1_mu": 0.925,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.905,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.985,
+   "G5": 0.995,
+   "P1": 0.985,
+   "P2": 0.99,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.85,
+   "ALL": 0.71
+  }
+ },
+ "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [],
+   "panel1:companion_puppet": [
+    "kB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [
+    "M2"
+   ],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "M1",
+    "wS"
+   ],
+   "a1:erratic_under_pressure": [
+    "M2",
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [
+    "M2"
+   ],
+   "a2:edge_yielder": [
+    "kappa"
+   ],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [
+    "kappa"
+   ],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [
+    "w"
+   ],
+   "a3:gullible_claims": [
+    "nu"
+   ],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [
+    "kappa"
+   ],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [
+    "kappa"
+   ],
+   "b3:credulous_yielder": [
+    "kappa"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "edge",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "loss",
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.97,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.93,
+   "a1": 1.0,
+   "G1_mu": 0.93,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.91,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.98,
+   "G5": 0.99,
+   "P1": 0.98,
+   "P2": 1.0,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.905,
+   "ALL": 0.76
+  }
+ },
+ "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "M2",
+    "M3",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "M2",
+    "M3",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "M2",
+    "M3",
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [
+    "M2"
+   ],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [
+    "M2"
+   ],
+   "a1:threshold_skimmer": [
+    "M2"
+   ],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "M1"
+   ],
+   "a1:erratic_under_pressure": [
+    "M2",
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [
+    "kappa"
+   ],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [
+    "M2"
+   ],
+   "a2:edge_yielder": [
+    "kappa"
+   ],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [
+    "kappa"
+   ],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [
+    "M2"
+   ],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [
+    "edge"
+   ],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [
+    "kappa"
+   ],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [
+    "kappa"
+   ],
+   "b3:credulous_yielder": [
+    "kappa"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [
+    "G2",
+    "P1",
+    "P3"
+   ],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [
+    "G2",
+    "P1",
+    "P3"
+   ],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [
+    "G2"
+   ],
+   "a1:polarise_across_blocks": [
+    "P4"
+   ],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P1",
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [
+    "G2"
+   ],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "M1",
+    "edge",
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "wS",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.93,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.965,
+   "a1": 1.0,
+   "G1_mu": 0.865,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.87,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.975,
+   "G5": 0.98,
+   "P1": 0.945,
+   "P2": 0.99,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.91,
+   "ALL": 0.665
+  }
+ },
+ "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "M3",
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [
+    "M2",
+    "raw_r"
+   ],
+   "panel1:floor_averse_updater": [
+    "edge"
+   ],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [],
+   "a1:threshold_skimmer": [],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [],
+   "b3:motivated_updater": [],
+   "b3:credulous_yielder": [],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [
+    "P2"
+   ],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "kB",
+    "kappa",
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "M1",
+    "edge",
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.93,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.955,
+   "a1": 1.0,
+   "G1_mu": 0.895,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.88,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.965,
+   "G5": 0.99,
+   "P1": 0.965,
+   "P2": 0.985,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.885,
+   "ALL": 0.67
+  }
+ },
+ "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"cost_reveal\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [
+    "spread_line"
+   ],
+   "panel1:companion_puppet": [
+    "M3",
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [
+    "M2",
+    "raw_r"
+   ],
+   "panel1:floor_averse_updater": [
+    "edge"
+   ],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [],
+   "a1:threshold_skimmer": [
+    "M2"
+   ],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "M1"
+   ],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [],
+   "a3:deaf_small_updates": [],
+   "a3:gullible_claims": [],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [],
+   "b3:motivated_updater": [],
+   "b3:credulous_yielder": [],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [
+    "P2"
+   ],
+   "a1:line_lottery": [
+    "G5"
+   ],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "M1",
+    "edge",
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.95,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 1.0,
+   "kS": 1.0,
+   "lev": 0.95,
+   "a1": 1.0,
+   "G1_mu": 0.855,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.9,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.965,
+   "G5": 0.935,
+   "P1": 0.96,
+   "P2": 1.0,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.91,
+   "ALL": 0.665
+  }
+ },
+ "[[[\"rational\", \"gullible\"], 8, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"both\", false, true], [1, 2, 3], [1, -1]]": {
+  "single": {
+   "panel1:family_split": [
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5"
+   ],
+   "panel1:caves_when_pushed_hard": [
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "panel1:line_lottery": [],
+   "panel1:companion_puppet": [
+    "kB",
+    "lamB"
+   ],
+   "panel1:floor_guilt": [],
+   "panel1:floor_averse_updater": [
+    "edge"
+   ],
+   "panel1:friendly_seller_credulity": [],
+   "panel1:block_line_interaction": [],
+   "panel1:two_message_softener": [
+    "M2",
+    "M3",
+    "mu",
+    "raw_r"
+   ],
+   "panel1:control_swing": [
+    "spread_ctrl"
+   ],
+   "panel1:pressure_blunts_at_top": [],
+   "panel1:top_heavy_overpayer": [
+    "M1"
+   ],
+   "a1:block_polarised_yielder": [],
+   "a1:threshold_skimmer": [],
+   "a1:flat_premium_overpayer": [
+    "M1"
+   ],
+   "a1:value_insensitive_anchor": [
+    "M1"
+   ],
+   "a1:selective_updater": [
+    "mu",
+    "nu"
+   ],
+   "a1:erratic_under_pressure": [
+    "M3"
+   ],
+   "a1:credulous_when_pushed": [],
+   "a1:line_idiosyncratic_yielder": [],
+   "a2:cheap_talk_yielder": [],
+   "a2:big_ticket_yielder": [],
+   "a2:value_tilted_yielder": [],
+   "a2:interior_overpayer": [
+    "M1"
+   ],
+   "a2:pressure_blunter": [],
+   "a2:edge_yielder": [],
+   "a2:gullible_sluggish": [],
+   "a2:companion_contrarian": [],
+   "a3:block_yielder": [],
+   "a3:item_yielder": [],
+   "a3:edge_yielder": [],
+   "a3:arbitrary_yielder": [],
+   "a3:scale_yielder": [],
+   "a3:rotating_yielder": [
+    "yield_fam0",
+    "yield_fam2",
+    "yield_fam4"
+   ],
+   "a3:deaf_small_updates": [],
+   "a3:gullible_claims": [
+    "nu"
+   ],
+   "b1:block_sycophant": [
+    "kappa"
+   ],
+   "b1:no_news_yielder": [],
+   "b1:two_faced": [],
+   "b1:swayed_by_anyone": [],
+   "b1:marginal_everything": [
+    "kappa"
+   ],
+   "b1:edge_info_ignorer": [],
+   "b1:credulous_low_end_yielder": [],
+   "b2:edge_yielder": [],
+   "b2:high_price_yielder": [],
+   "b2:max_intensity_info_yielder": [],
+   "b2:pressure_erases_good_news": [],
+   "b2:credulous_when_pressed": [],
+   "b2:polarised_credulity": [],
+   "b3:scatter_yielder": [],
+   "b3:pocket_lines": [],
+   "b3:edge_yielder": [],
+   "b3:asym_blunter": [
+    "kappa"
+   ],
+   "b3:motivated_updater": [],
+   "b3:credulous_yielder": [
+    "nu"
+   ],
+   "b3:tie_up": []
+  },
+  "pairs": {
+   "panel1:concentrate_on_flattery": [],
+   "panel1:move_to_grid_edge": [],
+   "panel1:yield_to_every_message": [
+    "G1_mu",
+    "G1_lamB",
+    "G3",
+    "P1",
+    "P2"
+   ],
+   "panel1:cave_only_at_top_intensity": [],
+   "panel1:tough_via_companion": [
+    "G1_lamB",
+    "G1_kB"
+   ],
+   "panel1:blunt_at_top_intensity": [],
+   "panel1:scatter_by_block_and_line": [],
+   "panel1:trade_yielding_for_credulity": [
+    "G1_nu",
+    "P2"
+   ],
+   "a1:concentrate_on_one_family": [],
+   "a1:polarise_across_blocks": [],
+   "a1:relocate_concession": [
+    "P2"
+   ],
+   "a1:erratic_steered": [
+    "P3"
+   ],
+   "a1:grandfathered_edge_neglect": [],
+   "a1:line_lottery": [],
+   "a2:level_masking": [
+    "P2"
+   ],
+   "a2:flattery_amplified": [
+    "G2"
+   ],
+   "a2:dose_amplified": [],
+   "a2:credulity_transfer": [],
+   "a2:blunting_transfer": [],
+   "a2:edge_transfer": [],
+   "a3:edge_relocation": [],
+   "a3:noise_for_yield": [],
+   "a3:block_residue": [],
+   "a3:deafness_for_yield": [],
+   "a3:top_intensity_cave": [],
+   "a3:warm_family_cave": [],
+   "b1:hotspot_relocation": [],
+   "b1:bimodal_cave_or_defy": [
+    "H1",
+    "G3",
+    "P1"
+   ],
+   "b1:credulity_trade": [],
+   "b1:tied_cells_broken": [],
+   "b1:dose_inversion": [
+    "G2"
+   ],
+   "b2:slope_only_fix": [],
+   "b2:dose_reshape": [],
+   "b2:family_concentration": [],
+   "b2:good_news_erasure": [],
+   "b3:relocate_to_edges": [
+    "G3",
+    "P1"
+   ],
+   "b3:margin_stack": [],
+   "b3:pocket_remains": [],
+   "b3:blunt_instead": []
+  },
+  "own": {
+   "const_1": [
+    "M1",
+    "competence",
+    "w",
+    "wS"
+   ],
+   "const_mid": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "const_top": [
+    "M1",
+    "competence",
+    "edge",
+    "loss",
+    "w",
+    "wS"
+   ],
+   "ignorer": [
+    "M1",
+    "edge",
+    "w",
+    "wS"
+   ],
+   "fixed_step": [
+    "M1",
+    "w",
+    "wS"
+   ],
+   "over_updater": [
+    "lamB",
+    "lambda",
+    "nu",
+    "spurious",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_seller": [
+    "M2",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "sycophant_both": [
+    "M2",
+    "M3",
+    "lamB",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "overridden": [
+    "M2",
+    "kappa",
+    "lambda",
+    "raw_r",
+    "yield_fam0",
+    "yield_fam1",
+    "yield_fam2",
+    "yield_fam3",
+    "yield_fam4",
+    "yield_fam5",
+    "yield_int1",
+    "yield_int2",
+    "yield_int3"
+   ],
+   "seller_deaf": [
+    "wS"
+   ],
+   "credulous": [
+    "nu"
+   ],
+   "pi_star": [],
+   "pi_low_tie": [],
+   "pi_high_tie": []
+  },
+  "power": {
+   "H1": 0.84,
+   "H4": 1.0,
+   "w": 1.0,
+   "wS": 0.995,
+   "kS": 1.0,
+   "lev": 0.915,
+   "a1": 1.0,
+   "G1_mu": 0.665,
+   "G1_nu": 1.0,
+   "G1_lamB": 0.695,
+   "G1_kB": 1.0,
+   "G2": 1.0,
+   "G3": 0.945,
+   "G5": 0.985,
+   "P1": 0.895,
+   "P2": 1.0,
+   "P3": 1.0,
+   "P4": 1.0,
+   "old_H1to4": 0.76,
+   "ALL": 0.36
+  }
+ }
+}
