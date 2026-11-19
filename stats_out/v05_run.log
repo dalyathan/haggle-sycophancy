@@ -33,3 +33,35 @@ rung 1: 622 reach every power target; N*: min 78,208, median 209,664, max 466,02
   components 2x: 0 feasible; 0 need more replication than at 1x
     rung_check.jsonl: 25/91
     rung_check.jsonl: 50/91
+    rung_check.jsonl: 75/91
+    rung_check.jsonl: 91/91
+rung check: 200/200 sampled designs reach simulated power >= 0.75 (400 runs) on H1, H2 and H3 at the rung-1 N* (150s); passes if at least 95% do
+    rung2.jsonl: 31/622
+    rung2.jsonl: 62/622
+    rung2.jsonl: 93/622
+    rung2.jsonl: 124/622
+    rung2.jsonl: 155/622
+    rung2.jsonl: 186/622
+    rung2.jsonl: 217/622
+    rung2.jsonl: 248/622
+    rung2.jsonl: 279/622
+    rung2.jsonl: 310/622
+    rung2.jsonl: 341/622
+    rung2.jsonl: 372/622
+    rung2.jsonl: 403/622
+    rung2.jsonl: 434/622
+    rung2.jsonl: 465/622
+    rung2.jsonl: 496/622
+    rung2.jsonl: 527/622
+    rung2.jsonl: 558/622
+    rung2.jsonl: 589/622
+    rung2.jsonl: 620/622
+    rung2.jsonl: 622/622
+rung 2: 620/622 of the best 1,000 keep power >= 0.8 under misspecification with calibrated standard errors (951s)
+    rung3.jsonl: 25/50
+    rung3.jsonl: 50/50
+rung 3: 2/50 pass V2, V3, V4 and the size gate (2012s)
+  V2 pass rate 9/50
+  V3 pass rate 47/50
+  V4 pass rate 46/50
+  SIZE pass rate 25/50

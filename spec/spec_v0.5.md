@@ -254,7 +254,21 @@ Among valid stated designs with the required coverage, the search picks the smal
 
 **6.7 Results.**
 
-RESULTS_PENDING
+With the gates frozen before the run, 2 of the 50 cheapest designs passed every gate (87,984 items each). The failures traced to three faults, fixed in v0.6 rather than by changing any threshold.
+
+| Rung | Result |
+| --- | --- |
+| Required coverage | 622 of 25,324 stated designs |
+| Rung 1, closed-form power | all 622 feasible; N\* from 78,208 to 466,024 items (median 209,664); every design needs W6 = 18, set by the offer-level equivalence (α0), because the context shift moves every cell of an arm; W5 is set by H1 in some designs |
+| Sensitivity | with every standard deviation ×1.5, 615 feasible, all needing more replication; ×2, none feasible |
+| Rung check | 200 of 200 reach simulated power ≥ 0.75 on H1, H2 and H3 (lowest H1 0.855) |
+| Rung 2 | 620 of 622 keep power ≥ 0.8 under misspecification |
+| Rung 3 | V2: 9 of 50; V3: 47; V4: 46; VS: 25; all four: 2 |
+
+- Blunting bias up to 0.044 (limit 0.01) in 41 designs: the generator let blunting grow with intensity, but the model had one coefficient, which GLS averaged with noise weights. Fixed by D12.
+- Test size up to 0.095 (limit 0.065) in 25 designs: the paired difference's spread was 1.07 to 1.19 times its model-based standard error, which the single-arm calibration (factor 1.00) missed. Fixed by D11.
+- The credulous buyer escaped in 4 designs whose only non-credible claim never changes a scored optimum. Fixed by D10.
+- Yielding itself was recovered well: worst bias 0.0093 under the correct model and 0.014 under misspecification.
 
 ## 7. The evaluator ensemble
 

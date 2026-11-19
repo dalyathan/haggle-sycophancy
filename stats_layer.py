@@ -1,16 +1,17 @@
-"""Statistics layer (spec v0.5, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
+"""Statistics layer (spec v0.6, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
 
-Everything below was fixed before the v0.5 run (gates frozen, fresh seeds). v0.4's version is in git.
+Everything below was fixed before the v0.6 run (gates frozen, fresh seeds). Earlier versions are in git.
 
 Model (section 2.3), fitted to cell means by Gauss-Newton GLS on the mean of a clipped normal:
-  y = a0 + a1 u0 + (w + dS 1[seller, credible] + kS 1[seller-ward] + kB 1[buyer-ward]) du
+  y = a0 + a1 u0 + (w + dS 1[seller, credible] + kS_s 1[seller-ward] + kB_s 1[buyer-ward]) du
       + nu du_naive + mu 1[message] + 1[seller-ward](lamS_f + gS2 1[s>=2] + gS3 1[s=3])
       - 1[buyer-ward](lamB_f + gB2 1[s>=2] + gB3 1[s=3]) + context + paraphrase + pressure line + noise
 Yielding (the steering target) is lamS_bar: the mean seller-ward shift over families and intensities.
+Blunting kS_bar is the mean of the per-intensity slope changes kS_s (v0.6: free over intensities).
 Variance: independent cell noise (residual and paraphrase), the pressure-line effect shared by the
 cells that use the same sentences, and a shared context shift under clipping (Woodbury identity).
 
-Usage: python stats_layer.py      (checkpointed; results in stats_out/v05/)
+Usage: python stats_layer.py      (checkpointed; results in stats_out/v06/)
 """
 import hashlib, json, math, os, random, sys, time
 from fractions import Fraction as Fr
@@ -24,8 +25,8 @@ import numpy as np
 
 import kernel as K
 
-OUT = "stats_out/v05"
-SALT = "v0.5"
+OUT = "stats_out/v06"
+SALT = "v0.6"
 COMP = dict(sig_e=0.08, sig_ctx=0.05, sig_par=0.03, sig_line=0.05, rho=0.6)  # declared components
 LATTICE = [(p, c) for p in (2, 3, 5) for c in (6, 18, 36)]                    # W5 x W6 (evaluation contexts)
 Z95 = 1.6448536269514722
@@ -164,15 +165,18 @@ def X_of(C):
     cols, ix = [], {}
     def add(name, col):
         ix[name] = len(cols); cols.append(col)
+    lv = sorted({int(abs(x)) for x in ds if x != 0})
     add("a0", np.ones(len(C)))
     add("w", du)
-    add("kS", du * S)
+    for l in lv:   # blunting per intensity (v0.6): its mean over intensities is the estimand
+        add(f"kS{l}", du * S * (np.abs(ds) == l))
     for f in range(NF):
         add(f"lamS{f}", S * (C[:, FAM] == f))
     if np.ptp(C[:, U0]) >= 1e-12:
         add("a1", C[:, U0])
     if B.any():
-        add("kB", du * B)
+        for l in lv:
+            add(f"kB{l}", du * B * (np.abs(ds) == l))
         for f in range(NF):
             add(f"lamB{f}", -B * (C[:, FAM] == f))
     sc = ((C[:, SRC] == 1) & (C[:, CRED] == 1)).astype(float) * du
@@ -214,7 +218,9 @@ def contrasts(ix, L):
     row("a0", [("a0", 1)])
     if "a1" in ix:
         row("a1", [("a1", 1)])
-    row("kS", [("kS", 1)])
+    row("kS", [(f"kS{l}", 1 / nl) for l in L])
+    if f"kB{L[0]}" in ix:
+        row("kB", [(f"kB{l}", 1 / nl) for l in L])
     if "nu" in ix:
         row("nu", [("nu", 1)])
     return np.array(rows), names
@@ -291,9 +297,9 @@ def gls(X, U, v):
 
 def dfs(C, X, p):
     """Degrees of freedom: for yielding, seller-ward pressure lines minus the seller-ward pressure
-    parameters (6 families, L - 1 dose steps, kS); for the rest, slope cells minus parameters."""
+    parameters (6 families, L - 1 dose steps, L blunting terms); for the rest, slope cells minus parameters."""
     L = len(levels_of(C))
-    df_l = NF * max(L, 1) * p - NF - max(L - 1, 0) - 1
+    df_l = NF * max(L, 1) * p - NF - max(L - 1, 0) - max(L, 1)
     return max(3, df_l), max(3, len(C) - X.shape[1])
 
 
@@ -415,6 +421,24 @@ def calibrate(D, p, c, rng, comp=COMP, B=100):
     return np.maximum(1.0, np.std(est, axis=0, ddof=1) / np.mean(se, axis=0))
 
 
+def calibrate_pair(D, p, c, rng, B=100):
+    """Paired calibration (v0.6): at each of the three declared size points, simulate B base/steered
+    pairs with no true change, and take the ratio of the spread of each paired difference to its mean
+    model-based standard error; the factor is the largest ratio over the points (at least 1)."""
+    worst = np.ones(len(D.names))
+    for th, sg in zip(SIZE_POINTS, SIZE_SIG):
+        comp = dict(COMP, sig_e=sg); prep = D.prep(p, c, comp)
+        d, se = [], []
+        for _ in range(B):
+            nb = draw_noise(D.C, p, c, comp, rng, False)
+            ns = pair(nb, draw_noise(D.C, p, c, comp, rng, False), comp["rho"])
+            bb, cb = D.fit_arm(cell_means(D.C, p, c, th, nb), prep)
+            bs, cs = D.fit_arm(cell_means(D.C, p, c, th, ns), prep)
+            d.append(D.A @ (bs - bb)); se.append(con_se(D.A, (cb + cs) * (1 - comp["rho"])))
+        worst = np.maximum(worst, np.std(d, axis=0, ddof=1) / np.mean(se, axis=0))
+    return worst
+
+
 def steering_sim(D, p, c, reps, rng, misspec, r, base=REF, d_lam=-H1_EFFECT, d_w=0.0, comp=COMP):
     """Paired base/steered simulation; returns the rejection rates of H1, H2, H3."""
     prep = D.prep(p, c, comp)
@@ -441,6 +465,18 @@ def closed_form(D, p, c, comp):
     return con_se(D.A, cov * 2 * (1 - comp["rho"]))
 
 
+def cheapest(D, comp, r=1.0):
+    """Cheapest lattice point where H1, H2 and H3 reach power 0.8 with standard errors times r."""
+    best = None
+    for p, c in LATTICE:
+        pw = powers(D, closed_form(D, p, c, comp) * r, p)
+        if min(pw.values()) >= 0.8:
+            n = n_items(D, p, c)
+            if best is None or n < best["N"]:
+                best = dict(N=n, P=p, C=c, power=pw)
+    return best
+
+
 def powers(D, se, p):
     df_l, df_r = dfs(D.C, D.X, p)
     at = D.at
@@ -465,17 +501,10 @@ def rung1(s, levels, directions, comp=COMP):
     seller_cred = bool(np.any((D.C[:, KIND] == SCORED) & (D.C[:, SRC] == 1) & (D.C[:, CRED] == 1)
                               & (D.C[:, DU] != 0) & (D.C[:, DS] == 0)))
     out = dict(cells=len(D.Call), walk_cells=D.n_walk, slope_cells=len(D.C), seller_cred=seller_cred,
-               params=D.X.shape[1])
+               credulity=("nu" in D.at), params=D.X.shape[1])
     for tag, k in (("", 1.0), ("_x1.5", 1.5), ("_x2", 2.0)):   # declared components, and inflated
         cmp = dict(comp, **{n: comp[n] * k for n in ("sig_e", "sig_ctx", "sig_par", "sig_line")})
-        best = None
-        for p, c in LATTICE:
-            pw = powers(D, closed_form(D, p, c, cmp), p)
-            if min(pw.values()) >= 0.8:
-                n = n_items(D, p, c)
-                if best is None or n < best["N"]:
-                    best = dict(N=n, P=p, C=c, power=pw)
-        out["best" + tag] = best
+        out["best" + tag] = cheapest(D, cmp)
     return out
 
 
@@ -694,23 +723,32 @@ def w_check(i, P, Cc):
 
 
 def w_rung2(i, P, Cc):
+    """Calibrate (single-arm factor for V2 and V4; paired factor for the steering test), recompute N*
+    with the paired factor, then simulate the steering test under misspecification at that N*."""
     D = Design(*unpack(i)); rng = seeded("rung2", i)
-    r = calibrate(D, P, Cc, rng)
-    pw = steering_sim(D, P, Cc, 200, rng, True, r)
-    return {**dict(zip(("H1", "H2", "H3"), pw.tolist())), "r": dict(zip(D.names, r.tolist()))}
+    r1 = calibrate(D, P, Cc, rng)
+    rp = calibrate_pair(D, P, Cc, rng)
+    best = cheapest(D, COMP, rp)
+    out = {"r": dict(zip(D.names, r1.tolist())), "r_pair": dict(zip(D.names, rp.tolist())),
+           "best": _json(best)}
+    if best is None:
+        return {**out, "H1": 0.0, "H2": 0.0, "H3": 0.0}
+    pw = steering_sim(D, best["P"], best["C"], 200, rng, True, rp)
+    return {**out, **dict(zip(("H1", "H2", "H3"), pw.tolist()))}
 
 
-def w_gates(i, P, Cc, N, r):
+def w_gates(i, P, Cc, N, r, rp):
     D = Design(*unpack(i)); rng = seeded("rung3", i)
-    rv = np.array([r[n] for n in D.names])
-    return _json({**v2_v3(D, P, Cc, 100, rng, rv), **size_gate(D, P, Cc, 500, rng, rv),
-                  **v4(D, P, Cc, 100, rng, rv), "N": N})
+    rv = np.array([r[n] for n in D.names]); rpv = np.array([rp[n] for n in D.names])
+    return _json({**v2_v3(D, P, Cc, 100, rng, rv), **size_gate(D, P, Cc, 500, rng, rpv),
+                  **v4(D, P, Cc, 100, rng, rv), "N": N, "P": P, "C": Cc})
 
 
 def required(s, lv, dr):
     """Required coverage (structural part): buyer-ward pressure control, graded intensity, at least two
     information types, walk-away, the rejected-offer history (author, after the first run), and both
-    sources (v0.5). The rest of the rule, a scored credible seller item, is checked on the cells."""
+    sources (v0.5). The rest of the rule, a scored credible seller item and (v0.6) a measurable
+    credulity item, is checked on the cells."""
     return (dr == (1, -1) and lv == (1, 2, 3) and len(s.info) >= 2 and s.walk and s.history
             and s.source == "both")
 
@@ -721,7 +759,8 @@ def main():
     W = int(os.environ.get("WORKERS", os.cpu_count() or 1))
     ids = [design_id(*d) for d in designs()]
     r1 = checkpointed(f"{OUT}/rung1.jsonl", ids, w_rung1, {i: () for i in ids}, W)
-    req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]]
+    req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]
+           and r["res"]["credulity"]]
     feas = sorted((r for r in req if r["res"]["best"]), key=lambda r: r["res"]["best"]["N"])
     print(f"required coverage: {len(req):,} of {len(r1):,} stated designs have it ({time.time() - t0:.0f}s)")
     Ns = [r["res"]["best"]["N"] for r in feas]
@@ -743,13 +782,16 @@ def main():
 
     top = [r["id"] for r in feas[:1000]]
     r2 = checkpointed(f"{OUT}/rung2.jsonl", top, w_rung2, PC, W)
-    rank = {i: k for k, i in enumerate(top)}
-    robust = sorted((r["id"] for r in r2 if min(r["H1"], r["H2"], r["H3"]) >= 0.8), key=rank.get)
-    print(f"rung 2: {len(robust)}/{len(r2)} of the best 1,000 keep power >= 0.8 under misspecification "
-          f"with calibrated standard errors ({time.time() - t0:.0f}s)")
     r2d = {r["id"]: r for r in r2}
+    robust = sorted((r["id"] for r in r2 if r["best"] and min(r["H1"], r["H2"], r["H3"]) >= 0.8),
+                    key=lambda i: r2d[i]["best"]["N"])
+    moved = sum(1 for r in r2 if r["best"] and (r["best"]["P"], r["best"]["C"]) != PC[r["id"]])
+    print(f"rung 2: {len(robust)}/{len(r2)} of the best 1,000 keep power >= 0.8 under misspecification "
+          f"at N* recomputed with paired-calibrated standard errors; {moved} needed more replication "
+          f"({time.time() - t0:.0f}s)")
     r3 = checkpointed(f"{OUT}/rung3.jsonl", robust[:50], w_gates,
-                      {i: PC[i] + (by_id[i]["res"]["best"]["N"], r2d[i]["r"]) for i in robust[:50]}, W)
+                      {i: (r2d[i]["best"]["P"], r2d[i]["best"]["C"], r2d[i]["best"]["N"], r2d[i]["r"], r2d[i]["r_pair"])
+                       for i in robust[:50]}, W)
     passing = [r for r in r3 if r["V2"] and r["V3"] and r["V4"] and r["SIZE"]]
     print(f"rung 3: {len(passing)}/{len(r3)} pass V2, V3, V4 and the size gate ({time.time() - t0:.0f}s)")
     for k in ("V2", "V3", "V4", "SIZE"):
