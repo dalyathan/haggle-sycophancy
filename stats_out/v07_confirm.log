@@ -1,0 +1,6 @@
+    confirm.jsonl: 4/4
+N*=95,940 confirm PASS V2=True V3=True V4=True SIZE=True size_max=0.055 grid=0.014  [[["rational", "gullible", "floor_low", "floor_high"], 5, 9, true, true, "uniform", ["quality_down", "competing_offer"], "both", false, true], [1, 2, 3], [1, -1]]
+N*=100,672 confirm fail V2=True V3=True V4=True SIZE=False size_max=0.077 grid=0.012  [[["rational", "gullible", "floor_low"], 5, 9, true, true, "rational_heavy", ["quality_down", "cost_reveal"], "both", false, true], [1, 2, 3], [1, -1]]
+N*=116,064 confirm PASS V2=True V3=True V4=True SIZE=True size_max=0.050 grid=0.014  [[["rational", "gullible", "floor_low"], 5, 9, true, true, "rational_heavy", ["quality_down", "quality_up", "competing_offer"], "both", false, true], [1, 2, 3], [1, -1]]
+N*=130,572 confirm fail V2=True V3=True V4=True SIZE=False size_max=0.069 grid=0.008  [[["rational", "floor_low"], 5, 9, true, true, "rational_heavy", ["quality_down", "quality_up", "competing_offer"], "both", false, true], [1, 2, 3], [1, -1]]
+selected: [[["rational", "gullible", "floor_low", "floor_high"], 5, 9, true, true, "uniform", ["quality_down", "competing_offer"], "both", false, true], [1, 2, 3], [1, -1]]

@@ -294,7 +294,16 @@ All counts below come from the frozen v0.7 run (salt "v0.7", outputs in stats\_o
 
 **Passing designs.** All 18 have p\_max = 9. The cheapest, at N\* = 95,940 items (W5 = 2, W6 = 18), uses all four seller types, 5 values, uniform mix, quality\_down and competing\_offer from both sources. Its gate values: bias of λ̄^S 0.005 (grid generator 0.010), w 0.008, κ̄^S 0.008; median coverage 0.94; largest size rate 0.050; specificity 1.0.
 
-**Confirmation (D20).** CONFIRM_PENDING
+**Confirmation (D20).** The four cheapest rung-3 passes were rerun with fresh seeds (stats\_out/v07/confirm.jsonl, `confirm.py`).
+
+| N\* | Rerun | Largest size rate | Notes |
+| --- | --- | --- | --- |
+| 95,940 | pass | 0.055 | bias of λ̄^S 0.005, grid generator 0.014, κ̄^S 0.007; coverage 0.94; specificity 0.995 |
+| 100,672 | fail (VS) | 0.077 | upper α1 test 0.077 (rung 3: 0.065) |
+| 116,064 | pass | 0.050 | |
+| 130,572 | fail (VS) | 0.069 | level test 0.069 (rung 3: 0.059) |
+
+**Selected design:** the cheapest, N\* = 95,940 items at W5 = 2, W6 = 18 (seller types rational, gullible, floor\_low and floor\_high; 5 values; p\_max = 9; uniform mix; quality\_down and competing\_offer from both sources). The next confirmed design, at 116,064, is the fallback. Two of four reruns failed VS on a test that passed at rung 3, so the size gate is close to its limit for many designs; the selected design passed it twice (0.050 and 0.055).
 
 **Selection effect.** Choosing the cheapest of 18 passes out of 50 noisy evaluations favours designs that were lucky once. D20 reruns every rung-3 gate with fresh seeds on the cheapest passing designs, in order, before one is selected.
 
