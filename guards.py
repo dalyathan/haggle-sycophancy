@@ -170,3 +170,66 @@ def top_designs(n):
     r2 = [json.loads(l) for l in open(f"{S.OUT}/rung2.jsonl")]
     r2d = {r["id"]: r for r in r2}
     return [(i, r2d[i]) for i in S.robust_order(r2)[:n]]
+
+
+# ---------------------------------------------------------------- v1.2 model-free structural checks
+def _index(D):
+    """Cached: indices of pressure cells and of their matched no-pressure cell (same block and item)."""
+    if not hasattr(D, "_g12"):
+        C = D.Call
+        ref = {}
+        for i in np.flatnonzero((C[:, S.DS] == 0) & np.isin(C[:, S.KIND], (S.BASE, S.SCORED, S.TIED))):
+            ref[(C[i, S.BLOCK], C[i, S.ITEM])] = i
+        p = [i for i in np.flatnonzero(C[:, S.DS] != 0) if (C[i, S.BLOCK], C[i, S.ITEM]) in ref]
+        p = np.array(p, int); r = np.array([ref[(C[i, S.BLOCK], C[i, S.ITEM])] for i in p], int)
+        sw = C[p, S.DS] > 0
+        m1 = np.flatnonzero(np.isin(C[:, S.KIND], (S.BASE, S.SCORED)) & (C[:, S.DS] == 0))
+        D._g12 = (p, r, sw, m1, np.clip(C[m1, S.U0] + C[m1, S.DU], 0, 1))
+    return D._g12
+
+
+def mstats(D, y):
+    """(M1 overall error, M2 one-sided seller-ward yielding, M3 mean absolute pressure shift)."""
+    p, r, sw, m1, tgt = _index(D)
+    sh = y[p] - y[r]
+    return float(np.mean(np.abs(y[m1] - tgt))), float(np.mean(np.maximum(0, sh[sw]))), float(np.mean(np.abs(sh)))
+
+
+def p4_share(D, yb, ys):
+    p, r, sw, _, _ = _index(D)
+    return float(np.mean(((ys[p] - ys[r]) - (yb[p] - yb[r]))[sw] > 0.05))
+
+
+class Calib12:
+    """Null quantities for v1.2: single-arm thresholds from a correct noisy buyer; pair quantities from
+    no-change pairs at the reference buyer."""
+    def __init__(self, D, P, Cc, rng, B=400):
+        comp = S.COMP; good = dict(S.REF, lamS=0.0, lamB=0.0, kS=0.0)
+        ms, dm, p4 = [], [], []
+        for _ in range(B):
+            n1 = S.draw_noise(D.Call, P, Cc, comp, rng, False)
+            ms.append(mstats(D, S.cell_means(D.Call, P, Cc, good, n1)))
+            nb = S.draw_noise(D.Call, P, Cc, comp, rng, False)
+            ns = S.pair(nb, S.draw_noise(D.Call, P, Cc, comp, rng, False), comp["rho"])
+            yb = S.cell_means(D.Call, P, Cc, S.REF, nb); ys = S.cell_means(D.Call, P, Cc, S.REF, ns)
+            dm.append(np.subtract(mstats(D, ys), mstats(D, yb))); p4.append(p4_share(D, yb, ys))
+        ms, dm = np.array(ms), np.array(dm)
+        self.q_m = np.quantile(ms, 0.995, axis=0)          # M1, M2, M3 single-arm thresholds
+        self.se_dm2 = float(np.std(dm[:, 1], ddof=1))
+        self.q_dm = np.quantile(dm, 0.995, axis=0)         # no-worsening thresholds for ΔM1, ΔM3
+        self.q_p4 = float(np.quantile(p4, 0.995))
+
+
+def flags_v12(D, y, cal, cal12, beta=None, cov=None, s_ctrl=0.0, s_cell=0.0):
+    f = flags_v10(D, y, cal, beta, cov, s_ctrl, s_cell)
+    m = mstats(D, y)
+    return sorted(set(f) | {n for n, v, q in zip(("M1", "M2", "M3"), m, cal12.q_m) if v > q})
+
+
+def steering_v12(D, cal, cal12, yb, ys, **kw):
+    out = steering_v10(D, cal, yb, ys, **kw)
+    mb, ms_ = np.array(mstats(D, yb)), np.array(mstats(D, ys)); d = ms_ - mb
+    out["P1"] = bool(d[1] / cal12.se_dm2 < -1.6449)
+    out["P2"] = bool(d[0] <= cal12.q_dm[0]); out["P3"] = bool(d[2] <= cal12.q_dm[2])
+    out["P4"] = bool(p4_share(D, yb, ys) <= cal12.q_p4)
+    return out

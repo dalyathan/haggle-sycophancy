@@ -14,17 +14,17 @@ def work(args):
     i, r2, files, reps = args
     D = S.Design(*S.unpack(i)); P, Cc = r2["best"]["P"], r2["best"]["C"]
     rng = S.seeded("v10eval", i)
-    cal = G.Calib(D, P, Cc, r2, rng)
+    cal = G.Calib(D, P, Cc, r2, rng); cal12 = G.Calib12(D, P, Cc, rng)
     out = {"single": {}, "pairs": {}, "own": {}, "power": {}}
     good, bad = S.buyers(D.Call, D.s.pmax)
     for n, y in list(bad.items()) + list(good.items()):
-        out["own"][n] = G.flags_v10(D, np.clip(y, 0, 1), cal)
+        out["own"][n] = G.flags_v12(D, np.clip(y, 0, 1), cal, cal12)
     for fpath in files:
         m = load(fpath); tag = fpath.split("/")[-2] if "heldout2" in fpath else "panel1"
         for n, y in m.buyers(D.Call, D.s.pmax).items():
-            out["single"][f"{tag}:{n}"] = G.flags_v10(D, np.clip(np.asarray(y, float), 0, 1), cal)
+            out["single"][f"{tag}:{n}"] = G.flags_v12(D, np.clip(np.asarray(y, float), 0, 1), cal, cal12)
         for n, (yb, ys) in m.steering_pairs(D.Call, D.s.pmax).items():
-            res = G.steering_v10(D, cal, np.clip(np.asarray(yb, float), 0, 1), np.clip(np.asarray(ys, float), 0, 1))
+            res = G.steering_v12(D, cal, cal12, np.clip(np.asarray(yb, float), 0, 1), np.clip(np.asarray(ys, float), 0, 1))
             out["pairs"][f"{tag}:{n}"] = [k for k, v in res.items() if not v]
     # genuine improvement: REF base, steered lamS - 0.05, noisy, clipped fits (as the steering test)
     comp = S.COMP; prep = D.prep(P, Cc, comp)
@@ -40,7 +40,7 @@ def work(args):
         ns = S.pair(nb, S.draw_noise(D.Call, P, Cc, comp, rng, False), comp["rho"])
         yb = S.cell_means(D.Call, P, Cc, S.REF, nb); ys = S.cell_means(D.Call, P, Cc, steered, ns)
         bb, cb = D.fit_arm(yb[inner], prep); bs, cs = D.fit_arm(ys[inner], prep)
-        res = G.steering_v10(D, cal, yb, ys, bb, bs, cb, cs, s_ctrl, math.sqrt(v))
+        res = G.steering_v12(D, cal, cal12, yb, ys, bb=bb, bs=bs, cb=cb, cs=cs, s_ctrl=s_ctrl, s_cell=math.sqrt(v))
         res["old_H1to4"] = all(res[k] for k in res if k in ("H1", "H4") or k in S.EQUIV)
         res["ALL"] = all(v_ for k, v_ in res.items() if k not in ("old_H1to4",))
         for k, v_ in res.items():
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     jobs = [(i, r2, files, reps) for i, r2 in G.top_designs(10)]
     with Pool(4) as pool:
         res = pool.map(work, jobs)
-    R = dict(res); json.dump(R, open(f"{S.OUT}/v10_eval.json", "w"), indent=1)
+    R = dict(res); json.dump(R, open(f"{S.OUT}/v12_eval.json", "w"), indent=1)
     nd = len(R); first = next(iter(R.values()))
     print(f"== own panel (designs where flagged / {nd}) ==")
     for n in first["own"]:
