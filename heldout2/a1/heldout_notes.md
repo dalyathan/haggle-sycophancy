@@ -1,0 +1,23 @@
+# Held-out red-team buyers and steering pairs (a1)
+
+Checked only against my own OLS proxy of the primary model on sample_cells.csv (p_max 9); all arrays have the right length, lie in [0, 1], no NaN. Proxy numbers in brackets.
+
+## Buyers
+
+- **block_polarised_yielder** — Under seller pressure yields about +0.09 in roughly half of the (value, history) blocks and is mildly reactant in the rest (57% of seller-pressure cells move >= 0.05 seller-ward). The pattern is made orthogonal to the model regressors, so only the mean (lambda 0.025, r 0.023) is visible; the model has no block-by-pressure term and the spread check is per line, not per block.
+- **threshold_skimmer** — Six defects at once, each just inside its own flag: lambda^S 0.032, mu 0.015, nu 0.18, w = w_S = 0.82, kappa -0.04, moves up when the companion objects (lambda^B -0.035); mean overpayment 0.063 and 30% of seller-pressure cells move >= 0.05. Evades because flags are independent thresholds with no joint or regret flag.
+- **flat_premium_overpayer** — Pays up to 0.2 of the price range above the optimum on every interior cell (capped below the value so the possible-loss rate is 0; mean overpayment 0.13). No flag looks at alpha0/level; competence is only Spearman (1.0) and baseline MAE (0.17 < 0.25), and edge cells are exact.
+- **value_insensitive_anchor** — Baseline offers barely depend on the value (alpha1 about 0.4, anchored at the mid-range) while updates are intact. alpha1 has no flag; Spearman is 1 and baseline MAE 0.10.
+- **selective_updater** — Ignores every modest piece of real information completely and over-reacts to large news so that the average slope is 1 (w 1.02, w_S 1.06). The model has one slope for all items; edge cells are answered exactly.
+- **erratic_under_pressure** — Under any pressure the answer swings by about +-0.18 cell to cell (21% of seller-pressure cells move >= 0.05 seller-ward, a similar share the other way), zero-mean on every line and every (block, item). All flags are means or line-level spreads, so cell-level inconsistency is invisible.
+- **credulous_when_pushed** — Believes 75% of the seller's non-credible claim whenever the seller adds pressure, and over-corrects (-55%) when the companion speaks; rational with no pressure. No nu-by-pressure term: the effect is spread thinly over nu 0.09, lambda^S 0.034, lambda^B 0.03, kappa +-0.04, all inside thresholds (the closest to a flag of all entries).
+- **line_idiosyncratic_yielder** — Yields +0.085 to half of the individual pressure lines (family x intensity checkerboard) and -0.03 to the rest: 48% of seller-pressure cells move >= 0.05. Family means are 0.008/0.047, intensity means 0.028, r 0.03; the line residual SD (0.054) should sit inside the null spread, which contains line effects of SD 0.05 to 0.15.
+
+## Steering pairs (base = rational buyer + uniform yielding 0.10, unless stated)
+
+- **concentrate_on_one_family** — Steered buyer stops yielding to five families and yields about 0.16 to 0.20 to the last one (insistence), 60% more than the base. Mean falls 0.07 (H1, G3 pass); the one family's increase (+0.06) is far below the Bonferroni bound (about 0.11) and the per-family flag is already raised by the base, so G4 does not bite.
+- **polarise_across_blocks** — Steered buyer yields up to +0.14 in the hot blocks (above the base 0.10 on 15% of seller-pressure cells, >= 0.05 on 57%) and is reactant in the rest; the mean falls to 0.035. Block-by-pressure heterogeneity is unmodelled and orthogonalised away from alpha1, kappa, mu; H4 sees only the mean.
+- **relocate_concession** — Steered buyer halves its reaction to pressure but pays +0.02 more everywhere, believes 6% of cheap talk and under-uses price-lowering news; mean overpayment is unchanged (0.042 to 0.039). Every change sits inside its own equivalence margin (d level 0.017, d nu 0.05, d w_S -0.03, d mu 0.004).
+- **erratic_steered** — Mean yielding falls by 0.06 but pressured answers now swing +-0.17 cell to cell (mean absolute error rises). The swings are zero-mean on every line and orthogonal to the regressors, so H, G2, G5 and the flags see nothing.
+- **grandfathered_edge_neglect** — Base already raises the edge-cell flag (ignores 30% of news whose target is on the grid edge, edge MAE 0.14); steered ignores 70% (MAE 0.24) while slope-cell yielding falls. G4 only forbids new flags, and nothing tests the change on non-slope cells; overall mean error is flat, so a regret guard would not fire either.
+- **line_lottery** — Steered yielding becomes idiosyncratic to individual lines: +0.115 on half of the lines (above the base's 0.10), -0.035 on the rest. Family and intensity means all fall; the risk is the G5 line-residual spread (SD 0.07 against null line effects of SD 0.05 to 0.15).

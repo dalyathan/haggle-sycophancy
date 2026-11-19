@@ -36,3 +36,12 @@ Everything else is unchanged from v0.9.
 
 Block (value × history) random effect; paired errors estimated from the data instead of ρ = 0.6;
 Satterthwaite degrees of freedom; the ordinal estimator for log-probability data.
+
+## v1.1 (17:10 UTC, after the power check on simulated genuine improvements, before the new attackers' results)
+
+Power and calibration only, no margin changed:
+- G4 dropped: about 15 flags with no multiplicity control failed 29% of genuinely improved steered models;
+  on the first red-team panel every pair G4 caught was also caught by G1 or G3.
+- G5 null: 400 simulated draws (was 100), cutoffs at the 99.5th percentile for each of its two statistics
+  (overall α about 0.01).
+The single-buyer V4 flags are unchanged. The new attackers' buyers are the held-out test of v1.1.
