@@ -1,4 +1,4 @@
-"""Confirmation run (v0.7, D20): re-run every rung-3 gate with fresh seeds on the cheapest designs that
+"""Confirmation run (D20, from v0.7): re-run every rung-3 gate with fresh seeds on the cheapest designs that
 passed rung 3, in order of N*. The selected design is the cheapest one that passes both rung 3 and this
 rerun. Selecting the cheapest of 18 noisy passes favours designs that were lucky once; an independent
 rerun removes that selection effect for the chosen design. Rule fixed before this script was run."""

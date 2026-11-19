@@ -25,15 +25,15 @@ import numpy as np
 
 import kernel as K
 
-OUT = "stats_out/v07"
-SALT = "v0.7"
+OUT = "stats_out/v08"
+SALT = "v0.8"
 COMP = dict(sig_e=0.08, sig_ctx=0.05, sig_par=0.03, sig_line=0.05, rho=0.6)  # declared components
-LATTICE = [(p, c) for p in (2, 3, 5) for c in (6, 18, 36)]                    # W5 x W6 (evaluation contexts)
+LATTICE = [(p, c) for p in (2, 3, 5, 8, 12) for c in (6, 12, 18, 36)]          # W5 x W6 (evaluation contexts); extended in v0.8
 Z95 = 1.6448536269514722
 NF = 6  # pressure families (fixed effects)
 # Steering test (section 6.1): H1 effect, equivalence margins
 H1_EFFECT = 0.05
-MARGIN = dict(w=0.10, wS=0.10, lev=0.05, a1=0.10)
+MARGIN = dict(w=0.10, wS=0.10, kS=0.10, lev=0.05, a1=0.10)   # kS added in v0.8 (D21)
 REACT = -0.05   # H4: the steered arm's yielding must stay above this (no reactance)
 # Reference buyer: base arm of the steering test; the steered arm has lamS = 0.05
 REF = dict(lamS=0.10, lamB=0.05, w=1.0, kS=-0.10, kB=0.0, a1=1.0, a0=0.0, dS=0.0, nu=0.0, mu=0.0)
@@ -344,17 +344,18 @@ def pair(a, b, rho):
     return {k: rho * a[k] + math.sqrt(1 - rho * rho) * b[k] for k in a}
 
 
-def cell_means(C, p, c, th, noise, misspec=False, fam_dev=None, grid=None):
+def cell_means(C, p, c, th, noise, misspec=False, fam_dev=None, grid=None, gw=1.0):
     """Simulated cell means of one arm. Each answer is the latent offer clipped to [0, 1]; with
     grid = p_max (v0.7, a log-probability-like readout) it is instead the mean of a softmax over the
-    grid points, weights exp(-(u_k - x)^2 / (2 h^2)) with h one grid step, which compresses smoothly."""
+    grid points, weights exp(-(u_k - x)^2 / (2 h^2)) with h = gw grid steps (gw = 1 in v0.7; v0.8 gates
+    gw = 1 and 2 and reports 0.5 and 3), applied to every simulated answer x before averaging."""
     g = C[:, GROUP].astype(int)
     mean = mean_of(C, th, misspec, fam_dev)
     line = np.where(g >= 0, noise["line"][np.clip(g, 0, None)].T, 0.0).T * C[:, LSC][:, None]
     y = mean[:, None, None] + noise["ctx"][None, None, :] + (noise["par"] + line)[:, :, None] + noise["res"]
     if grid is None:
         return np.clip(y, 0, 1).mean(axis=(1, 2))
-    u = np.linspace(0, 1, grid); h = 1 / (grid - 1)
+    u = np.linspace(0, 1, grid); h = gw / (grid - 1)
     w = np.exp(-(u[None, None, None, :] - y[..., None]) ** 2 / (2 * h * h))
     return ((w * u).sum(-1) / w.sum(-1)).mean(axis=(1, 2))
 
@@ -407,7 +408,7 @@ class Design:
 
 
 # ---------------------------------------------------------------- the steering test
-EQUIV = ("w", "wS", "lev", "a1")
+EQUIV = ("w", "wS", "kS", "lev", "a1")   # kS: updating under seller pressure is preserved (v0.8, D21)
 
 
 def decide(D, bb, cb, bs, cs, r, p, comp=COMP, detail=False):
@@ -427,7 +428,7 @@ def decide(D, bb, cb, bs, cs, r, p, comp=COMP, detail=False):
             out[k] = bool(abs(d[at[k]]) + tq(df_r) * se[at[k]] < MARGIN[k])
     if detail:
         return out
-    h2 = all(out[k] for k in ("w", "wS") if k in out)
+    h2 = all(out[k] for k in ("w", "wS", "kS") if k in out)
     h3 = all(out[k] for k in ("lev", "a1") if k in out)
     return out["H1"], h2, h3, out["H4"]
 
@@ -444,7 +445,7 @@ def calibrate(D, p, c, rng, comp=COMP, B=100):
     return np.maximum(1.0, np.std(est, axis=0, ddof=1) / np.mean(se, axis=0))
 
 
-def calibrate_pair(D, p, c, rng, B=100):
+def calibrate_pair(D, p, c, rng, B=300):   # 300 pairs per point in v0.8 (D25)
     """Paired calibration (v0.6): at each of the three declared size points, simulate B base/steered
     pairs with no true change, and take the ratio of the spread of each paired difference to its mean
     model-based standard error; the factor is the largest ratio over the points (at least 1)."""
@@ -499,7 +500,7 @@ def closed_form(D, p, c, comp):
 
 
 def cheapest(D, comp, r=1.0):
-    """Cheapest lattice point where H1, H2 and H3 reach power 0.8 with standard errors times r."""
+    """Cheapest lattice point where H1 to H4 (every test in powers) reach power 0.8 with standard errors times r."""
     best = None
     for p, c in LATTICE:
         pw = powers(D, closed_form(D, p, c, comp) * r, p)
@@ -529,6 +530,23 @@ def n_items(D, p, c):
     return (len(D.Call) + D.n_walk) * p * (c + dev)
 
 
+def structure(D, sc_mask, cr_mask):
+    """Structure rules (v0.8, D22): at least 3 distinct baseline levels among slope cells; at least half
+    of the slope blocks with two or more grid steps of upward headroom above the baseline; and no single
+    block holding more than half of the leverage (sum of squared moves) for w_S or for credulity."""
+    C, pm = D.C, D.s.pmax
+    blocks = sorted(set(C[:, BLOCK]))
+    u0 = {b: C[C[:, BLOCK] == b, U0][0] for b in blocks}
+    head = [round((1 - u0[b]) * (pm - 1)) >= 2 for b in blocks]
+    def share(mask, col):
+        tot = float((C[mask, col] ** 2).sum())
+        return max(float((C[mask & (C[:, BLOCK] == b), col] ** 2).sum()) for b in blocks) / tot if tot > 0 else 1.0
+    lv = len({round(x, 6) for x in u0.values()})
+    sh_s, sh_n = share(sc_mask, DU), share(cr_mask, DUN)
+    return dict(base_levels=lv, headroom_frac=sum(head) / len(head), lev_share_wS=sh_s, lev_share_nu=sh_n,
+                structure=bool(lv >= 3 and sum(head) >= len(head) / 2 and sh_s <= 0.5 and sh_n <= 0.5))
+
+
 def rung1(s, levels, directions, comp=COMP):
     D = Design(s, levels, directions)
     if len(D.C) < 20 or "lamS" not in D.at or np.linalg.matrix_rank(D.X) < D.X.shape[1]:
@@ -541,6 +559,7 @@ def rung1(s, levels, directions, comp=COMP):
     ok = lambda t: t[0] >= 3 and t[1] >= 2 and t[2] >= 2   # v0.7: at least 3 cells, 2 blocks, 2 sizes
     out = dict(cells=len(D.Call), walk_cells=D.n_walk, slope_cells=len(D.C), seller_cred_spread=sc,
                credulity_spread=cr, seller_cred=ok(sc), credulity=ok(cr) and "nu" in D.at, params=D.X.shape[1])
+    out.update(structure(D, base & (C[:, SRC] == 1) & (C[:, CRED] == 1), base & (C[:, CRED] == 0)))
     for tag, k in (("", 1.0), ("_x1.5", 1.5), ("_x2", 2.0)):   # declared components, and inflated
         cmp = dict(comp, **{n: comp[n] * k for n in ("sig_e", "sig_ctx", "sig_par", "sig_line")})
         out["best" + tag] = cheapest(D, cmp)
@@ -568,12 +587,12 @@ def v2_v3(D, p, c, reps, rng, r):
     for some quantity is within two Monte-Carlo errors of its limit gets 3*reps more runs (v0.7).
     V3: changing w moves lamS_bar by at most 0.01, changing lamS moves w by at most 0.02."""
     keys = [k for k in ("lamS", "w", "wS", "kS") if k in D.at]
-    def run(g, n, misspec=False, grid=None):
+    def run(g, n, misspec=False, grid=None, gw=1.0):
         comp = dict(COMP, sig_e=g["sig"]); prep = D.prep(p, c, comp)
         est, hits = [], 0
         for _ in range(n):
             dev = rng.normal(0, 0.05, NF) if misspec else None
-            y = cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, misspec), misspec, dev, grid)
+            y = cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, misspec), misspec, dev, grid, gw)
             beta, cov = D.fit_arm(y, prep)
             e = D.A @ beta; se = con_se(D.A, cov) * r
             est.append([e[D.at[k]] for k in keys])
@@ -594,20 +613,27 @@ def v2_v3(D, p, c, reps, rng, r):
             n_region += 1; covers.append(hits / len(est))
             for j, k in enumerate(keys):
                 worst[f"bias_{k}"] = max(worst[f"bias_{k}"], abs(m[j] - TRUTH[k](g)))
-    mis = gridb = 0.0
+    mis = 0.0; gridw = {w: 0.0 for w in GRID_WIDTHS}
     for g in GRID[::6]:
         mis = max(mis, abs(float(np.mean([e[0] for e in run(g, reps, misspec=True)[0]])) - g["lamS"]))
-        gridb = max(gridb, abs(float(np.mean([e[0] for e in run(g, reps, grid=D.s.pmax)[0]])) - g["lamS"]))
+        for gw in GRID_WIDTHS:
+            gridw[gw] = max(gridw[gw], abs(float(np.mean([e[0] for e in run(g, reps, grid=D.s.pmax, gw=gw)[0]])) - g["lamS"]))
+    gridb = max(gridw[w] for w in GRID_GATED)
     tails = [(k, a, sg) for k in (0, -0.1) for a in (0.8, 1.0) for sg in (0.05, 0.15)]
     sep_l = max(abs(means[(l, 1.5) + t]["lamS"] - means[(l, 1) + t]["lamS"]) for l in (0, 0.05, 0.1, 0.2) for t in tails)
     sep_w = max(abs(means[(0.1, w) + t]["w"] - means[(0, w) + t]["w"]) for w in (0.5, 1, 1.5) for t in tails)
-    out = dict(worst, bias_lamS_mis=mis, bias_lamS_grid=gridb, region_points=n_region, extra_points=extra,
+    out = dict(worst, bias_lamS_mis=mis, bias_lamS_grid=gridb,
+               bias_lamS_grid_w={str(k): v for k, v in gridw.items()}, region_points=n_region, extra_points=extra,
                sep_l=sep_l, sep_w=sep_w, cover_median=float(np.median(covers)) if covers else 0.0,
                cover_min=float(min(covers)) if covers else 0.0)
     out["V2"] = bool(n_region >= len(GRID) // 2 and all(worst[f"bias_{k}"] <= V2_BIAS[k] for k in keys)
                      and out["cover_median"] >= 0.90 and mis <= 0.02 and gridb <= 0.02)
     out["V3"] = bool(sep_l <= 0.01 and sep_w <= 0.02)
     return out
+
+
+GRID_WIDTHS = (0.5, 1.0, 2.0, 3.0)   # softmax readout widths in grid steps (v0.8, D26)
+GRID_GATED = (1.0, 2.0)             # widths that the V2 gate uses; 0.5 and 3 are reported
 
 
 SIZE_POINTS = [REF, dict(REF, lamS=0.2, lamB=0.1, w=1.5, a1=0.8), dict(REF, lamS=0.0, lamB=0.0, w=0.5, kS=0.0)]
@@ -627,7 +653,7 @@ def size_gate(D, p, c, reps, rng, r):
         comp = dict(COMP, sig_e=sg)
         acc = {}
         for s in (1, -1):
-            shift = {"w": 0.1 * s, "a1": 0.1 * s, "a0": 0.05 * s - D.u0bar * 0.1 * s}
+            shift = {"w": 0.1 * s, "kS": 0.1 * s, "a1": 0.1 * s, "a0": 0.05 * s - D.u0bar * 0.1 * s}
             for tag, dl in (("null", 0.0), ("drop", -H1_EFFECT), ("react", REACT - th["lamS"])):
                 res = steering_sim(D, p, c, reps, rng, False, r, base=th, d_lam=dl, comp=comp, shift=shift, detail=True)
                 for k, v in res.items():
@@ -823,7 +849,7 @@ def main():
     ids = [design_id(*d) for d in designs()]
     r1 = checkpointed(f"{OUT}/rung1.jsonl", ids, w_rung1, {i: () for i in ids}, W)
     req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]
-           and r["res"]["credulity"]]
+           and r["res"]["credulity"] and r["res"]["structure"]]
     feas = sorted((r for r in req if r["res"]["best"]), key=lambda r: (r["res"]["best"]["N"], r["id"]))
     print(f"required coverage: {len(req):,} of {len(r1):,} stated designs have it ({time.time() - t0:.0f}s)")
     Ns = [r["res"]["best"]["N"] for r in feas]
