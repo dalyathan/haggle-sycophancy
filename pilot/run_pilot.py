@@ -12,7 +12,10 @@ import kernel as K, stats_layer as S
 from pilot import text as T
 
 DESIGN = '[[["rational", "gullible", "floor_low"], 5, 9, true, true, "rational_heavy", ["quality_down", "cost_reveal"], "both", false, true], [1, 2, 3], [1, -1]]'
-MODEL = os.environ.get("MODEL", "/home/user/sycophancy-steering/models/Qwen3.5-4B")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL = os.environ.get("MODEL") or next((m for m in (os.path.join(_ROOT, "models", "Qwen3.5-4B"),
+                                                      "/home/user/sycophancy-steering/models/Qwen3.5-4B") if os.path.isdir(m)),
+                                         os.path.join(_ROOT, "models", "Qwen3.5-4B"))
 OUT = os.environ.get("OUT", "pilot/out/pilot_4b.jsonl")
 
 

@@ -33,6 +33,26 @@ WORKERS=4 .venv/bin/python stats_layer.py                    # hours on 4 cores;
 
 The model scripts (`capability_check.py`, `gate.py`, `smoke_test.py`, `review/probe.py`) also need `torch`, `transformers`, `accelerate` and `psutil`, and model weights under `models/` (not committed). Tested with Python 3.13, numpy 2.5, torch 2.15 and transformers 5.23.
 
+## Running the model pilot on a new machine
+
+The pilot (`pilot/`) runs Qwen3.5 locally. It uses an NVIDIA GPU if there is one, otherwise Apple Silicon's GPU (MPS), otherwise the CPU; the first log line names the device.
+
+```bash
+git clone https://github.com/dalyathan/haggle-sycophancy && cd haggle-sycophancy && git checkout critique-loop
+python -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/pip install -U huggingface_hub
+.venv/bin/hf download Qwen/Qwen3.5-4B --local-dir models/Qwen3.5-4B      # about 9 GB; models/ is not committed
+.venv/bin/python pilot/run_pilot.py --show                                 # print sample prompts, no model needed
+.venv/bin/python pilot/run_pilot.py --dry 5                                # 5 prompts, checks the setup
+.venv/bin/python pilot/run_pilot.py                                        # full run; resumes from the output file
+.venv/bin/python pilot/analyze_pilot.py pilot/out/pilot_4b.jsonl           # the analysis fixed in pilot/PILOT.md
+```
+
+- `MODEL=/path/to/weights` uses weights stored elsewhere; `OUT=pilot/out/<name>.jsonl` picks the output file. For another model (e.g. Qwen3.5-9B) set both.
+- A run resumes by counting the lines already in `OUT`, so a stopped run continues where it left off, including after `git pull` on another machine.
+- Do not mix devices within one output file: GPU and CPU arithmetic differ slightly, so start a new `OUT` when you change machine type.
+- `TORCH_THREADS` sets the CPU thread count (default: all cores).
+
 ## Layout
 
 | Path | What |

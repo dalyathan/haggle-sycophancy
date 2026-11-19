@@ -1,0 +1,8 @@
+# statistics and design search
+numpy==2.5.5
+# model scripts (pilot, capability gate)
+torch==2.15.0
+transformers==5.23.0
+accelerate==1.16.0
+safetensors==0.8.0
+psutil==7.2.2
