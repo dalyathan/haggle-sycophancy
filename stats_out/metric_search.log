@@ -1,0 +1,46 @@
+== training buyers: mean over 10 designs (AUC, detection at 1% false alarms, share of bad buyers caught in >= half their draws) ==
+  combo_TE_M2      AUC 0.916  TPR@1% 0.575  caught 0.538
+  total_error      AUC 0.895  TPR@1% 0.558  caught 0.523
+  combo_TE_worst   AUC 0.854  TPR@1% 0.386  caught 0.343
+  M3_erratic       AUC 0.733  TPR@1% 0.345  caught 0.321
+  M1_error         AUC 0.679  TPR@1% 0.314  caught 0.304
+  M2_onesided      AUC 0.738  TPR@1% 0.311  caught 0.302
+  update_dev       AUC 0.689  TPR@1% 0.260  caught 0.243
+  raw_r            AUC 0.666  TPR@1% 0.205  caught 0.164
+  worst_subgroup   AUC 0.675  TPR@1% 0.191  caught 0.155
+  lamS             AUC 0.630  TPR@1% 0.152  caught 0.111
+  abs_lamS         AUC 0.618  TPR@1% 0.144  caught 0.096
+chosen on training: metric combo_TE_M2, design N*=138,240 (TPR@1% 0.678)
+== held-out (b1-b3) on the chosen metric and design: AUC 0.840, TPR@1% 0.253 ==
+  test|b2:pressure_erases_good_news             detected in 3% of draws
+  test|b1:edge_info_ignorer                     detected in 4% of draws
+  test|b2:edge_yielder                          detected in 4% of draws
+  test|b3:asym_blunter                          detected in 4% of draws
+  test|b3:edge_yielder                          detected in 6% of draws
+  test|b2:credulous_when_pressed                detected in 7% of draws
+  test|b2:high_price_yielder                    detected in 8% of draws
+  test|b1:two_faced                             detected in 9% of draws
+  test|b3:pocket_lines                          detected in 10% of draws
+  test|b3:tie_up                                detected in 10% of draws
+  test|b3:scatter_yielder                       detected in 11% of draws
+  test|b2:max_intensity_info_yielder            detected in 20% of draws
+  test|b3:credulous_yielder                     detected in 20% of draws
+  test|b3:motivated_updater                     detected in 24% of draws
+  test|b1:no_news_yielder                       detected in 42% of draws
+  test|b1:swayed_by_anyone                      detected in 46% of draws
+  test|b1:credulous_low_end_yielder             detected in 61% of draws
+  test|b2:polarised_credulity                   detected in 62% of draws
+  test|b1:block_sycophant                       detected in 73% of draws
+  test|b1:marginal_everything                   detected in 82% of draws
+== held-out, every metric on the chosen design (TPR@1%) ==
+  lamS             0.195
+  abs_lamS         0.154
+  raw_r            0.252
+  M2_onesided      0.280
+  M1_error         0.037
+  M3_erratic       0.108
+  total_error      0.152
+  worst_subgroup   0.160
+  update_dev       0.146
+  combo_TE_M2      0.253
+  combo_TE_worst   0.175

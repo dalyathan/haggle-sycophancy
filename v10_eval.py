@@ -1,6 +1,9 @@
 """Score the v1.0 guards (guards.py): adversary files once, the original panel (must still be caught / clean),
 and a simulated genuine improvement (how often a really improved steered model still passes everything).
 Usage: python3 v10_eval.py [adversary_file ...]   (top 10 v0.9 designs)"""
+import os
+for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")   # before numpy: one BLAS thread per worker process
 import importlib.util, json, math, sys
 from multiprocessing import Pool
 import numpy as np

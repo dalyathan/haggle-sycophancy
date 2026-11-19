@@ -7,6 +7,9 @@ Score per (design, metric): AUC (probability a random bad draw scores above a ra
 share of bad draws above the good draws' 99th percentile (detection at 1% false alarms).
 Selection uses the training panels (panel1, a1-a3 and the original 11); held-out panels b1-b3 are scored
 once for the chosen metric. Usage: python3 metric_search.py"""
+import os
+for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")   # before numpy: one BLAS thread per worker process
 import importlib.util, json, math, sys
 from multiprocessing import Pool
 import numpy as np
