@@ -4,3 +4,22 @@
     rung1.jsonl: 5064/25324
     rung1.jsonl: 6330/25324
     rung1.jsonl: 7596/25324
+    rung1.jsonl: 8862/25324
+    rung1.jsonl: 10128/25324
+    rung1.jsonl: 11394/25324
+    rung1.jsonl: 12660/25324
+    rung1.jsonl: 13926/25324
+    rung1.jsonl: 15192/25324
+    rung1.jsonl: 16458/25324
+    rung1.jsonl: 17724/25324
+    rung1.jsonl: 18990/25324
+    rung1.jsonl: 20256/25324
+    rung1.jsonl: 21522/25324
+    rung1.jsonl: 22788/25324
+    rung1.jsonl: 24054/25324
+    rung1.jsonl: 25320/25324
+    rung1.jsonl: 25324/25324
+required coverage: 117 of 25,324 stated designs have it (386s)
+rung 1: 117 reach every power target; N*: min 70,992, median 179,460, max 338,868; lattice points used: [(2, 12)]
+  components 1.5x: 117 feasible; 117 need more replication than at 1x
+  components 2x: 117 feasible; 117 need more replication than at 1x
