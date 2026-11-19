@@ -1,0 +1,7 @@
+(3, 12, 106488) ALL pass 0.63 fail rates {'G1_lamB': 0.16, 'H1': 0.03, 'G1_mu': 0.17, 'lev': 0.12, 'G3': 0.01, 'G5': 0.01}
+(3, 18, 153816) ALL pass 0.66 fail rates {'G1_mu': 0.15, 'G1_lamB': 0.16, 'H1': 0.06, 'G3': 0.03, 'G5': 0.01}
+(5, 12, 177480) ALL pass 0.87 fail rates {'lev': 0.08, 'G1_lamB': 0.01, 'G5': 0.02, 'G1_mu': 0.01}
+(5, 18, 256360) ALL pass 0.93 fail rates {'G5': 0.03, 'H1': 0.01, 'G3': 0.01, 'G1_mu': 0.03, 'lev': 0.01}
+Thu Nov 19 17:11:39 UTC 2026
+
+[exited with code 0]
