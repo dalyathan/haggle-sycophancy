@@ -24,3 +24,8 @@ rung 1: 117 reach every power target; N*: min 70,992, median 179,460, max 338,86
   components 1.5x: 117 feasible; 117 need more replication than at 1x
   components 2x: 117 feasible; 117 need more replication than at 1x
     rung_check.jsonl: 25/117
+    rung_check.jsonl: 50/117
+    rung_check.jsonl: 75/117
+    rung_check.jsonl: 100/117
+    rung_check.jsonl: 117/117
+rung check: 117/117 sampled designs reach simulated power >= 0.75 (400 runs) on H1 to H4 at the rung-1 N* (1168s); passes if at least 95% do
