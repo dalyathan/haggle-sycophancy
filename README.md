@@ -2,7 +2,7 @@
 
 Does an LLM buyer in a price negotiation cave to social pressure, or update only on real information? This repo holds the game theory, the benchmark-design search and the statistics for measuring that, as groundwork for steering open-weight models away from sycophancy without training.
 
-The current specification is [`spec/spec_v0.7.md`](spec/spec_v0.7.md); v0.6, v0.5, v0.4 and v0.1 are kept beside it.
+The current specification is [`spec/spec_v0.9.md`](spec/spec_v0.9.md); v0.8 to v0.4 and v0.1 are kept beside it.
 
 ## How it fits together
 
@@ -18,7 +18,7 @@ The current specification is [`spec/spec_v0.7.md`](spec/spec_v0.7.md); v0.6, v0.
 
 ## Current result
 
-Spec v0.7 (branch `critique-loop`). With the required coverage (seller-ward and companion pressure at three intensities, at least two information types from both the seller and an inspector, credible seller claims and measurable credulity items each spread over at least 3 cells, walk-away and history), 18 of the 50 cheapest designs pass every simulated gate, including a type-I-error check of all four steering tests and a misspecified generator that mimics a log-probability readout. Every design with a five-step price grid fails that generator. The cheapest passing design needs 95,940 items; it is rerun with fresh seeds before selection (`confirm.py`). Details, failures and open questions: spec section 6.7.
+Spec v0.9 (branch `critique-loop`). 38 of the 50 cheapest designs pass every simulated gate, and the four cheapest pass again with fresh seeds; the selected design needs 106,488 items. A held-out red-team panel then fooled the evaluator in every case (12 of 12 bad buyers unflagged, 8 of 8 fake steering wins certified; [`heldout/RESULTS.md`](heldout/RESULTS.md)), so the steering test is not ready to pre-register. Details: spec section 6.7.
 
 ## Running it
 
@@ -26,7 +26,8 @@ Spec v0.7 (branch `critique-loop`). With the required coverage (seller-ward and 
 python -m venv .venv && .venv/bin/pip install numpy          # kernel, stage A, statistics
 .venv/bin/python test_kernel.py                              # stage-0 checks (9 tests)
 .venv/bin/python stage_a.py stage_a_feasible.jsonl           # about 30 s
-WORKERS=4 .venv/bin/python stats_layer.py                    # about 2.5 hours on 4 cores; resumes if stopped
+WORKERS=4 .venv/bin/python stats_layer.py                    # hours on 4 cores; resumes if stopped
+# or split rungs 2 and 3 across machines: STOP_AFTER=check, then share.py <rung> k n on each, then merge.py <rung>
 .venv/bin/python confirm.py                                  # fresh-seed rerun of the cheapest passing designs
 ```
 
@@ -37,13 +38,14 @@ The model scripts (`capability_check.py`, `gate.py`, `smoke_test.py`, `review/pr
 | Path | What |
 | --- | --- |
 | `kernel.py`, `test_kernel.py`, `stage_a.py` | game kernel, its tests, the design-space enumeration |
-| `stats_layer.py`, `confirm.py` | model, power, rungs and gates; fresh-seed confirmation |
-| `stats_out/` | current results (`v07/`), the v0.6, v0.5 and v0.4 results (`v06/`, `v05/`, `v04/`) and earlier runs kept for comparison (`pre_fix/`, `linear_dose/`, `anchored_C7_partial/`, `serial_partial/`) |
+| `stats_layer.py`, `confirm.py`, `share.py`, `merge.py` | model, power, rungs and gates; fresh-seed confirmation; splitting a rung across machines |
+| `heldout/`, `heldout_eval.py` | held-out adversarial panel and its scoring harness |
+| `stats_out/` | current results (`v09/`), earlier versions' results (`v08/` to `v04/`) and earlier runs kept for comparison (`pre_fix/`, `linear_dose/`, `anchored_C7_partial/`, `serial_partial/`) |
 | `gate.py`, `gate_report.py`, `results_gate_*.jsonl`, `haiku/`, `sonnet/` | capability gate and its results |
 | `capability_check.py`, `analyze.py`, `results_2b.jsonl`, `results_4b.jsonl` | first readout checks on Qwen3.5-2B and 4B |
 | `kernel_proto.py`, `enum_v03.py` | v0.3 prototypes, superseded by `kernel.py` and `stage_a.py` |
 | `reports/`, `research_notes/` | literature reviews: negotiation benchmarks, search-problem formulations |
-| `spec/` | the specification, v0.1 and v0.4 to v0.7 |
+| `spec/` | the specification, v0.1 and v0.4 to v0.9 |
 
 ## Not done yet
 

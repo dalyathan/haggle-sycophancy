@@ -309,7 +309,24 @@ Among valid stated designs with the required coverage, the search picks the smal
 
 **6.7 Results.**
 
-RESULTS_PENDING
+All counts come from the frozen v0.9 run (salt "v0.9", stats\_out/v09/). Rung 1 and the rung check ran on one machine; rungs 2 and 3 were split across up to eight machines by `share.py`, with per-design seeds, and merged by `merge.py`. No threshold was changed after the run.
+
+| Step | Result |
+| --- | --- |
+| Required coverage | **117** of 25,324 stated designs |
+| Rung 1 | N\*: min 70,992, median 179,460, max 338,868; every design at W5 = 2, W6 = 12; ×1.5 and ×2: all 117 feasible with more replication |
+| Rung check | 117/117 reach simulated power ≥ 0.75 on H1 to H4 |
+| Rung 2 | 117/117 keep simulated power ≥ 0.75 (400 runs); with the calibration over the size-gate configurations (D37), 106 needed more replication; N\* min 106,488, median 266,004; lattice points (2, 12), (3, 12), (3, 18); joint power min 0.75, median 0.88 |
+| Rung 3 | **38 of 50 pass**; V2 44/50, V3 50/50, V4 50/50, VS 44/50 |
+| Confirmation (D20) | the four cheapest passes all pass again with fresh seeds (largest size rates 0.055, 0.047, 0.041, 0.049) |
+
+**Failures.** V2: 5 p\_max = 5 designs fail the width-1 softmax check (bias 0.044 to 0.045), one also fails w\_S. VS: 6 designs, on the lower α1 test (6 rates), w\_S (4) and w (1); the α1 excursions are fewer than in v0.8 (12 rates) but not gone (weakness 12).
+
+**Readout shrinkage (D31).** Over the 50 finalists, the expected-offer shift caused by yielding is on average 0.88, 0.82, 0.64 and 0.45 of the latent λ^S at softmax widths 0.5, 1, 2 and 3 grid steps.
+
+**Selected design:** N\* = 106,488 items at its rung-2 lattice point (seller types rational, gullible and floor\_low; 5 values; p\_max = 9; rational-heavy prior; quality\_down and cost\_reveal from both sources). Gate values: largest size rate 0.055 (rerun 0.055), width-1 softmax bias 0.013 (rerun 0.016), κ̄^S bias 0.006, dose-misspecification bias 0.005. Fallbacks: 121,716, 122,958 and 138,186, all confirmed.
+
+**Held-out adversarial panel (after the run; not a gate).** A blind red-team agent, given a spec excerpt without the bad-buyer panel, wrote 12 single buyers and 8 base/steered pairs. Scored once on the 10 top designs by a harness committed before the panel was seen, **all 12 raised no V4 flag and all 8 pairs passed H1 to H4 in every design** (heldout/RESULTS.md). The holes: estimands are averages, so yielding to some families or intensities cancels against reactance to others; edge cells are outside the fit; Δμ, Δν and the companion side are reported but not tested; the spurious-updating flag tests a mean, not a spread. The simulated gates above certify the statistics as designed; they do not show that a steered model cannot game the steering test. v0.9 is therefore not ready for a pre-registered steering result.
 
 **Earlier runs.** v0.8: 0 of 50 passed; every design failed the width-2 softmax check, which could not be passed (D31); without it 21 would have passed (stats\_out/v08/, v0.8 tab). v0.7: 18 of 50 passed rung 3 and the 95,940-item design was confirmed, but it fails the structure rules (D22); details in stats\_out/v07/ and the v0.7 tab. v0.5: 2 of 50 passed (faults fixed by D10 to D12). v0.6: 26 of 50 passed; its gates are superseded by D13 to D28 (results in stats\_out/v06/ and the v0.6 tab).
 
