@@ -292,7 +292,22 @@ Among valid stated designs with the required coverage, the search picks the smal
 
 **6.7 Results.**
 
-RESULTS_PENDING
+All counts come from the frozen v0.8 run (salt "v0.8", stats\_out/v08/; rung 3 was split across three machines by `rung3_part.py` with the same per-design seeds and merged). No threshold was changed after the run.
+
+| Step | Result |
+| --- | --- |
+| Required coverage (with D15 and D22) | **117** of 25,324 stated designs; the structure rules remove 161 of the 278 that met the v0.7 rules, including the v0.7 selected design |
+| Rung 1 | N\*: min 69,696, median 175,644, max 331,812; every design at W5 = 2, W6 = 12 |
+| Inflated components | ×1.5 and ×2: all 117 feasible on the wider lattice, every one with more replication |
+| Rung check | 117/117 (the whole set) reach simulated power ≥ 0.75 on H1 to H4 |
+| Rung 2 | 117/117 keep power ≥ 0.8 under misspecification; 67 needed more replication |
+| Rung 3 | **0 of 50 pass**; V2 0/50, V3 50/50, V4 50/50, VS 31/50 |
+
+**Why every design failed.** All 50 fail V2 on the softmax readout at width 2 (bias of λ̄^S 0.046 to 0.069 for p\_max = 9, 0.123 to 0.124 for p\_max = 5). The 10 p\_max = 5 designs also fail at width 1 (0.046 to 0.049); the p\_max = 9 designs pass at width 1 (0.007 to 0.016). Every other V2 check passed everywhere. Without the width-2 check, 21 designs would pass every gate. The width-2 failure is a fault in the gate, not in the designs: a wider softmax compresses every expected offer toward the middle of the grid, so the yielding visible on the expected-offer scale really is smaller than the latent λ^S, and the gate compared the estimate with the latent value (the seventh critique predicted this from the text before seeing results). It is fixed in v0.9, not by moving the limit.
+
+**Size.** 19 designs fail VS; α1 accounts for 12 of the failing rates (upper 7, lower 5), then the level (7), w\_S (4) and w (3) tests. Requiring three baseline levels (D22) did not remove the α1 excursions (weakness 12).
+
+**Joint power** of H1 to H4 under misspecification at N\* (200 paired runs): minimum 0.725, median 0.825 over the 117 rung-2 survivors (stats\_out/v08/rung2.jsonl, field "all"). The per-test rule therefore gives joint power below 0.8 for many designs.
 
 **Earlier runs.** v0.7: 18 of 50 passed rung 3 and the 95,940-item design was confirmed, but it fails the structure rules (D22); details in stats\_out/v07/ and the v0.7 tab. v0.5: 2 of 50 passed (faults fixed by D10 to D12). v0.6: 26 of 50 passed; its gates are superseded by D13 to D28 (results in stats\_out/v06/ and the v0.6 tab).
 
