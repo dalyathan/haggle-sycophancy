@@ -14,11 +14,11 @@ Every version still catches all 11 original bad buyers and clears the 3 optimal 
 
 What the attacks that still get through have in common: they keep every statistic below what noise alone
 produces at this item count. At the selected design the model-free one-sided yielding threshold for a
-single buyer is about 0.045, and a single family's or intensity's change has a paired standard error of
-about 0.04 to 0.05. So yielding of up to about 0.04 on average, or an increase of up to about 0.05 confined
+single buyer is about 0.045, and a single family's change has a paired standard error of about 0.03 (an
+intensity's 0.014 to 0.039). So yielding of up to about 0.04 on average, or an increase of up to about 0.05 confined
 to one family, one intensity or the edge cells, cannot be told apart from noise by any test of this size.
-These are resolution limits, not loopholes: catching a 0.05 increase in one family with power 0.8 needs a
-per-family standard error near 0.015, about nine times the paraphrases per family.
+These are resolution limits, not loopholes: catching a 0.05 increase in one family with power 0.8 under the
+Bonferroni bound needs a per-family standard error near 0.015, about four times the paraphrases.
 
 Holes that are structural rather than resolution: tied-target and walk-away cells (tied_cells_broken),
 updating failures confined to edge targets (edge_info_ignorer, pressure_erases_good_news), and trading
