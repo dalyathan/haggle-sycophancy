@@ -15,6 +15,10 @@ readout has to measure play. This pilot changes only how the answer is asked for
   (walking away, ties) replace a recomputed optimum; acceptance rule tightened (A3 threshold, A5 slope only, A6 history, A7
   artefacts); a fast-path gate and a per-run self-check; R4 made diagnostic; dry runs and resumption made safe.
 
+- v2.1 (before the R1 run): a 16-prompt dry run of R1 (written to a separate `.dry` file, not part of the results) showed the
+  token " **" (the start of a markdown-bold answer) carrying 11 to 32% of the mass after "Answer:", which the v2 reading counted as
+  lost coverage. The reading now follows " **" with the digit or "walk". Nothing else changed.
+
 ## Variants (`readout.py`)
 
 | | Instruction | Read |
@@ -26,7 +30,8 @@ readout has to measure play. This pilot changes only how the answer is asked for
 | R4 | R1 plus "think it through in at most two short sentences first"; greedy, at most 100 new tokens | after the reasoning, "Answer:" (below) |
 
 Reading after "Answer:": walking = " walk" or " Walk", or " " then "walk"/"Walk"; price d = " " then the digit d, or the digit
-directly, or the number word " one" to " nine" when those are single tokens. The mass on 1 is multiplied by 1 - P(a digit follows
+directly, or the number word " one" to " nine" when those are single tokens, or " **" (markdown bold) then the digit or
+"walk"/"Walk" (added in v2.1). The mass on 1 is multiplied by 1 - P(a digit follows
 "Answer: 1"), since 1 may start 10 to 19. The tokenisation of "Answer: 5" and "Answer: walk" is asserted at start-up.
 
 R2 confounds option order with the paraphrase; its paraphrase difference is order plus wording. R4 is greedy, so its option

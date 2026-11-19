@@ -12,7 +12,7 @@ Variants
   R4  R1 with a short reasoning step: greedy generation of at most MAX_NEW tokens, then "\nAnswer:" and the R1 reading.
       Baseline cells only (generation is slow on CPU); diagnostic (READOUT.md).
 Reading after "Answer:" (R1, R3, R4): walk = " walk" | " Walk" | (" " then "walk"); price d = " " then d, or d directly, or the
-number word; the mass on "1" is multiplied by 1 - P(a digit follows "Answer: 1"), since "1" may start 10 to 18.
+number word, or " **" (markdown bold) then the digit or "walk"; the mass on "1" is multiplied by 1 - P(a digit follows "Answer: 1"), since "1" may start 10 to 18.
 Cells: the 10 baseline blocks; every information item generated in each block (no pressure); the two irrelevant
 remarks from the stage-B pilot; two irrelevant remarks that contain a number (3 or 7) for the number-copying check.
 Each cell is run in 3 contexts x 2 paraphrases. CONTEXTS=fresh uses three new contexts (confirmation run).
@@ -165,16 +165,17 @@ def read_answer(rd, texts_res, k, p, ids):
         for j, o in enumerate(opts):
             q[0 if o.startswith("walk") else int(o.split()[0])] += lp[j]
         return q, {}
-    p1, p2, p3 = (texts_res[k * 3 + j][0] for j in range(3))      # after "Answer:", "Answer: ", "Answer: 1"
-    ps = float(p1[ids["space"]])
-    walk = float(p1[ids["walk_sp"]].sum()) + ps * float(p2[ids["walk_ns"]].sum())
+    p1, p2, p3, p4 = (texts_res[k * 4 + j][0] for j in range(4))  # after "Answer:", "Answer: ", "Answer: 1", "Answer: **"
+    ps = float(p1[ids["space"]]); pb = float(p1[ids["bold"]])
+    walk = float(p1[ids["walk_sp"]].sum()) + ps * float(p2[ids["walk_ns"]].sum()) + pb * float(p4[ids["walk_ns"]].sum())
     two = float(p3[ids["dig"]].sum())                              # "1" followed by another digit: 10 to 19
-    price = ps * p2[ids["dig"]].cpu().numpy().astype(float)[1:] + p1[ids["dig"]].cpu().numpy().astype(float)[1:]
+    price = (ps * p2[ids["dig"]].cpu().numpy().astype(float)[1:] + p1[ids["dig"]].cpu().numpy().astype(float)[1:]
+             + pb * p4[ids["dig"]].cpu().numpy().astype(float)[1:])
     if ids["words"]:
         price += p1[ids["words"]].cpu().numpy().astype(float)
     price[0] *= (1 - two)
     top2 = torch.topk(p2, 10)
-    extra = dict(p_space=ps, p_two_digit_after_1=two, p_direct_digit=float(p1[ids["dig"][1:]].sum()),
+    extra = dict(p_space=ps, p_bold=pb, p_two_digit_after_1=two, p_direct_digit=float(p1[ids["dig"][1:]].sum()),
                  p_word=float(p1[ids["words"]].sum()) if ids["words"] else 0.0,
                  top10_after_space=[[rd.tok.decode([i]), round(x, 5)] for x, i in zip(top2.values.tolist(), top2.indices.tolist())])
     return np.concatenate([[walk], price]), extra
@@ -198,12 +199,13 @@ def main():
     one = lambda w: (lambda x: x[0] if len(x) == 1 else None)(enc(w))
     ids = dict(dig=[one(d) for d in "0123456789"], space=one(" "), letters=[one(" " + c) for c in LETTERS],
                walk_sp=[i for i in (one(" walk"), one(" Walk")) if i is not None],
-               walk_ns=[i for i in (one("walk"), one("Walk")) if i is not None])
+               walk_ns=[i for i in (one("walk"), one("Walk")) if i is not None], bold=one(" **"))
     words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
     wid = [one(" " + w) for w in words]
     ids["words"] = wid if all(x is not None for x in wid) else []
     assert all(x is not None for x in ids["dig"]) and ids["space"] is not None and all(x is not None for x in ids["letters"])
-    assert ids["walk_sp"] and ids["walk_ns"], "walk is not a single token"
+    assert ids["walk_sp"] and ids["walk_ns"] and ids["bold"] is not None, "walk or ' **' is not a single token"
+    assert enc("Answer: **5") == enc("Answer:") + [ids["bold"], ids["dig"][5]], enc("Answer: **5")
     assert enc("Answer: 5") == enc("Answer:") + [ids["space"], ids["dig"][5]], enc("Answer: 5")
     assert enc("Answer: walk") == enc("Answer:") + [one(" walk")], enc("Answer: walk")
     print("number words read:", bool(ids["words"]), flush=True)
@@ -248,20 +250,20 @@ def main():
             texts = []
             for g, p in enumerate(group):
                 base = rd.chat(p["messages"], (gen[g]["used"] if gen[g] else "") + frame(p))
-                texts += [base] if VARIANT in ("R0", "R2") else [base, base + " ", base + " 1"]
+                texts += [base] if VARIANT in ("R0", "R2") else [base, base + " ", base + " 1", base + " **"]
             if VARIANT == "R4":
                 res = [rd.last_probs(t, None, use_cache=False) for t in texts]
             else:
                 res = rd.last_probs_batch(texts, pre)
                 if not checked:                                       # self-check: batched cache path vs full passes
                     full = [rd.last_probs(t, None, use_cache=False) for t in texts]
-                    opt = ids["dig"] + ids["letters"] + [ids["space"]] + ids["walk_sp"]
+                    opt = ids["dig"] + ids["letters"] + [ids["space"], ids["bold"]] + ids["walk_sp"] + ids["walk_ns"]
                     dmax = max(float((a[0][opt] - b[0][opt]).abs().max()) for a, b in zip(res, full))
                     print(f"self-check on {len(texts)} texts: max abs option-probability difference, batched cache vs full pass: {dmax:.4f}", flush=True)
                     if dmax > 0.03:
                         sys.exit("self-check failed: fast path disagrees with full forward passes")
                     checked = True
-            step = 1 if VARIANT in ("R0", "R2") else 3
+            step = 1 if VARIANT in ("R0", "R2") else 4
             for g, p in enumerate(group):
                 pr, ntok = res[g * step]
                 q, extra = read_answer(rd, res, g, p, ids)
