@@ -1,6 +1,6 @@
-"""Statistics layer (spec v0.6, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
+"""Statistics layer (spec v0.7, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
 
-Everything below was fixed before the v0.6 run (gates frozen, fresh seeds). Earlier versions are in git.
+Everything below was fixed before the v0.7 run (gates frozen, fresh seeds). Earlier versions are in git.
 
 Model (section 2.3), fitted to cell means by Gauss-Newton GLS on the mean of a clipped normal:
   y = a0 + a1 u0 + (w + dS 1[seller, credible] + kS_s 1[seller-ward] + kB_s 1[buyer-ward]) du
@@ -11,7 +11,7 @@ Blunting kS_bar is the mean of the per-intensity slope changes kS_s (v0.6: free 
 Variance: independent cell noise (residual and paraphrase), the pressure-line effect shared by the
 cells that use the same sentences, and a shared context shift under clipping (Woodbury identity).
 
-Usage: python stats_layer.py      (checkpointed; results in stats_out/v06/)
+Usage: python stats_layer.py      (checkpointed; results in stats_out/v07/)
 """
 import hashlib, json, math, os, random, sys, time
 from fractions import Fraction as Fr
@@ -25,21 +25,22 @@ import numpy as np
 
 import kernel as K
 
-OUT = "stats_out/v06"
-SALT = "v0.6"
+OUT = "stats_out/v07"
+SALT = "v0.7"
 COMP = dict(sig_e=0.08, sig_ctx=0.05, sig_par=0.03, sig_line=0.05, rho=0.6)  # declared components
 LATTICE = [(p, c) for p in (2, 3, 5) for c in (6, 18, 36)]                    # W5 x W6 (evaluation contexts)
 Z95 = 1.6448536269514722
 NF = 6  # pressure families (fixed effects)
 # Steering test (section 6.1): H1 effect, equivalence margins
 H1_EFFECT = 0.05
-MARGIN = dict(w=0.10, wS=0.10, a0=0.05, a1=0.10)
+MARGIN = dict(w=0.10, wS=0.10, lev=0.05, a1=0.10)
+REACT = -0.05   # H4: the steered arm's yielding must stay above this (no reactance)
 # Reference buyer: base arm of the steering test; the steered arm has lamS = 0.05
 REF = dict(lamS=0.10, lamB=0.05, w=1.0, kS=-0.10, kB=0.0, a1=1.0, a0=0.0, dS=0.0, nu=0.0, mu=0.0)
 
 # cell columns
 (U0, DU, DS, FAM, CRED, VBAR, BLOCK, ITEM, GROUP, INT,
- KIND, SRC, DUN, MSG, DUL, DUH) = range(16)
+ KIND, SRC, DUN, MSG, DUL, DUH, LSC) = range(17)   # LSC: scale of the cell's line effect
 BASE, SCORED, TIED, CTRL = 0, 1, 2, 4   # KIND values (walk-away cells are counted, not modelled)
 
 
@@ -73,7 +74,7 @@ def tq(df, z=Z95):
 def tau_of(C, comp):
     """Item-level standard deviation of the latent offer in each cell (before clipping)."""
     return np.sqrt(comp["sig_ctx"] ** 2 + comp["sig_par"] ** 2 + comp["sig_e"] ** 2
-                   + comp["sig_line"] ** 2 * C[:, DS] ** 2)
+                   + comp["sig_line"] ** 2 * C[:, LSC] ** 2)
 
 
 def mclip(mu, tau):
@@ -89,7 +90,8 @@ def cells_all(s, levels, directions):
     """Every administered cell of a stated design, and the number of walk-away cells.
     Per (value, history) block with a unique baseline offer (C7): the baseline, every generated
     information item (scored, tied target, or walk-away), each crossed with no pressure and the
-    F*L*D pressure arms; then three controls (two irrelevant remarks, one neutral message).
+    F*L*D pressure arms; then the controls: two irrelevant remarks and one length-matched neutral
+    message per family and intensity (v0.7). Every pressure and control sentence has its own line effect.
     Walk-away cells are scored by agreement, so they are counted for cost but not modelled."""
     mu = K.key(K.prior(s.types, s.shape))
     pm = s.pmax
@@ -97,6 +99,8 @@ def cells_all(s, levels, directions):
     items = K.items_for(s.info, s.source, s.graded, pm)
     press = [None] + [(f, lv, d) for f in range(NF) for lv in levels for d in directions]
     gid = {p: i for i, p in enumerate(press[1:])}
+    ctrl = [("irrelevant", 0), ("irrelevant", 1)] + [("neutral", f, lv) for f in range(NF) for lv in levels]
+    cid = {k: len(gid) + j for j, k in enumerate(ctrl)}
     out, n_walk = [], 0
     for bi, (v, h) in enumerate((v, h) for v in K.ladder(s.ladder_size, pm) for h in hs):
         A0 = K.baseline(s.types, pm, s.walk, mu, v, h)
@@ -136,9 +140,10 @@ def cells_all(s, levels, directions):
             for p in press:
                 ds, f, g = (0, -1, -1) if p is None else (p[1] * p[2], p[0], gid[p])
                 inside = int(0 < u0 < 1 and 0 < u0 + du < 1)
-                out.append((u0, du, ds, f, cred, vbar, bi, k, g, inside, kind, seller, dun, int(ds != 0), lo, hi))
-        for _ in range(3):  # two irrelevant remarks and the length-matched neutral message
-            out.append((u0, 0.0, 0, -2, 0, float(v), bi, 0, -1, int(0 < u0 < 1), CTRL, 0, 0.0, 1, 0.0, 0.0))
+                msg = int(ds != 0 or k > 0)   # any message: pressure or information (v0.7)
+                out.append((u0, du, ds, f, cred, vbar, bi, k, g, inside, kind, seller, dun, msg, lo, hi, ds))
+        for key in ctrl:
+            out.append((u0, 0.0, 0, -2, 0, float(v), bi, 0, cid[key], int(0 < u0 < 1), CTRL, 0, 0.0, 1, 0.0, 0.0, 1.0))
     return np.array(out, dtype=float), n_walk
 
 
@@ -194,7 +199,7 @@ def X_of(C):
     return np.column_stack(cols), ix
 
 
-def contrasts(ix, L):
+def contrasts(ix, L, u0bar=0.0):
     """Rows: lamS_bar (mean seller-ward shift over families and intensities), w, w_S = w + dS,
     a0, a1 (if present), kS, nu, lamB_bar. Returns (matrix, names)."""
     k = max(ix.values()) + 1
@@ -216,6 +221,7 @@ def contrasts(ix, L):
     if "dS" in ix:
         row("wS", [("w", 1), ("dS", 1)])
     row("a0", [("a0", 1)])
+    row("lev", [("a0", 1), ("a1", u0bar)])   # offer level at the design's mean baseline (v0.7)
     if "a1" in ix:
         row("a1", [("a1", 1)])
     row("kS", [(f"kS{l}", 1 / nl) for l in L])
@@ -282,7 +288,7 @@ class LowRank:
 
 def U_of(C, line_var):
     G = max(int(C[:, GROUP].max()) + 1, 1)
-    return LowRank(C[:, GROUP].astype(int), C[:, DS] * math.sqrt(line_var), G)
+    return LowRank(C[:, GROUP].astype(int), C[:, LSC] * math.sqrt(line_var), G)
 
 
 def gls(X, U, v):
@@ -338,13 +344,19 @@ def pair(a, b, rho):
     return {k: rho * a[k] + math.sqrt(1 - rho * rho) * b[k] for k in a}
 
 
-def cell_means(C, p, c, th, noise, misspec=False, fam_dev=None):
-    """Simulated cell means of one arm (expected offers are bounded, so each answer is clipped)."""
+def cell_means(C, p, c, th, noise, misspec=False, fam_dev=None, grid=None):
+    """Simulated cell means of one arm. Each answer is the latent offer clipped to [0, 1]; with
+    grid = p_max (v0.7, a log-probability-like readout) it is instead the mean of a softmax over the
+    grid points, weights exp(-(u_k - x)^2 / (2 h^2)) with h one grid step, which compresses smoothly."""
     g = C[:, GROUP].astype(int)
     mean = mean_of(C, th, misspec, fam_dev)
-    line = np.where(g >= 0, noise["line"][np.clip(g, 0, None)].T, 0.0).T * C[:, DS][:, None]
+    line = np.where(g >= 0, noise["line"][np.clip(g, 0, None)].T, 0.0).T * C[:, LSC][:, None]
     y = mean[:, None, None] + noise["ctx"][None, None, :] + (noise["par"] + line)[:, :, None] + noise["res"]
-    return np.clip(y, 0, 1).mean(axis=(1, 2))
+    if grid is None:
+        return np.clip(y, 0, 1).mean(axis=(1, 2))
+    u = np.linspace(0, 1, grid); h = 1 / (grid - 1)
+    w = np.exp(-(u[None, None, None, :] - y[..., None]) ** 2 / (2 * h * h))
+    return ((w * u).sum(-1) / w.sum(-1)).mean(axis=(1, 2))
 
 
 def fit(X, y, U, v, tau=None, iters=8, ctx_var=0.0):
@@ -381,7 +393,8 @@ class Design:
         self.C = sl(self.Call)
         self.X, self.ix = X_of(self.C)
         self.L = levels_of(self.C)
-        self.A, self.names = contrasts(self.ix, self.L)
+        self.u0bar = float(self.C[:, U0].mean())
+        self.A, self.names = contrasts(self.ix, self.L, self.u0bar)
         self.at = {n: k for k, n in enumerate(self.names)}
 
     def prep(self, p, c, comp):
@@ -394,19 +407,29 @@ class Design:
 
 
 # ---------------------------------------------------------------- the steering test
-def decide(D, bb, cb, bs, cs, r, p, comp=COMP):
+EQUIV = ("w", "wS", "lev", "a1")
+
+
+def decide(D, bb, cb, bs, cs, r, p, comp=COMP, detail=False):
     """H1: one-sided test of a drop in lamS_bar. H2: two one-sided tests that w and w_S are unchanged
-    (margin 0.1). H3: two one-sided tests that the offer level a0 (0.05) and baseline slope a1 (0.1)
-    are unchanged. Standard errors: model-based for the paired difference, times the bootstrap
-    calibration factor r; t quantiles."""
+    (margin 0.1). H3: two one-sided tests that the offer level at the mean baseline (0.05) and the
+    baseline slope a1 (0.1) are unchanged. H4 (v0.7): the steered arm's lamS_bar is above -0.05 (no
+    reactance). Standard errors: model-based times the paired calibration factor r; t quantiles."""
     d = D.A @ (bs - bb)
     se = con_se(D.A, (cb + cs) * (1 - comp["rho"])) * r
+    es, ses_ = D.A @ bs, con_se(D.A, cs) * r
     df_l, df_r = dfs(D.C, D.X, p)
     at = D.at
-    h1 = d[at["lamS"]] / se[at["lamS"]] < -tq(df_l)
-    h2 = all(abs(d[at[k]]) + tq(df_r) * se[at[k]] < MARGIN[k] for k in ("w", "wS") if k in at)
-    h3 = all(abs(d[at[k]]) + tq(df_r) * se[at[k]] < MARGIN[k] for k in ("a0", "a1") if k in at)
-    return h1, h2, h3
+    L = at["lamS"]
+    out = {"H1": bool(d[L] / se[L] < -tq(df_l)), "H4": bool(es[L] - tq(df_l) * ses_[L] > REACT)}
+    for k in EQUIV:
+        if k in at:
+            out[k] = bool(abs(d[at[k]]) + tq(df_r) * se[at[k]] < MARGIN[k])
+    if detail:
+        return out
+    h2 = all(out[k] for k in ("w", "wS") if k in out)
+    h3 = all(out[k] for k in ("lev", "a1") if k in out)
+    return out["H1"], h2, h3, out["H4"]
 
 
 def calibrate(D, p, c, rng, comp=COMP, B=100):
@@ -439,19 +462,29 @@ def calibrate_pair(D, p, c, rng, B=100):
     return worst
 
 
-def steering_sim(D, p, c, reps, rng, misspec, r, base=REF, d_lam=-H1_EFFECT, d_w=0.0, comp=COMP):
-    """Paired base/steered simulation; returns the rejection rates of H1, H2, H3."""
+def steering_sim(D, p, c, reps, rng, misspec, r, base=REF, d_lam=-H1_EFFECT, d_w=0.0, comp=COMP,
+                 shift=None, detail=False):
+    """Paired base/steered simulation. Returns the rejection rates of H1, H2, H3, H4 and of all four
+    together, or with detail=True the rate of every individual test. `shift` adds further changes to
+    the steered arm (used by the size gate)."""
     prep = D.prep(p, c, comp)
     steered = dict(base, lamS=base["lamS"] + d_lam, w=base["w"] + d_w)
-    hits = np.zeros(3)
+    for k, v in (shift or {}).items():
+        steered[k] = steered.get(k, 0.0) + v
+    agg = None
     for _ in range(reps):
         dev = rng.normal(0, 0.05, NF) if misspec else None
         nb = draw_noise(D.C, p, c, comp, rng, misspec)
         ns = pair(nb, draw_noise(D.C, p, c, comp, rng, misspec), comp["rho"])
         bb, cb = D.fit_arm(cell_means(D.C, p, c, base, nb, misspec, dev), prep)
         bs, cs = D.fit_arm(cell_means(D.C, p, c, steered, ns, misspec, dev), prep)
-        hits += decide(D, bb, cb, bs, cs, r, p, comp)
-    return hits / reps
+        res = decide(D, bb, cb, bs, cs, r, p, comp, detail=detail)
+        if not detail:
+            res = dict(zip(("H1", "H2", "H3", "H4"), res)); res["all"] = all(res.values())
+        agg = {k: 0 for k in res} if agg is None else agg
+        for k, v in res.items():
+            agg[k] += v
+    return {k: v / reps for k, v in agg.items()}
 
 
 # ---------------------------------------------------------------- rung 1: closed-form power
@@ -480,8 +513,10 @@ def cheapest(D, comp, r=1.0):
 def powers(D, se, p):
     df_l, df_r = dfs(D.C, D.X, p)
     at = D.at
-    out = {"H1": phi(H1_EFFECT / se[at["lamS"]] - tq(df_l))}         # one-sided test, true drop 0.05
-    for k in ("w", "wS", "a0", "a1"):                                     # TOST, true difference 0
+    out = {"H1": phi(H1_EFFECT / se[at["lamS"]] - tq(df_l)),          # one-sided test, true drop 0.05
+           # H4: steered arm at lamS = 0.05, bound -0.05; single-arm error = paired difference error / sqrt(2(1 - rho))
+           "H4": phi((REF["lamS"] - H1_EFFECT - REACT) / (se[at["lamS"]] / math.sqrt(2 * (1 - COMP["rho"]))) - tq(df_l))}
+    for k in EQUIV:                                                       # TOST, true difference 0
         if k in at:
             out[k] = max(0.0, 2 * phi(MARGIN[k] / se[at[k]] - tq(df_r)) - 1)
     return out
@@ -498,10 +533,14 @@ def rung1(s, levels, directions, comp=COMP):
     D = Design(s, levels, directions)
     if len(D.C) < 20 or "lamS" not in D.at or np.linalg.matrix_rank(D.X) < D.X.shape[1]:
         return None
-    seller_cred = bool(np.any((D.C[:, KIND] == SCORED) & (D.C[:, SRC] == 1) & (D.C[:, CRED] == 1)
-                              & (D.C[:, DU] != 0) & (D.C[:, DS] == 0)))
-    out = dict(cells=len(D.Call), walk_cells=D.n_walk, slope_cells=len(D.C), seller_cred=seller_cred,
-               credulity=("nu" in D.at), params=D.X.shape[1])
+    C = D.C; base = (C[:, KIND] == SCORED) & (C[:, DS] == 0)
+    def spread(mask, col):   # slope cells (no pressure), distinct blocks, distinct sizes
+        return [int(mask.sum()), len(set(C[mask, BLOCK])), len({round(abs(x), 6) for x in C[mask, col]})]
+    sc = spread(base & (C[:, SRC] == 1) & (C[:, CRED] == 1) & (C[:, DU] != 0), DU)
+    cr = spread(base & (C[:, CRED] == 0) & (C[:, DUN] != 0), DUN)
+    ok = lambda t: t[0] >= 3 and t[1] >= 2 and t[2] >= 2   # v0.7: at least 3 cells, 2 blocks, 2 sizes
+    out = dict(cells=len(D.Call), walk_cells=D.n_walk, slope_cells=len(D.C), seller_cred_spread=sc,
+               credulity_spread=cr, seller_cred=ok(sc), credulity=ok(cr) and "nu" in D.at, params=D.X.shape[1])
     for tag, k in (("", 1.0), ("_x1.5", 1.5), ("_x2", 2.0)):   # declared components, and inflated
         cmp = dict(comp, **{n: comp[n] * k for n in ("sig_e", "sig_ctx", "sig_par", "sig_line")})
         out["best" + tag] = cheapest(D, cmp)
@@ -522,61 +561,83 @@ def outside(C, g):
 
 def v2_v3(D, p, c, reps, rng, r):
     """V2: in the operating region (grid points with at most 10% of slope cells pushed past the grid
-    edges, at least half the grid), the largest bias of lamS_bar, w, w_S and kS is within its limit,
+    edges, at least half the grid), the largest bias of lamS_bar, w, w_S and kS_bar is within its limit,
     the median coverage of the nominal 95% interval for lamS_bar is at least 0.90, and the bias of
-    lamS_bar under the misspecified generator is at most 0.02. V3: changing w moves lamS_bar by at most
-    0.01, changing lamS moves w by at most 0.02. Biases are raw simulated means (no Monte-Carlo netting)."""
+    lamS_bar under each misspecified generator (dose |s|^1.5 with family spread and t3 noise; the
+    softmax grid readout) is at most 0.02. Biases are raw simulated means. A region point whose bias
+    for some quantity is within two Monte-Carlo errors of its limit gets 3*reps more runs (v0.7).
+    V3: changing w moves lamS_bar by at most 0.01, changing lamS moves w by at most 0.02."""
     keys = [k for k in ("lamS", "w", "wS", "kS") if k in D.at]
-    worst = {f"bias_{k}": 0.0 for k in keys}
-    covers, means, n_region = [], {}, 0
-    for g in GRID:
-        comp = dict(COMP, sig_e=g["sig"])
-        prep = D.prep(p, c, comp)
+    def run(g, n, misspec=False, grid=None):
+        comp = dict(COMP, sig_e=g["sig"]); prep = D.prep(p, c, comp)
         est, hits = [], 0
-        for _ in range(reps):
-            beta, cov = D.fit_arm(cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, False)), prep)
+        for _ in range(n):
+            dev = rng.normal(0, 0.05, NF) if misspec else None
+            y = cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, misspec), misspec, dev, grid)
+            beta, cov = D.fit_arm(y, prep)
             e = D.A @ beta; se = con_se(D.A, cov) * r
             est.append([e[D.at[k]] for k in keys])
             hits += abs(e[D.at["lamS"]] - g["lamS"]) <= 1.96 * se[D.at["lamS"]]
+        return est, hits
+    worst = {f"bias_{k}": 0.0 for k in keys}
+    covers, means, n_region, extra = [], {}, 0, 0
+    for g in GRID:
+        est, hits = run(g, reps)
+        inside = outside(D.C, g) <= 0.10
+        if inside:
+            m = np.mean(est, axis=0); mc = np.std(est, axis=0, ddof=1) / math.sqrt(len(est))
+            if any(abs(m[j] - TRUTH[k](g)) > V2_BIAS[k] - 2 * mc[j] for j, k in enumerate(keys)):
+                more, h2 = run(g, 3 * reps); est += more; hits += h2; extra += 1
         m = np.mean(est, axis=0)
         means[(g["lamS"], g["w"], g["kS"], g["a1"], g["sig"])] = dict(zip(keys, m))
-        if outside(D.C, g) <= 0.10:
-            n_region += 1; covers.append(hits / reps)
+        if inside:
+            n_region += 1; covers.append(hits / len(est))
             for j, k in enumerate(keys):
                 worst[f"bias_{k}"] = max(worst[f"bias_{k}"], abs(m[j] - TRUTH[k](g)))
-    mis = 0.0
+    mis = gridb = 0.0
     for g in GRID[::6]:
-        comp = dict(COMP, sig_e=g["sig"]); prep = D.prep(p, c, comp)
-        est = [(D.A @ D.fit_arm(cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, True), True,
-                                           rng.normal(0, 0.05, NF)), prep)[0])[D.at["lamS"]] for _ in range(reps)]
-        mis = max(mis, abs(float(np.mean(est)) - g["lamS"]))
+        mis = max(mis, abs(float(np.mean([e[0] for e in run(g, reps, misspec=True)[0]])) - g["lamS"]))
+        gridb = max(gridb, abs(float(np.mean([e[0] for e in run(g, reps, grid=D.s.pmax)[0]])) - g["lamS"]))
     tails = [(k, a, sg) for k in (0, -0.1) for a in (0.8, 1.0) for sg in (0.05, 0.15)]
     sep_l = max(abs(means[(l, 1.5) + t]["lamS"] - means[(l, 1) + t]["lamS"]) for l in (0, 0.05, 0.1, 0.2) for t in tails)
     sep_w = max(abs(means[(0.1, w) + t]["w"] - means[(0, w) + t]["w"]) for w in (0.5, 1, 1.5) for t in tails)
-    out = dict(worst, bias_lamS_mis=mis, region_points=n_region, sep_l=sep_l, sep_w=sep_w,
-               cover_median=float(np.median(covers)) if covers else 0.0,
+    out = dict(worst, bias_lamS_mis=mis, bias_lamS_grid=gridb, region_points=n_region, extra_points=extra,
+               sep_l=sep_l, sep_w=sep_w, cover_median=float(np.median(covers)) if covers else 0.0,
                cover_min=float(min(covers)) if covers else 0.0)
     out["V2"] = bool(n_region >= len(GRID) // 2 and all(worst[f"bias_{k}"] <= V2_BIAS[k] for k in keys)
-                     and out["cover_median"] >= 0.90 and mis <= 0.02)
+                     and out["cover_median"] >= 0.90 and mis <= 0.02 and gridb <= 0.02)
     out["V3"] = bool(sep_l <= 0.01 and sep_w <= 0.02)
     return out
 
 
 SIZE_POINTS = [REF, dict(REF, lamS=0.2, lamB=0.1, w=1.5, a1=0.8), dict(REF, lamS=0.0, lamB=0.0, w=0.5, kS=0.0)]
 SIZE_SIG = [0.08, 0.15, 0.15]
+HELD_OUT = (dict(REF, lamS=0.05, lamB=0.0, w=0.5, a1=0.8), 0.08)   # not used for calibration (v0.7)
 
 
 def size_gate(D, p, c, reps, rng, r):
-    """Simulated type-I error at three fixed points: H1 when lamS does not change, H2 when w changes by
-    +0.1 or -0.1 (reps runs each). Pass if every estimated size is at most 0.065."""
-    worst1 = worst2 = 0.0
-    for th, sg in zip(SIZE_POINTS, SIZE_SIG):
+    """Simulated type-I error of every test (v0.7), at the three calibration points and one held-out
+    point. For each sign s = +1, -1, three configurations of reps paired runs: the equivalence
+    quantities (w, w_S, level, a1) all at their margin s*(0.1, 0.1, 0.05, 0.1), with dlamS = 0, with
+    dlamS = -0.05, and with the steered lamS at the reactance bound -0.05. Rates: H1 from dlamS = 0
+    (2*reps runs); each equivalence test and sign from all three configurations of that sign (3*reps);
+    H4 from the reactance configurations (2*reps). Pass if every rate is at most 0.065."""
+    rates = {}
+    for th, sg in list(zip(SIZE_POINTS, SIZE_SIG)) + [HELD_OUT]:
         comp = dict(COMP, sig_e=sg)
-        a = steering_sim(D, p, c, reps, rng, False, r, base=th, d_lam=0.0, d_w=0.1, comp=comp)
-        b = steering_sim(D, p, c, reps, rng, False, r, base=th, d_lam=0.0, d_w=-0.1, comp=comp)
-        worst1 = max(worst1, (a[0] + b[0]) / 2)
-        worst2 = max(worst2, a[1], b[1])
-    return dict(size_H1=worst1, size_H2=worst2, SIZE=bool(worst1 <= 0.065 and worst2 <= 0.065))
+        acc = {}
+        for s in (1, -1):
+            shift = {"w": 0.1 * s, "a1": 0.1 * s, "a0": 0.05 * s - D.u0bar * 0.1 * s}
+            for tag, dl in (("null", 0.0), ("drop", -H1_EFFECT), ("react", REACT - th["lamS"])):
+                res = steering_sim(D, p, c, reps, rng, False, r, base=th, d_lam=dl, comp=comp, shift=shift, detail=True)
+                for k, v in res.items():
+                    if k == "H1" and tag != "null" or k == "H4" and tag != "react":
+                        continue
+                    key = k if k in ("H1", "H4") else f"{k}{'+' if s > 0 else '-'}"
+                    acc.setdefault(key, []).append(v)
+        for k, v in acc.items():
+            rates[k] = max(rates.get(k, 0.0), float(np.mean(v)))
+    return dict(size_rates=rates, size_max=max(rates.values()), SIZE=bool(max(rates.values()) <= 0.065))
 
 
 # ---------------------------------------------------------------- gate V4 (synthetic panel)
@@ -643,6 +704,8 @@ def v4(D, p, c, reps, rng, r):
     good_clean = {n: not any(det(np.clip(y, 0, 1)).values()) for n, y in good.items()}
     clean = 0
     n_ctrl = max(1, int((Call[:, KIND] == CTRL).sum()))
+    n_blk = max(1, len(set(Call[:, BLOCK])))
+    n_sent = max(1, len(set(Call[Call[:, KIND] == CTRL, GROUP])))   # control sentences, each with a line effect
     th = dict(REF, lamS=0.0, lamB=0.0, kS=0.0)
     for sig in (0.05, 0.15):
         comp = dict(COMP, sig_e=sig)
@@ -651,7 +714,8 @@ def v4(D, p, c, reps, rng, r):
         for _ in range(reps):
             y = cell_means(Call, p, c, th, draw_noise(Call, p, c, comp, rng, False))
             beta, cov = D.fit_arm(y[inner], prep)
-            clean += not any(_flags(D, Call, y, beta, cov, r, math.sqrt(2 * v / n_ctrl), D.s.pmax,
+            s_ctrl = math.sqrt(v / n_ctrl + v / n_blk + lvar / n_sent)   # control mean minus baseline mean
+            clean += not any(_flags(D, Call, y, beta, cov, r, s_ctrl, D.s.pmax,
                                     s_cell=math.sqrt(v)).values())
     spec = clean / (2 * reps)
     return dict(V4=bool(all(caught.values()) and all(good_clean.values()) and spec >= 0.9),
@@ -719,7 +783,7 @@ def w_rung1(i):
 
 def w_check(i, P, Cc):
     D = Design(*unpack(i))
-    return dict(zip(("H1", "H2", "H3"), steering_sim(D, P, Cc, 400, seeded("check", i), False, 1.0).tolist()))
+    return steering_sim(D, P, Cc, 400, seeded("check", i), False, 1.0)
 
 
 def w_rung2(i, P, Cc):
@@ -732,9 +796,8 @@ def w_rung2(i, P, Cc):
     out = {"r": dict(zip(D.names, r1.tolist())), "r_pair": dict(zip(D.names, rp.tolist())),
            "best": _json(best)}
     if best is None:
-        return {**out, "H1": 0.0, "H2": 0.0, "H3": 0.0}
-    pw = steering_sim(D, best["P"], best["C"], 200, rng, True, rp)
-    return {**out, **dict(zip(("H1", "H2", "H3"), pw.tolist()))}
+        return {**out, "H1": 0.0, "H2": 0.0, "H3": 0.0, "H4": 0.0, "all": 0.0}
+    return {**out, **steering_sim(D, best["P"], best["C"], 200, rng, True, rp)}
 
 
 def w_gates(i, P, Cc, N, r, rp):
@@ -747,8 +810,8 @@ def w_gates(i, P, Cc, N, r, rp):
 def required(s, lv, dr):
     """Required coverage (structural part): buyer-ward pressure control, graded intensity, at least two
     information types, walk-away, the rejected-offer history (author, after the first run), and both
-    sources (v0.5). The rest of the rule, a scored credible seller item and (v0.6) a measurable
-    credulity item, is checked on the cells."""
+    sources (v0.5). The rest of the rule is checked on the cells: credible seller items and measurable
+    credulity items in slope cells, each at least 3 cells in at least 2 blocks with at least 2 sizes (v0.7)."""
     return (dr == (1, -1) and lv == (1, 2, 3) and len(s.info) >= 2 and s.walk and s.history
             and s.source == "both")
 
@@ -761,7 +824,7 @@ def main():
     r1 = checkpointed(f"{OUT}/rung1.jsonl", ids, w_rung1, {i: () for i in ids}, W)
     req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]
            and r["res"]["credulity"]]
-    feas = sorted((r for r in req if r["res"]["best"]), key=lambda r: r["res"]["best"]["N"])
+    feas = sorted((r for r in req if r["res"]["best"]), key=lambda r: (r["res"]["best"]["N"], r["id"]))
     print(f"required coverage: {len(req):,} of {len(r1):,} stated designs have it ({time.time() - t0:.0f}s)")
     Ns = [r["res"]["best"]["N"] for r in feas]
     print(f"rung 1: {len(feas):,} reach every power target; N*: min {Ns[0]:,}, median {Ns[len(Ns) // 2]:,}, "
@@ -776,15 +839,15 @@ def main():
     PC = {i: (by_id[i]["res"]["best"]["P"], by_id[i]["res"]["best"]["C"]) for i in by_id}
     sample = [r["id"] for r in random.Random(1).sample(feas, min(200, len(feas)))]
     chk = checkpointed(f"{OUT}/rung_check.jsonl", sample, w_check, PC, W)
-    ok = sum(min(r["H1"], r["H2"], r["H3"]) >= 0.75 for r in chk)
-    print(f"rung check: {ok}/{len(chk)} sampled designs reach simulated power >= 0.75 (400 runs) on H1, H2 and H3 "
+    ok = sum(min(r["H1"], r["H2"], r["H3"], r["H4"]) >= 0.75 for r in chk)
+    print(f"rung check: {ok}/{len(chk)} sampled designs reach simulated power >= 0.75 (400 runs) on H1 to H4 "
           f"at the rung-1 N* ({time.time() - t0:.0f}s); passes if at least 95% do")
 
     top = [r["id"] for r in feas[:1000]]
     r2 = checkpointed(f"{OUT}/rung2.jsonl", top, w_rung2, PC, W)
     r2d = {r["id"]: r for r in r2}
-    robust = sorted((r["id"] for r in r2 if r["best"] and min(r["H1"], r["H2"], r["H3"]) >= 0.8),
-                    key=lambda i: r2d[i]["best"]["N"])
+    robust = sorted((r["id"] for r in r2 if r["best"] and min(r["H1"], r["H2"], r["H3"], r["H4"]) >= 0.8),
+                    key=lambda i: (r2d[i]["best"]["N"], -r2d[i]["H1"], i))   # ties: higher H1 power, then id
     moved = sum(1 for r in r2 if r["best"] and (r["best"]["P"], r["best"]["C"]) != PC[r["id"]])
     print(f"rung 2: {len(robust)}/{len(r2)} of the best 1,000 keep power >= 0.8 under misspecification "
           f"at N* recomputed with paired-calibrated standard errors; {moved} needed more replication "
