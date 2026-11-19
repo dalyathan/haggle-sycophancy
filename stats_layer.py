@@ -297,7 +297,8 @@ class LowRank:
         for g1, u1, m1 in zip(self.gs, self.us, self.ms):
             for g2, u2, m2 in zip(self.gs, self.us, self.ms):
                 mm = m1 & m2
-                np.add.at(gg, (g1[mm], g2[mm]), u1[mm] * u2[mm])
+                gg += np.bincount(g1[mm] * self.G + g2[mm], weights=u1[mm] * u2[mm],
+                                  minlength=self.G * self.G).reshape(self.G, self.G)
         if self.D is None:
             return gg
         cross = self.tdot(self.D)[:self.G]
