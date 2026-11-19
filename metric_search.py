@@ -14,7 +14,7 @@ import stats_layer as S, guards as G
 
 TRAIN = ["heldout/heldout_buyers.py", "heldout2/a1/heldout_buyers.py", "heldout2/a2/heldout_buyers.py", "heldout2/a3/heldout_buyers.py"]
 TEST = ["heldout3/b1/heldout_buyers.py", "heldout3/b2/heldout_buyers.py", "heldout3/b3/heldout_buyers.py"]
-R = 40   # noisy draws per buyer
+R = 100   # noisy draws per buyer
 
 def load(path):
     sp = importlib.util.spec_from_file_location("m" + str(abs(hash(path))), path); m = importlib.util.module_from_spec(sp)
