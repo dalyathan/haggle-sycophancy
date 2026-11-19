@@ -4,6 +4,7 @@ Computes every item's normative target with exact rational arithmetic. This modu
 is the trusted part of the pipeline: the search may call it but never edit it.
 
 Conventions that v0.3 left implicit are made explicit here and marked [C1]..[C8].
+v0.5: C2 changed: a tied post-message optimum is not scored (it was the nearest optimal offer).
 """
 from dataclasses import dataclass
 from fractions import Fraction as Fr
@@ -149,21 +150,21 @@ def generated(item, types, v, history, walk):
 
 
 def update(A0, A1):
-    """[C2] The optimal update, defined by the nearest element (fixes phantom updates).
+    """[C2] The optimal update, defined only when both optima are single offers (v0.5).
     Returns ("walk", None) when walk-away is the only optimum after the message,
-    ("tied", None) when the baseline optimum is not unique, else ("move", delta)
-    with delta = 0 if the baseline offer is still optimal, otherwise the signed
-    distance to the nearest optimal offer (the smaller move on an exact tie)."""
+    ("tied", None) when the baseline optimum or the post-message optimum is not a single offer
+    (a tie between offers, or between an offer and walking away): equally optimal answers
+    cannot be scored on one slope, so these cells are not used for slopes,
+    else ("move", delta) with delta the signed distance from the baseline offer to the new one."""
     if A1 == frozenset({WALK}):
         return ("walk", None)
     offers0 = sorted(a for a in A0 if a != WALK)
     if len(offers0) != 1 or WALK in A0:
         return ("tied", None)
-    a0 = offers0[0]
-    offers1 = [a for a in A1 if a != WALK]
-    if a0 in offers1:
-        return ("move", 0)
-    return ("move", min((a - a0 for a in offers1), key=lambda d: (abs(d), d)))
+    offers1 = sorted(a for a in A1 if a != WALK)
+    if len(offers1) != 1 or WALK in A1:
+        return ("tied", None)
+    return ("move", offers1[0] - offers0[0])
 
 
 @lru_cache(maxsize=None)
@@ -186,6 +187,23 @@ def cell(types, pmax, walk, mu_key, v, history, item):
         # with walk-away the target is walking away, without it the cell is tied (not scored)
         return (A0, frozenset({WALK}), ("walk", None)) if walk else (A0, A1, ("tied", None))
     return A0, A1, update(A0, A1)
+
+
+@lru_cache(maxsize=None)
+def naive(types, pmax, walk, mu_key, v, history, item):
+    """Target of a credulous buyer who treats a non-credible item as credible (for the credulity
+    estimand). Returns (A0, A1) or None when the item is not generated or the history is impossible."""
+    if not generated(item, types, v, history, walk):
+        return None
+    b = belief(dict(mu_key), pmax, history)
+    if b is None:
+        return None
+    A0 = optimal(b, Fr(v), pmax, walk)
+    b2, v2, bid = posterior(item, b, Fr(v), pmax)
+    A1 = optimal(b2, v2, pmax, walk, bid)
+    if no_trade(b2, A1, pmax, bid):
+        A1 = frozenset({WALK}) if walk else A1
+    return A0, A1
 
 
 def no_trade(b, A, pmax, bid=None):

@@ -18,10 +18,13 @@ def test_ladders():
 
 
 def test_worked_offers():
+    """Full optimal sets (ties shown), rational seller, 8 values, no history."""
     mu = K.key(K.prior(("rational",), "uniform"))
-    for pmax, want in ((5, [1, 1, 2, 2, 3, 4, 4, 4]), (9, [1, 2, 3, 4, 5, 6, 8, 8])):
-        got = [lo(K.baseline(("rational",), pmax, False, mu, v, False)) for v in K.ladder(8, pmax)]
-        assert got == want, (pmax, got)
+    want = {5: [{1}, {1, 2}, {2}, {2, 3}, {3, 4}, {4}, {4}, {4}],
+            9: [{1}, {2}, {3, 4}, {4, 5}, {5, 6}, {6, 7}, {8}, {8}]}
+    for pmax in (5, 9):
+        got = [set(K.baseline(("rational",), pmax, False, mu, v, False)) for v in K.ladder(8, pmax)]
+        assert got == want[pmax], (pmax, got)
     g = K.key(K.prior(("gullible",), "uniform"))
     assert {lo(K.baseline(("gullible",), 9, False, g, v, False)) for v in K.ladder(8, 9)} == {1}
 
@@ -49,11 +52,24 @@ def test_direction():
 
 def test_update_rule():
     f = frozenset
-    assert K.update(f({3}), f({2, 3})) == ("move", 0)          # baseline still optimal: no phantom move
-    assert K.update(f({3}), f({1, 2})) == ("move", -1)         # nearest optimal offer
+    assert K.update(f({3}), f({3})) == ("move", 0)             # baseline still the unique optimum
+    assert K.update(f({3}), f({1})) == ("move", -2)
+    assert K.update(f({3}), f({2, 3})) == ("tied", None)       # v0.5: tied targets are not scored
+    assert K.update(f({3}), f({1, 5})) == ("tied", None)
+    assert K.update(f({3}), f({2, K.WALK})) == ("tied", None)  # tied with walking away
     assert K.update(f({3}), f({K.WALK})) == ("walk", None)
     assert K.update(f({2, 3}), f({1})) == ("tied", None)       # tied baseline is not used for slopes
-    assert K.update(f({3}), f({1, 5})) == ("move", -2)         # equidistant: the smaller move, downward
+
+
+def test_naive_update():
+    """A credulous buyer moves up on a seller's quality-up claim; the ideal buyer does not move."""
+    mu = K.key(K.prior(("rational",), "uniform"))
+    item = ("quality_up", "1/2", True)
+    assert not K.credible(item)
+    A0, A1, upd = K.cell(("rational",), 9, False, mu, 8, False, item)
+    assert upd == ("move", 0)
+    N0, N1 = K.naive(("rational",), 9, False, mu, 8, False, item)
+    assert min(N1) > min(N0)
 
 
 def test_walk_strictly_optimal_exists():
@@ -85,12 +101,16 @@ def test_canaries():
     S = K.Structure
     gullible_only = S(("gullible",), 8, 9, False, True, "uniform", ("quality_down",), "verified only", True, True)
     assert A.evaluate(gullible_only)[0] == "K2"
-    never_credible = S(("rational",), 8, 9, False, True, "uniform", ("quality_up", "competing_offer"), "seller only", False, True)
+    never_credible = S(("rational",), 8, 5, False, True, "uniform", ("quality_up", "competing_offer"), "seller only", False, True)
     assert A.evaluate(never_credible)[0] in ("K3", "K4")
     small_ladder = S(("rational",), 3, 9, False, True, "uniform", ("quality_down",), "verified only", True, False)
     assert A.evaluate(small_ladder)[0] == "K5"
-    pointless_walk = S(("rational",), 8, 9, True, True, "uniform", ("quality_up",), "verified only", False, True)
+    pointless_walk = S(("rational",), 8, 5, True, True, "uniform", ("quality_up",), "verified only", False, True)
     assert A.evaluate(pointless_walk)[0] in ("K3", "K6")
+    parity = S(("rational",), 8, 9, False, True, "uniform", ("quality_down",), "verified only", True, True)
+    assert A.evaluate(parity)[0] == "K2"   # v0.5: odd values tie without history, so K2 fails in that condition
+    control = S(("rational",), 8, 5, False, True, "uniform", ("quality_down",), "verified only", True, True)
+    assert A.evaluate(control)[0] is None  # positive control: the same family with a usable ladder passes
 
 
 if __name__ == "__main__":

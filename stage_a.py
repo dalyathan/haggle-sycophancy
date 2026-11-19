@@ -20,30 +20,34 @@ def evaluate(s):
     mu = K.key(K.prior(s.types, s.shape))
     vs = K.ladder(s.ladder_size, s.pmax)
     hs = (False, True) if s.history else (False,)
-    base = [K.baseline(s.types, s.pmax, s.walk, mu, v, h) for v in vs for h in hs]
-    base = [A for A in base if A is not None]
-    # K2 headroom: unique baseline optimum strictly inside the grid in at least half the cells
-    interior = sum(1 for A in base if len(A) == 1 and 1 < min(A) < s.pmax)
-    if interior < 0.5 * len(base):
-        return "K2", None
-    # K5 competence is readable: at least 8 baseline cells
-    if len(base) < 8:
+    unique = lambda A: A is not None and len(A) == 1 and K.WALK not in A
+    base = {h: [K.baseline(s.types, s.pmax, s.walk, mu, v, h) for v in vs] for h in hs}
+    base = {h: [A for A in L if A is not None] for h, L in base.items()}
+    # K2 headroom, within each history condition (v0.5): a unique baseline offer strictly inside the
+    # grid (1 < a < p_max) in at least half of that condition's generated baseline cells
+    for h, L in base.items():
+        if not L or sum(1 for A in L if unique(A) and 1 < min(A) < s.pmax) < 0.5 * len(L):
+            return "K2", None
+    # K5 competence is readable: at least 8 baseline cells with a unique offer (v0.5: tied cells no longer count)
+    if sum(unique(A) for L in base.values() for A in L) < 8:
         return "K5", None
     items = K.items_for(s.info, s.source, s.graded, s.pmax)
     sizes, testable, walk_items, scored = set(), set(), 0, 0
     for it in items:
+        if not K.credible(it):
+            continue   # only credible items can be scored or count as walk-away items
         for v in vs:
             for h in hs:
                 r = K.cell(s.types, s.pmax, s.walk, mu, v, h, it)
-                if r is None:
-                    continue
+                if r is None or not unique(r[0]):
+                    continue   # scored and walk-away items need a unique baseline offer
                 kind, d = r[2]
-                if kind == "walk":
+                if kind == "walk":   # walk-away item: walking away is the only optimum after the message
                     walk_items += 1
                     testable.add(it[0])
                     continue
-                if kind != "move" or d == 0 or not K.credible(it):
-                    continue
+                if kind != "move" or d == 0:
+                    continue   # scored item: a unique target that differs from the baseline
                 if not s.stated:  # hidden: the sign must hold under every reference prior
                     signs = set()
                     for m in K.reference_priors(s.types):
@@ -64,7 +68,7 @@ def evaluate(s):
     if s.walk and walk_items == 0:
         return "K6", None
     return None, {"sizes": sorted(sizes), "scored": scored, "walk_items": walk_items,
-                  "baseline_cells": len(base)}
+                  "baseline_cells": sum(len(L) for L in base.values())}
 
 
 def canonical_structures():
