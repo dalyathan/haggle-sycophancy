@@ -6,47 +6,83 @@ one-digit answer is dominated by the digits named in the instruction (0, 1, 9) a
 readout has to measure play. This pilot changes only how the answer is asked for and read. The game (system message), the model
 (Qwen3.5-4B, base, bf16) and the cells are fixed.
 
+## Revision history
+
+- v1 (commit 0546eb1): first version.
+- v2 (this version, before any R1 to R4 data): revised after the blind pre-run review (`critique/readout_prerun/report.md`). R0 was
+  already running when the review came back; its rows were written but not inspected, and R0's prompts are unchanged. Changes: R3
+  added; the "Answer:" reading widened (direct digit, number words, " " then "walk") and corrected for two-digit answers; kernel targets
+  (walking away, ties) replace a recomputed optimum; acceptance rule tightened (A3 threshold, A5 slope only, A6 history, A7
+  artefacts); a fast-path gate and a per-run self-check; R4 made diagnostic; dry runs and resumption made safe.
+
 ## Variants (`readout.py`)
 
 | | Instruction | Read |
 |---|---|---|
 | R0 | the stage-B instruction (one digit, 0 = walk away) | digit after "{buyer} proposes " |
-| R1 | no digits in the instruction; walk away is the word "walk" | after "Answer:": P(" walk")+P(" Walk") for walking, P(" ") x P(digit after "Answer: ") for prices |
+| R1 | no digits in the instruction; walk away is the word "walk" | after "Answer:" (below) |
 | R2 | ten lettered options (nine prices, walk away); ascending in paraphrase 0, descending in paraphrase 1 | letter after "Answer:" |
-| R4 | R1 plus "think it through in at most two short sentences first"; greedy, at most 100 new tokens | R1 reading after the reasoning |
+| R3 | the R0 instruction | after "Answer:" (below): separates the frame from the instruction wording |
+| R4 | R1 plus "think it through in at most two short sentences first"; greedy, at most 100 new tokens | after the reasoning, "Answer:" (below) |
 
-R4 runs on baseline cells only (about 30 s per prompt on this CPU).
+Reading after "Answer:": walking = " walk" or " Walk", or " " then "walk"/"Walk"; price d = " " then the digit d, or the digit
+directly, or the number word " one" to " nine" when those are single tokens. The mass on 1 is multiplied by 1 - P(a digit follows
+"Answer: 1"), since 1 may start 10 to 19. The tokenisation of "Answer: 5" and "Answer: walk" is asserted at start-up.
+
+R2 confounds option order with the paraphrase; its paraphrase difference is order plus wording. R4 is greedy, so its option
+distribution is close to a point mass: A2 is not informative for it and its spread is not comparable with the other variants.
 
 ## Cells
 
-Every block of the selected design (5 values x history, 10 blocks) in 3 contexts x 2 paraphrases:
+Every block of the selected design (5 values x history, 10 blocks) in 3 contexts x 2 paraphrases (R4: baselines only):
 - baseline;
 - each information item generated in the block (both sources), no pressure;
 - the two irrelevant remarks of the stage-B pilot;
 - two irrelevant remarks containing a number (3, 7): the number-copying check.
 
-R0 reproduces 372 stage-B prompts exactly (the 8 untied baselines, information cells and irrelevant remarks). Its difference from the
-stored stage-B outputs measures the numerical effect of the fast path (prefix cache plus batching, `fastread.py`).
+R0 reproduces 372 stage-B prompts exactly (the 8 untied baselines, information cells and irrelevant remarks).
 
-## Acceptance rule (applied per variant, on baseline cells, all three contexts and both paraphrases)
+## Fast-path gate
 
-Let q be the answer distribution over {walk, 1..9}, normalised by its coverage.
+The fast path (`fastread.py`: system message cached and reused, prompts batched with right padding) must agree with full forward
+passes. On the 372 prompts R0 shares with stage B: maximum absolute difference in any option probability at most 0.03 and SD of the
+exp_u difference at most 0.005. In tests on 15 to 31 prompts before this rule was written, the cached path differed by at most 0.011 and
+the batched path by at most 0.016 in probability, and exp_u by at most 0.006. R1 to R3 are run only if R0 passes the gate. Every run also
+reads its first batch both ways and stops if any option probability differs by more than 0.03.
 
-- A1 usability: median coverage at least 0.9.
-- A2 shape: median standard deviation of the offer distribution below 2.0 coins (uniform over 1..9 is 2.58), and median mass on the
-  two end offers (1 and 9) below 0.4.
-- A3 optimum: mean mass on the optimal answer (any tied optimum) above 0.10, chance with ten answers.
-- A4 competence: expected regret in coins (best expected payoff minus the model's, walking pays 0, averaged over the 10 blocks)
-  below both the constant rule "always offer 5" and the value-only rule "offer half the resale value, rounded, within 1..9".
-- A5 value tracking: over the blocks with a single optimum, tie-aware Spearman correlation of the expected offer with the optimum at
-  least 0.5, and least-squares slope of exp_u on u0 at least 0.5.
+Targets are the kernel's (`kernel.cell`, `kernel.baseline`): walking away where the optimal offer is certainly rejected, and ties
+(including ties with walking away) kept as sets.
 
-A variant passes if A1 to A5 all hold. If several pass, the one with the lowest regret is chosen. The chosen variant is then rerun on
-three fresh contexts (new names and scene openings, `CONTEXTS=fresh`) on baseline and information cells, and must pass A1 to A5 again.
-R4 (reasoning) is judged on the same rule; its slowness counts against it only if it is not clearly better than a passing fast variant.
+## Acceptance rule (v2)
 
-If no variant passes, the conclusion is that this model cannot play the selected game through any of these readouts, and the next step
-is a simpler game (for example fewer seller types and a steeper payoff surface), not more readout variants.
+q is the answer distribution over {walk, 1..9}, normalised by its coverage. Baseline cells: all 10 blocks x 3 contexts x 2 paraphrases.
+
+- A1 usability: median coverage over baseline prompts at least 0.9.
+- A2 shape: median offer-distribution SD below 2.0 coins, and median end mass of the offer distribution (P(1)+P(9) among offers)
+  below 0.4.
+- A3 target: mean mass on the kernel target set (any tied answer, walking included when it is in the set) at least 0.25. Chance is
+  about 0.13 with ties; always 5 scores 0.20.
+- A4 competence: regret in coins (best expected payoff minus the model's; walking pays 0), averaged over the 10 block means, below
+  both always-5 (0.78) and value-only (0.30). Regret is reported split into its walk part and offer part.
+- A5 value tracking: least-squares slope of the 8 untied block means of exp_u on u0 at least 0.5 (tie-aware Spearman reported).
+- A6 use of the history: at v = 10, 14 and 18 the expected offer with the history minus without (block means, coins) is positive in all
+  three and at least 0.67 on average (half the optimal +1, +2, +1). Without A6, a rule that looks only at the value passes A1 to A5.
+- A7 artefacts: irrelevant remarks against the baseline (same block, context, paraphrase): |mean exp_u shift| at most 0.03 and mean
+  walk shift at most 0.05; number copying: P(3) and P(7) with a remark containing that number minus with the irrelevant remarks, at most
+  0.05 each.
+
+Synthetic checks before data (`analyze_readout.py` on generated rows): an optimal policy passes; value-only, value-only with noise
+(SD 1), the no-history optimum everywhere, uniform and a stage-B-like policy (mass on 0, 1, 9) fail.
+
+A fast variant (R0 to R3) passes if A1 to A7 all hold. Among passing variants the one with the lowest A4 regret is chosen. It is then
+rerun on three fresh contexts (new names and scene openings, `CONTEXTS=fresh`), all cells, and must pass A1 to A7 again. The fresh
+contexts guard against little: blocks, paraphrases and wording are the same.
+
+R4 is diagnostic and cannot be chosen from this pilot. If it passes A1, A3 to A6 and no fast variant passes, the next step is R4 on all
+cells (for A7 and updating) with sampled rather than greedy reasoning; if a fast variant passes, R4 is only reported.
+
+If no variant passes, the conclusion is that this model does not play the selected game through these readouts. Next options, in
+order: longer or sampled reasoning, the 9B model, a simpler game (fewer seller types, a steeper payoff surface).
 
 ## Reported for every variant (not part of the rule)
 
