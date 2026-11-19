@@ -258,7 +258,23 @@ Among valid stated designs with the required coverage, the search picks the smal
 
 **6.7 Results.**
 
-RESULTS_PENDING
+With the gates frozen before the run and new seeds, 26 of the 50 cheapest designs pass every gate; the cheapest needs 78,208 items (W5 = 2, W6 = 18).
+
+| Rung | Result |
+| --- | --- |
+| Required coverage | 604 of 25,324 stated designs (D1, D10 and the author's coverage) |
+| Rung 1, closed-form power | all 604 feasible; N\* from 78,208 to 466,024 items (median 209,664). Every design needs W6 = 18, set by the offer-level equivalence on α0: the context shift moves every cell of an arm. W5 is set by H1 in some designs |
+| Sensitivity | every standard deviation ×1.5: 597 feasible, all needing more replication; ×2: none feasible |
+| Rung check | 200 of 200 reach simulated power ≥ 0.75 on H1, H2 and H3 at the rung-1 N\* (passes: at least 95% needed) |
+| Rung 2 | paired factors for λ̄^S from 1.0 to 1.52 (median 1.18); 312 of 604 designs need more replication once errors are calibrated (median N\* 251,420); all 604 keep power ≥ 0.8 under misspecification at the recomputed N\* |
+| Rung 3 | V2: 28 of 50; V3: 48; V4: 50; VS: 47; all four: 26 |
+
+- Passing designs: worst bias 0.0075 for λ̄^S (0.0074 under misspecification), 0.0097 for κ̄^S, 0.012 for w; test size at most 0.062 (H1) and 0.052 (H2); the noisy updater is cleared in at least 99.5% of runs; every bad buyer, including the seller-deaf and credulous ones, is caught in every design.
+- The passing designs share a shape: a rational seller mixed with one or two floor types (often a rational-heavy prior), a 5-value ladder, quality-down plus competing-offer information from both sources. Cheapest: rational, gullible and high-floor sellers, rational-heavy prior, 5 values, p\_max = 5; 78,208 items.
+- The 24 failures: 22 exceed the blunting bias limit (0.0101 to 0.033), 7 of them also the w or w\_S limit; 3 fail VS (H1 size 0.063 to 0.072); 2 fail V3. Every blunting failure arises at the edge of the operating region (λ^S = 0.2, w = 1.5, α1 = 0.8, σ\_e = 0.15, about 10% of slope cells clipped). There the fit to the expected cell means recovers κ and w exactly (bias 0.000), so the bias is the finite-sample bias of the nonlinear estimator under heavy clipping, not a missing model term. Narrowing the operating region would remove it, but that would change a threshold after seeing results; it is left to the author (section 11).
+- Paired calibration fixed the v0.5 size problem: worst H1 size fell from 0.095 to 0.072 overall and to 0.062 among passing designs.
+
+Open questions for the author: the operating-region rule (D9), now the main source of failures through the edge bias above; whether the offer-level equivalence margin (±0.05), which alone sets W6 = 18 in every design, is the intended price; and whether the declared variance components are plausible, since doubling them leaves no feasible design.
 
 ## 7. The evaluator ensemble
 
@@ -332,7 +348,7 @@ Ten weaknesses remain; the first two are modelling choices that can be disclosed
 4. **Fixed families limit generalisation.** Conclusions are about these six pressure families.
 5. **Declared variance components are guesses** until stage B measures them; the ×1.5 and ×2 sensitivity runs show how far rankings depend on them. In real fits the components are estimated, which the simulations do not reproduce.
 6. **Speaker and direction are confounded**: buyer-ward pressure always comes from the companion.
-7. **Certified range**: V2 covers λ^S up to 0.2 and the operating region excludes strong yielders; a model that yields more is outside what the estimator was certified for (R4-S15).
+7. **Certified range and edge bias**: V2 covers λ^S up to 0.2 and the operating region excludes strong yielders; a model that yields more is outside what the estimator was certified for (R4-S15). At the region's edge, under heavy clipping and high noise, the nonlinear estimator has a finite-sample bias in κ̄^S and w of up to about 0.06 at single grid points; it is what fails 22 of the 24 rejected v0.6 finalists.
 8. **Departure from Concordia's numbers.** The frame can stay verbatim, but costs, values and floors differ from Fruitville's.
 9. **One decision only**; multi-turn feedback is not measured.
 10. **Non-gameability is relative to the panel** of bad buyers, and annotation ambiguity remains, reduced by explicit sources and the blind audit.

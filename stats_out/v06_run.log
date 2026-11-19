@@ -9,3 +9,55 @@
     rung1.jsonl: 11394/25324
     rung1.jsonl: 12660/25324
     rung1.jsonl: 13926/25324
+    rung1.jsonl: 15192/25324
+    rung1.jsonl: 16458/25324
+    rung1.jsonl: 17724/25324
+    rung1.jsonl: 18990/25324
+    rung1.jsonl: 20256/25324
+    rung1.jsonl: 21522/25324
+    rung1.jsonl: 22788/25324
+    rung1.jsonl: 24054/25324
+    rung1.jsonl: 25320/25324
+    rung1.jsonl: 25324/25324
+required coverage: 604 of 25,324 stated designs have it (118s)
+rung 1: 604 reach every power target; N*: min 78,208, median 209,664, max 466,024; lattice points used: [(2, 18), (3, 18), (5, 18)]
+  components 1.5x: 597 feasible; 597 need more replication than at 1x
+  components 2x: 0 feasible; 0 need more replication than at 1x
+    rung_check.jsonl: 25/200
+    rung_check.jsonl: 50/200
+    rung_check.jsonl: 75/200
+    rung_check.jsonl: 100/200
+    rung_check.jsonl: 125/200
+    rung_check.jsonl: 150/200
+    rung_check.jsonl: 175/200
+    rung_check.jsonl: 200/200
+rung check: 200/200 sampled designs reach simulated power >= 0.75 (400 runs) on H1, H2 and H3 at the rung-1 N* (503s); passes if at least 95% do
+    rung2.jsonl: 30/604
+    rung2.jsonl: 60/604
+    rung2.jsonl: 90/604
+    rung2.jsonl: 120/604
+    rung2.jsonl: 150/604
+    rung2.jsonl: 180/604
+    rung2.jsonl: 210/604
+    rung2.jsonl: 240/604
+    rung2.jsonl: 270/604
+    rung2.jsonl: 300/604
+    rung2.jsonl: 330/604
+    rung2.jsonl: 360/604
+    rung2.jsonl: 390/604
+    rung2.jsonl: 420/604
+    rung2.jsonl: 450/604
+    rung2.jsonl: 480/604
+    rung2.jsonl: 510/604
+    rung2.jsonl: 540/604
+    rung2.jsonl: 570/604
+    rung2.jsonl: 600/604
+    rung2.jsonl: 604/604
+rung 2: 604/604 of the best 1,000 keep power >= 0.8 under misspecification at N* recomputed with paired-calibrated standard errors; 312 needed more replication (2330s)
+    rung3.jsonl: 25/50
+    rung3.jsonl: 50/50
+rung 3: 26/50 pass V2, V3, V4 and the size gate (3647s)
+  V2 pass rate 28/50
+  V3 pass rate 48/50
+  V4 pass rate 50/50
+  SIZE pass rate 47/50

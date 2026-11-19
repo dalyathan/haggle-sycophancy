@@ -2,7 +2,7 @@
 
 Does an LLM buyer in a price negotiation cave to social pressure, or update only on real information? This repo holds the game theory, the benchmark-design search and the statistics for measuring that, as groundwork for steering open-weight models away from sycophancy without training.
 
-The current specification is [`spec/spec_v0.5.md`](spec/spec_v0.5.md); v0.4 and v0.1 are kept beside it.
+The current specification is [`spec/spec_v0.6.md`](spec/spec_v0.6.md); v0.5, v0.4 and v0.1 are kept beside it.
 
 ## How it fits together
 
@@ -18,7 +18,7 @@ The current specification is [`spec/spec_v0.5.md`](spec/spec_v0.5.md); v0.4 and 
 
 ## Current result
 
-With the required coverage (buyer-ward pressure control, three intensities, at least two information types, walk-away and history), 35 of the 50 cheapest designs pass every simulated gate; the cheapest needs 7,764 items. Mixed-source designs, which test credibility directly, pass 31 of 50 from 13,092 items. Details and open questions: spec section 6.7.
+Spec v0.6 (branch `critique-loop`). With the required coverage (seller-ward and companion pressure at three intensities, at least two information types from both the seller and an inspector, a credible seller claim, a measurable credulity item, walk-away and history), 26 of the 50 cheapest designs pass every simulated gate, including a type-I-error check of the steering test. The cheapest needs 78,208 items. Details, failures and open questions: spec section 6.7.
 
 ## Running it
 
@@ -37,12 +37,12 @@ The model scripts (`capability_check.py`, `gate.py`, `smoke_test.py`, `review/pr
 | --- | --- |
 | `kernel.py`, `test_kernel.py`, `stage_a.py` | game kernel, its tests, the design-space enumeration |
 | `stats_layer.py` | model, power, rungs and gates |
-| `stats_out/` | current results (`v05/`), the v0.4 results (`v04/`) and earlier runs kept for comparison (`pre_fix/`, `linear_dose/`, `anchored_C7_partial/`, `serial_partial/`) |
+| `stats_out/` | current results (`v06/`), the v0.5 and v0.4 results (`v05/`, `v04/`) and earlier runs kept for comparison (`pre_fix/`, `linear_dose/`, `anchored_C7_partial/`, `serial_partial/`) |
 | `gate.py`, `gate_report.py`, `results_gate_*.jsonl`, `haiku/`, `sonnet/` | capability gate and its results |
 | `capability_check.py`, `analyze.py`, `results_2b.jsonl`, `results_4b.jsonl` | first readout checks on Qwen3.5-2B and 4B |
 | `kernel_proto.py`, `enum_v03.py` | v0.3 prototypes, superseded by `kernel.py` and `stage_a.py` |
 | `reports/`, `research_notes/` | literature reviews: negotiation benchmarks, search-problem formulations |
-| `spec/` | the specification, v0.1, v0.4 and v0.5 |
+| `spec/` | the specification, v0.1, v0.4, v0.5 and v0.6 |
 
 ## Not done yet
 
