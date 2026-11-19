@@ -17,12 +17,13 @@ def w_confirm(i, P, Cc, N, r, rp):
 
 
 if __name__ == "__main__":
-    r2 = {json.loads(l)["id"]: json.loads(l) for l in open(f"{S.OUT}/rung2.jsonl")}
-    r3 = [json.loads(l) for l in open(f"{S.OUT}/rung3.jsonl")]
-    order = sorted((r for r in r3 if r["V2"] and r["V3"] and r["V4"] and r["SIZE"]),
-                   key=lambda r: (r["N"], -r2[r["id"]]["H1"], r["id"]))
-    todo = [r["id"] for r in order[:K_FIRST]]
-    args = {i: (r2[i]["best"]["P"], r2[i]["best"]["C"], r2[i]["best"]["N"], r2[i]["r"], r2[i]["r_pair"]) for i in todo}
+    r2l = [json.loads(l) for l in open(f"{S.OUT}/rung2.jsonl")]
+    r2 = {r["id"]: r for r in r2l}
+    r3 = {json.loads(l)["id"]: json.loads(l) for l in open(f"{S.OUT}/rung3.jsonl")}
+    order = [i for i in S.robust_order(r2l)[:50]
+             if i in r3 and r3[i]["V2"] and r3[i]["V3"] and r3[i]["V4"] and r3[i]["SIZE"]]   # rung-3 ranking
+    todo = order[:K_FIRST]
+    args = S.rung3_args(r2, todo)
     W = int(os.environ.get("WORKERS", os.cpu_count() or 1))
     out = S.checkpointed(f"{S.OUT}/confirm.jsonl", todo, w_confirm, args, W)
     res = {r["id"]: r for r in out}

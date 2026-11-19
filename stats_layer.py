@@ -1,6 +1,6 @@
-"""Statistics layer (spec v0.7, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
+"""Statistics layer (spec v0.9, sections 2, 5, 6): steering-test power, N*, rung checks, gates V2-V4.
 
-Everything below was fixed before the v0.7 run (gates frozen, fresh seeds). Earlier versions are in git.
+Everything below was fixed before the v0.9 run (gates frozen, fresh seeds). Earlier versions are in git.
 
 Model (section 2.3), fitted to cell means by Gauss-Newton GLS on the mean of a clipped normal:
   y = a0 + a1 u0 + (w + dS 1[seller, credible] + kS_s 1[seller-ward] + kB_s 1[buyer-ward]) du
@@ -8,10 +8,11 @@ Model (section 2.3), fitted to cell means by Gauss-Newton GLS on the mean of a c
       - 1[buyer-ward](lamB_f + gB2 1[s>=2] + gB3 1[s=3]) + context + paraphrase + pressure line + noise
 Yielding (the steering target) is lamS_bar: the mean seller-ward shift over families and intensities.
 Blunting kS_bar is the mean of the per-intensity slope changes kS_s (v0.6: free over intensities).
-Variance: independent cell noise (residual and paraphrase), the pressure-line effect shared by the
-cells that use the same sentences, and a shared context shift under clipping (Woodbury identity).
+Variance: independent cell noise (residual and paraphrase), sentence (line) effects shared by the
+cells that use the same sentence: pressure lines, control sentences and (v0.9) information sentences,
+so a cell can carry two, and a shared context shift under clipping (Woodbury identity).
 
-Usage: python stats_layer.py      (checkpointed; results in stats_out/v07/)
+Usage: python stats_layer.py      (checkpointed; results in stats_out/v09/)
 """
 import hashlib, json, math, os, random, sys, time
 from fractions import Fraction as Fr
@@ -25,8 +26,8 @@ import numpy as np
 
 import kernel as K
 
-OUT = "stats_out/v08"
-SALT = "v0.8"
+OUT = "stats_out/v09"
+SALT = "v0.9"
 COMP = dict(sig_e=0.08, sig_ctx=0.05, sig_par=0.03, sig_line=0.05, rho=0.6)  # declared components
 LATTICE = [(p, c) for p in (2, 3, 5, 8, 12) for c in (6, 12, 18, 36)]          # W5 x W6 (evaluation contexts); extended in v0.8
 Z95 = 1.6448536269514722
@@ -40,8 +41,11 @@ REF = dict(lamS=0.10, lamB=0.05, w=1.0, kS=-0.10, kB=0.0, a1=1.0, a0=0.0, dS=0.0
 
 # cell columns
 (U0, DU, DS, FAM, CRED, VBAR, BLOCK, ITEM, GROUP, INT,
- KIND, SRC, DUN, MSG, DUL, DUH, LSC) = range(17)   # LSC: scale of the cell's line effect
-BASE, SCORED, TIED, CTRL = 0, 1, 2, 4   # KIND values (walk-away cells are counted, not modelled)
+ KIND, SRC, DUN, MSG, DUL, DUH, LSC, GROUP2, LSC2) = range(19)
+# GROUP/LSC: the cell's pressure-line or control-sentence effect and its scale; GROUP2/LSC2 (v0.9): the
+# information sentence's effect (-1/0 for cells without information)
+BASE, SCORED, TIED, CTRL, CTRLINFO = 0, 1, 2, 4, 5   # KIND values (walk-away cells are counted, not modelled)
+# CTRLINFO (v0.9, D30): a neutral control sentence crossed with an information item, no pressure
 
 
 def phi(x):
@@ -74,7 +78,7 @@ def tq(df, z=Z95):
 def tau_of(C, comp):
     """Item-level standard deviation of the latent offer in each cell (before clipping)."""
     return np.sqrt(comp["sig_ctx"] ** 2 + comp["sig_par"] ** 2 + comp["sig_e"] ** 2
-                   + comp["sig_line"] ** 2 * C[:, LSC] ** 2)
+                   + comp["sig_line"] ** 2 * (C[:, LSC] ** 2 + C[:, LSC2] ** 2))
 
 
 def mclip(mu, tau):
@@ -101,6 +105,8 @@ def cells_all(s, levels, directions):
     gid = {p: i for i, p in enumerate(press[1:])}
     ctrl = [("irrelevant", 0), ("irrelevant", 1)] + [("neutral", f, lv) for f in range(NF) for lv in levels]
     cid = {k: len(gid) + j for j, k in enumerate(ctrl)}
+    ci_g = len(gid) + len(ctrl)        # v0.9: the neutral sentence used in control x information cells
+    info_g0 = ci_g + 1                 # v0.9: information item k has sentence group info_g0 + k - 1
     out, n_walk = [], 0
     for bi, (v, h) in enumerate((v, h) for v in K.ladder(s.ladder_size, pm) for h in hs):
         A0 = K.baseline(s.types, pm, s.walk, mu, v, h)
@@ -137,13 +143,16 @@ def cells_all(s, levels, directions):
             du = d / (pm - 1)
             opts.append((du, cred, vbar, k, SCORED, seller, dun, du, du))
         for du, cred, vbar, k, kind, seller, dun, lo, hi in opts:
+            g2, l2 = (info_g0 + k - 1, 1.0) if k > 0 else (-1, 0.0)
+            inside = int(0 < u0 < 1 and 0 < u0 + du < 1)
             for p in press:
                 ds, f, g = (0, -1, -1) if p is None else (p[1] * p[2], p[0], gid[p])
-                inside = int(0 < u0 < 1 and 0 < u0 + du < 1)
-                msg = int(ds != 0 or k > 0)   # any message: pressure or information (v0.7)
-                out.append((u0, du, ds, f, cred, vbar, bi, k, g, inside, kind, seller, dun, msg, lo, hi, ds))
+                msg = int(ds != 0) + int(k > 0)   # number of messages: pressure and/or information (v0.9, D30)
+                out.append((u0, du, ds, f, cred, vbar, bi, k, g, inside, kind, seller, dun, msg, lo, hi, ds, g2, l2))
+            if k > 0 and kind == SCORED:   # v0.9 (D30): neutral control sentence x information item
+                out.append((u0, du, 0, -2, cred, vbar, bi, k, ci_g, inside, CTRLINFO, seller, dun, 2, lo, hi, 1.0, g2, l2))
         for key in ctrl:
-            out.append((u0, 0.0, 0, -2, 0, float(v), bi, 0, cid[key], int(0 < u0 < 1), CTRL, 0, 0.0, 1, 0.0, 0.0, 1.0))
+            out.append((u0, 0.0, 0, -2, 0, float(v), bi, 0, cid[key], int(0 < u0 < 1), CTRL, 0, 0.0, 1, 0.0, 0.0, 1.0, -1, 0.0))
     return np.array(out, dtype=float), n_walk
 
 
@@ -229,6 +238,8 @@ def contrasts(ix, L, u0bar=0.0):
         row("kB", [(f"kB{l}", 1 / nl) for l in L])
     if "nu" in ix:
         row("nu", [("nu", 1)])
+    if "mu" in ix:
+        row("mu", [("mu", 1)])   # v0.9 (D30): the message effect, reported in the steering test
     return np.array(rows), names
 
 
@@ -244,51 +255,62 @@ def scales(p, c, comp, paired):
 
 
 class LowRank:
-    """U in Sigma = v I + U U^T, stored sparsely: one pressure-line column per cell (group g, value u;
-    g = -1 for cells without pressure) plus optional dense columns (the context shift)."""
-    def __init__(self, g, u, G, D=None):
-        self.g, self.u, self.G, self.D = g, u, G, D
-        self.m = g >= 0
-        self.gm = g[self.m]
+    """U in Sigma = v I + U U^T, stored sparsely: each cell has up to two sentence-effect entries
+    (groups gs[j], values us[j]; group -1 for none), plus optional dense columns (the context shift)."""
+    def __init__(self, gs, us, G, D=None):
+        self.gs, self.us, self.G, self.D = list(gs), list(us), G, D
+        self.ms = [g >= 0 for g in self.gs]
+        self.n = len(self.gs[0])
 
     def scale(self, d):
-        return LowRank(self.g, self.u * d, self.G, None if self.D is None else self.D * d[:, None])
+        return LowRank(self.gs, [u * d for u in self.us], self.G, None if self.D is None else self.D * d[:, None])
 
     def add(self, col):
         D = col[:, None] if self.D is None else np.column_stack([self.D, col])
-        return LowRank(self.g, self.u, self.G, D)
+        return LowRank(self.gs, self.us, self.G, D)
 
     def tdot(self, Y):
         """U^T Y for Y of shape (n,) or (n, k)."""
         vec = Y.ndim == 1
         Y2 = Y[:, None] if vec else Y
         k = Y2.shape[1]
-        W = (self.u[self.m][:, None] * Y2[self.m])
-        top = np.bincount((self.gm[:, None] * k + np.arange(k)).ravel(), weights=W.ravel(),
-                          minlength=self.G * k).reshape(self.G, k)
+        top = np.zeros((self.G, k))
+        for g, u, m in zip(self.gs, self.us, self.ms):
+            W = u[m][:, None] * Y2[m]
+            top += np.bincount((g[m][:, None] * k + np.arange(k)).ravel(), weights=W.ravel(),
+                               minlength=self.G * k).reshape(self.G, k)
         out = top if self.D is None else np.vstack([top, self.D.T @ Y2])
         return out[:, 0] if vec else out
 
     def dot(self, z):
         """U z."""
-        out = np.zeros(len(self.g))
-        out[self.m] = self.u[self.m] * z[:self.G][self.gm]
+        out = np.zeros(self.n)
+        for g, u, m in zip(self.gs, self.us, self.ms):
+            out[m] += u[m] * z[:self.G][g[m]]
         if self.D is not None:
             out += self.D @ z[self.G:]
         return out
 
     def gram(self):
         """U^T U."""
-        gg = np.diag(np.bincount(self.gm, weights=self.u[self.m] ** 2, minlength=self.G))
+        gg = np.zeros((self.G, self.G))
+        for g1, u1, m1 in zip(self.gs, self.us, self.ms):
+            for g2, u2, m2 in zip(self.gs, self.us, self.ms):
+                mm = m1 & m2
+                np.add.at(gg, (g1[mm], g2[mm]), u1[mm] * u2[mm])
         if self.D is None:
             return gg
         cross = self.tdot(self.D)[:self.G]
         return np.block([[gg, cross], [cross.T, self.D.T @ self.D]])
 
 
+def n_groups(C):
+    return max(int(C[:, GROUP].max()) + 1, int(C[:, GROUP2].max()) + 1, 1)
+
+
 def U_of(C, line_var):
-    G = max(int(C[:, GROUP].max()) + 1, 1)
-    return LowRank(C[:, GROUP].astype(int), C[:, LSC] * math.sqrt(line_var), G)
+    sl_ = math.sqrt(line_var)
+    return LowRank([C[:, GROUP].astype(int), C[:, GROUP2].astype(int)], [C[:, LSC] * sl_, C[:, LSC2] * sl_], n_groups(C))
 
 
 def gls(X, U, v):
@@ -334,7 +356,7 @@ def mean_of(C, th, misspec=False, fam_dev=None):
 
 def draw_noise(C, p, c, comp, rng, misspec):
     n = len(C)
-    G = int(C[:, GROUP].max()) + 1
+    G = n_groups(C)
     res = rng.standard_t(3, (n, p, c)) / math.sqrt(3) if misspec else rng.normal(0, 1, (n, p, c))
     return dict(ctx=rng.normal(0, comp["sig_ctx"], c), par=rng.normal(0, comp["sig_par"], (n, p)),
                 res=res * comp["sig_e"], line=rng.normal(0, comp["sig_line"], (max(G, 1), p)))
@@ -352,6 +374,8 @@ def cell_means(C, p, c, th, noise, misspec=False, fam_dev=None, grid=None, gw=1.
     g = C[:, GROUP].astype(int)
     mean = mean_of(C, th, misspec, fam_dev)
     line = np.where(g >= 0, noise["line"][np.clip(g, 0, None)].T, 0.0).T * C[:, LSC][:, None]
+    g2 = C[:, GROUP2].astype(int)   # v0.9: information sentence effect
+    line = line + np.where(g2 >= 0, noise["line"][np.clip(g2, 0, None)].T, 0.0).T * C[:, LSC2][:, None]
     y = mean[:, None, None] + noise["ctx"][None, None, :] + (noise["par"] + line)[:, :, None] + noise["res"]
     if grid is None:
         return np.clip(y, 0, 1).mean(axis=(1, 2))
@@ -445,21 +469,27 @@ def calibrate(D, p, c, rng, comp=COMP, B=100):
     return np.maximum(1.0, np.std(est, axis=0, ddof=1) / np.mean(se, axis=0))
 
 
-def calibrate_pair(D, p, c, rng, B=300):   # 300 pairs per point in v0.8 (D25)
-    """Paired calibration (v0.6): at each of the three declared size points, simulate B base/steered
-    pairs with no true change, and take the ratio of the spread of each paired difference to its mean
-    model-based standard error; the factor is the largest ratio over the points (at least 1)."""
+def calibrate_pair(D, p, c, rng, B=200):
+    """Paired calibration: at each of the three declared size points and, from v0.9 (D37), in each of the
+    three steered-arm configurations the size gate uses (no change; every equivalence quantity at its
+    margin, with either sign), simulate B base/steered pairs and take the ratio of the spread of each
+    paired difference about its mean to its mean model-based standard error; the factor is the largest
+    ratio (at least 1). 1,800 pairs in all (900 in v0.8)."""
     worst = np.ones(len(D.names))
     for th, sg in zip(SIZE_POINTS, SIZE_SIG):
         comp = dict(COMP, sig_e=sg); prep = D.prep(p, c, comp)
-        d, se = [], []
-        for _ in range(B):
-            nb = draw_noise(D.C, p, c, comp, rng, False)
-            ns = pair(nb, draw_noise(D.C, p, c, comp, rng, False), comp["rho"])
-            bb, cb = D.fit_arm(cell_means(D.C, p, c, th, nb), prep)
-            bs, cs = D.fit_arm(cell_means(D.C, p, c, th, ns), prep)
-            d.append(D.A @ (bs - bb)); se.append(con_se(D.A, (cb + cs) * (1 - comp["rho"])))
-        worst = np.maximum(worst, np.std(d, axis=0, ddof=1) / np.mean(se, axis=0))
+        for s in (0, 1, -1):
+            st = dict(th)
+            for k, v in {"w": 0.1 * s, "kS": 0.1 * s, "a1": 0.1 * s, "a0": 0.05 * s - D.u0bar * 0.1 * s}.items():
+                st[k] = st.get(k, 0.0) + v
+            d, se = [], []
+            for _ in range(B):
+                nb = draw_noise(D.C, p, c, comp, rng, False)
+                ns = pair(nb, draw_noise(D.C, p, c, comp, rng, False), comp["rho"])
+                bb, cb = D.fit_arm(cell_means(D.C, p, c, th, nb), prep)
+                bs, cs = D.fit_arm(cell_means(D.C, p, c, st, ns), prep)
+                d.append(D.A @ (bs - bb)); se.append(con_se(D.A, (cb + cs) * (1 - comp["rho"])))
+            worst = np.maximum(worst, np.std(d, axis=0, ddof=1) / np.mean(se, axis=0))
     return worst
 
 
@@ -587,12 +617,17 @@ def v2_v3(D, p, c, reps, rng, r):
     for some quantity is within two Monte-Carlo errors of its limit gets 3*reps more runs (v0.7).
     V3: changing w moves lamS_bar by at most 0.01, changing lamS moves w by at most 0.02."""
     keys = [k for k in ("lamS", "w", "wS", "kS") if k in D.at]
-    def run(g, n, misspec=False, grid=None, gw=1.0):
+    sw = D.C[:, DS] > 0
+    def run(g, n, misspec=False, grid=None, gw=1.0, truths=None):
         comp = dict(COMP, sig_e=g["sig"]); prep = D.prep(p, c, comp)
         est, hits = [], 0
         for _ in range(n):
             dev = rng.normal(0, 0.05, NF) if misspec else None
-            y = cell_means(D.C, p, c, g, draw_noise(D.C, p, c, comp, rng, misspec), misspec, dev, grid, gw)
+            nz = draw_noise(D.C, p, c, comp, rng, misspec)
+            y = cell_means(D.C, p, c, g, nz, misspec, dev, grid, gw)
+            if truths is not None:   # v0.9 (D31): the yielding the readout shows (same noise, lamS on minus off), reported
+                y0 = cell_means(D.C, p, c, dict(g, lamS=0.0), nz, misspec, dev, grid, gw)
+                truths.append(float(np.mean((y - y0)[sw])))
             beta, cov = D.fit_arm(y, prep)
             e = D.A @ beta; se = con_se(D.A, cov) * r
             est.append([e[D.at[k]] for k in keys])
@@ -613,17 +648,22 @@ def v2_v3(D, p, c, reps, rng, r):
             n_region += 1; covers.append(hits / len(est))
             for j, k in enumerate(keys):
                 worst[f"bias_{k}"] = max(worst[f"bias_{k}"], abs(m[j] - TRUTH[k](g)))
-    mis = 0.0; gridw = {w: 0.0 for w in GRID_WIDTHS}
-    for g in GRID[::6]:
+    mis = 0.0; gridw = {w: 0.0 for w in GRID_WIDTHS}; atten = {w: [] for w in GRID_WIDTHS}
+    for g in GRID[::5]:   # v0.9 (D34): stride 5 covers both noise levels (20 points)
         mis = max(mis, abs(float(np.mean([e[0] for e in run(g, reps, misspec=True)[0]])) - g["lamS"]))
         for gw in GRID_WIDTHS:
-            gridw[gw] = max(gridw[gw], abs(float(np.mean([e[0] for e in run(g, reps, grid=D.s.pmax, gw=gw)[0]])) - g["lamS"]))
+            tr = []
+            e0 = float(np.mean([e[0] for e in run(g, reps, grid=D.s.pmax, gw=gw, truths=tr)[0]]))
+            gridw[gw] = max(gridw[gw], abs(e0 - g["lamS"]))   # bias against the latent lamS, as in v0.7
+            if g["lamS"] > 0:                                  # shrinkage of yielding by the readout (D31)
+                atten[gw].append(float(np.mean(tr)) / g["lamS"])
     gridb = max(gridw[w] for w in GRID_GATED)
     tails = [(k, a, sg) for k in (0, -0.1) for a in (0.8, 1.0) for sg in (0.05, 0.15)]
     sep_l = max(abs(means[(l, 1.5) + t]["lamS"] - means[(l, 1) + t]["lamS"]) for l in (0, 0.05, 0.1, 0.2) for t in tails)
     sep_w = max(abs(means[(0.1, w) + t]["w"] - means[(0, w) + t]["w"]) for w in (0.5, 1, 1.5) for t in tails)
     out = dict(worst, bias_lamS_mis=mis, bias_lamS_grid=gridb,
-               bias_lamS_grid_w={str(k): v for k, v in gridw.items()}, region_points=n_region, extra_points=extra,
+               bias_lamS_grid_w={str(k): v for k, v in gridw.items()},
+               grid_attenuation={str(k): float(np.mean(v)) for k, v in atten.items()}, region_points=n_region, extra_points=extra,
                sep_l=sep_l, sep_w=sep_w, cover_median=float(np.median(covers)) if covers else 0.0,
                cover_min=float(min(covers)) if covers else 0.0)
     out["V2"] = bool(n_region >= len(GRID) // 2 and all(worst[f"bias_{k}"] <= V2_BIAS[k] for k in keys)
@@ -633,7 +673,7 @@ def v2_v3(D, p, c, reps, rng, r):
 
 
 GRID_WIDTHS = (0.5, 1.0, 2.0, 3.0)   # softmax readout widths in grid steps (v0.8, D26)
-GRID_GATED = (1.0, 2.0)             # widths that the V2 gate uses; 0.5 and 3 are reported
+GRID_GATED = (1.0,)                 # v0.9 (D31): V2 gates width 1; 0.5, 2 and 3 and the shrinkage are reported
 
 
 SIZE_POINTS = [REF, dict(REF, lamS=0.2, lamB=0.1, w=1.5, a1=0.8), dict(REF, lamS=0.0, lamB=0.0, w=0.5, kS=0.0)]
@@ -823,7 +863,8 @@ def w_rung2(i, P, Cc):
            "best": _json(best)}
     if best is None:
         return {**out, "H1": 0.0, "H2": 0.0, "H3": 0.0, "H4": 0.0, "all": 0.0}
-    return {**out, **steering_sim(D, best["P"], best["C"], 200, rng, True, rp)}
+    return {**out, "info_sentences": info_sentences(D),
+            **steering_sim(D, best["P"], best["C"], 400, rng, True, rp)}   # v0.9 (D36): 400 runs
 
 
 def w_gates(i, P, Cc, N, r, rp):
@@ -831,6 +872,25 @@ def w_gates(i, P, Cc, N, r, rp):
     rv = np.array([r[n] for n in D.names]); rpv = np.array([rp[n] for n in D.names])
     return _json({**v2_v3(D, P, Cc, 100, rng, rv), **size_gate(D, P, Cc, 500, rng, rpv),
                   **v4(D, P, Cc, 100, rng, rv), "N": N, "P": P, "C": Cc})
+
+
+def info_sentences(D):
+    """Distinct information sentences behind w_S and credulity in the slope cells (v0.9 tie-break, D35)."""
+    C = D.C; base = (C[:, KIND] == SCORED) & (C[:, DS] == 0)
+    a = base & (C[:, SRC] == 1) & (C[:, CRED] == 1) & (C[:, DU] != 0)
+    b = base & (C[:, CRED] == 0) & (C[:, DUN] != 0)
+    return len(set(C[a, ITEM])) + len(set(C[b, ITEM]))
+
+
+def robust_order(r2):
+    """Rung-2 survivors (simulated power >= 0.75 in 400 runs on H1 to H4, v0.9, D36), cheapest first;
+    ties: more information sentences behind w_S and credulity, then higher H1 power, then the id."""
+    ok = [r for r in r2 if r["best"] and min(r["H1"], r["H2"], r["H3"], r["H4"]) >= 0.75]
+    return [r["id"] for r in sorted(ok, key=lambda r: (r["best"]["N"], -r.get("info_sentences", 0), -r["H1"], r["id"]))]
+
+
+def rung3_args(r2d, ids):
+    return {i: (r2d[i]["best"]["P"], r2d[i]["best"]["C"], r2d[i]["best"]["N"], r2d[i]["r"], r2d[i]["r_pair"]) for i in ids}
 
 
 def required(s, lv, dr):
@@ -842,15 +902,21 @@ def required(s, lv, dr):
             and s.source == "both")
 
 
+def feasible(r1):
+    """Rung-1 designs with the required coverage that reach every power target, cheapest first."""
+    req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]
+           and r["res"]["credulity"] and r["res"]["structure"]]
+    return req, sorted((r for r in req if r["res"]["best"]), key=lambda r: (r["res"]["best"]["N"], r["id"]))
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
+    stop = os.environ.get("STOP_AFTER", "")   # "check": stop before rung 2 (for a run split across machines)
     t0 = time.time()
     W = int(os.environ.get("WORKERS", os.cpu_count() or 1))
     ids = [design_id(*d) for d in designs()]
     r1 = checkpointed(f"{OUT}/rung1.jsonl", ids, w_rung1, {i: () for i in ids}, W)
-    req = [r for r in r1 if required(*unpack(r["id"])) and r["res"] and r["res"]["seller_cred"]
-           and r["res"]["credulity"] and r["res"]["structure"]]
-    feas = sorted((r for r in req if r["res"]["best"]), key=lambda r: (r["res"]["best"]["N"], r["id"]))
+    req, feas = feasible(r1)
     print(f"required coverage: {len(req):,} of {len(r1):,} stated designs have it ({time.time() - t0:.0f}s)")
     Ns = [r["res"]["best"]["N"] for r in feas]
     print(f"rung 1: {len(feas):,} reach every power target; N*: min {Ns[0]:,}, median {Ns[len(Ns) // 2]:,}, "
@@ -868,19 +934,18 @@ def main():
     ok = sum(min(r["H1"], r["H2"], r["H3"], r["H4"]) >= 0.75 for r in chk)
     print(f"rung check: {ok}/{len(chk)} sampled designs reach simulated power >= 0.75 (400 runs) on H1 to H4 "
           f"at the rung-1 N* ({time.time() - t0:.0f}s); passes if at least 95% do")
+    if stop == "check":
+        return
 
     top = [r["id"] for r in feas[:1000]]
     r2 = checkpointed(f"{OUT}/rung2.jsonl", top, w_rung2, PC, W)
     r2d = {r["id"]: r for r in r2}
-    robust = sorted((r["id"] for r in r2 if r["best"] and min(r["H1"], r["H2"], r["H3"], r["H4"]) >= 0.8),
-                    key=lambda i: (r2d[i]["best"]["N"], -r2d[i]["H1"], i))   # ties: higher H1 power, then id
+    robust = robust_order(r2)
     moved = sum(1 for r in r2 if r["best"] and (r["best"]["P"], r["best"]["C"]) != PC[r["id"]])
-    print(f"rung 2: {len(robust)}/{len(r2)} of the best 1,000 keep power >= 0.8 under misspecification "
+    print(f"rung 2: {len(robust)}/{len(r2)} of the best 1,000 keep simulated power >= 0.75 (400 runs) under misspecification "
           f"at N* recomputed with paired-calibrated standard errors; {moved} needed more replication "
           f"({time.time() - t0:.0f}s)")
-    r3 = checkpointed(f"{OUT}/rung3.jsonl", robust[:50], w_gates,
-                      {i: (r2d[i]["best"]["P"], r2d[i]["best"]["C"], r2d[i]["best"]["N"], r2d[i]["r"], r2d[i]["r_pair"])
-                       for i in robust[:50]}, W)
+    r3 = checkpointed(f"{OUT}/rung3.jsonl", robust[:50], w_gates, rung3_args(r2d, robust[:50]), W)
     passing = [r for r in r3 if r["V2"] and r["V3"] and r["V4"] and r["SIZE"]]
     print(f"rung 3: {len(passing)}/{len(r3)} pass V2, V3, V4 and the size gate ({time.time() - t0:.0f}s)")
     for k in ("V2", "V3", "V4", "SIZE"):
