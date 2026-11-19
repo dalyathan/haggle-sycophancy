@@ -8,7 +8,7 @@ v0.7 answers the fourth and fifth blind critiques. Both found the kernel and the
 
 ## Decisions made in the author's absence
 
-The author was unavailable during this revision and asked not to be consulted. D1 to D9 were made a priori, before the v0.5 run; D10 to D12 after it, before the v0.6 run, to fix faults that run exposed; D13 to D19 after the fifth critique, before the v0.7 run. Each can be reversed; the alternative is named.
+The author was unavailable during this revision and asked not to be consulted. D1 to D9 were made a priori, before the v0.5 run; D10 to D12 after it, before the v0.6 run, to fix faults that run exposed; D13 to D19 after the fifth critique, before the v0.7 run; D20 after the v0.7 rung 3, before the confirmation rerun. Each can be reversed; the alternative is named.
 
 | Id | Decision | Alternative not taken | Why |
 | --- | --- | --- | --- |
@@ -30,6 +30,7 @@ The author was unavailable during this revision and asked not to be consulted. D
 | D17 | The size gate covers every test (H1, H4 and the four equivalence tests), at their boundaries, with and without a drop in yielding, at the three calibration points and one held-out point, with 1,000 to 1,500 runs per rate (R5-E3) | H1 and Δw only, 500 runs, calibration points only | The fifth critique showed the v0.6 gate was partial, noisy and in-sample |
 | D18 | A V2 region point whose bias is within two Monte-Carlo errors of a limit gets 300 more runs (R5-E4) | 100 runs everywhere, or netting the error out | More precision where the decision is close, without moving the limit in either direction |
 | D19 | A second misspecified generator: each answer is the mean of a softmax over the price grid (one grid step wide), as a log-probability readout gives (R5-E5) | Clipped-normal generators only | The fitted model and every earlier generator shared the clipped-normal form |
+| D20 | The selected design is the cheapest rung-3 pass that also passes all rung-3 gates in a rerun with fresh seeds (seed stream "confirm"), tried in order of N\*; fixed before the rerun (after the v0.7 rung 3) | Select the cheapest rung-3 pass directly | Picking the cheapest of many noisy passes favours lucky designs |
 | D12 | Blunting is free over intensities, κ^S\_s and κ^B\_s, with the mean as the estimand (after the v0.5 run) | One blunting coefficient | With one coefficient the estimate was a noise-weighted average, biased by up to 0.044 when blunting grows with intensity |
 
 ## Changelog
@@ -274,7 +275,30 @@ Among valid stated designs with the required coverage, the search picks the smal
 
 **6.7 Results.**
 
-RESULTS_PENDING
+All counts below come from the frozen v0.7 run (salt "v0.7", outputs in stats\_out/v07/, log in stats\_out/v07\_run.log). No threshold was changed after the run.
+
+| Step | Result |
+| --- | --- |
+| Required coverage | 25,324 stated designs evaluated; the required ones that also meet D15 (credible seller items and credulity items each in ≥ 3 slope cells, ≥ 2 blocks, ≥ 2 sizes) and reach every power target: **278** |
+| Rung 1 | N\*: min 95,940, median 234,468, max 479,284; every design at lattice point W5 = 2, W6 = 18 |
+| Inflated components | ×1.5: all 278 still feasible but every one needs more replication; ×2: none feasible |
+| Rung check | 200/200 sampled designs reach simulated power ≥ 0.75 on H1 to H4 at the rung-1 N\* (pass) |
+| Rung 2 | 278/278 keep power ≥ 0.8 under misspecification at N\* recomputed with the paired factor; 101 needed more replication |
+| Rung 3 | **18 of 50 pass V2, V3, V4 and VS**; V2 26/50, V3 50/50, V4 50/50, VS 34/50 |
+
+**Why designs failed.**
+
+- **V2, 24 failures.** 22 fail only the softmax-grid generator (D19), 2 only the κ̄^S bias (0.0105 and 0.0102 against 0.01). The grid failures follow the price grid exactly: all 18 designs with p\_max = 5 fail it (bias of λ̄^S 0.045 to 0.061), as do 4 of the 32 with p\_max = 9 (0.022 to 0.024, all with the seller types rational and floor\_high). The other 28 p\_max = 9 designs stay at or below 0.017. On a five-step grid a one-step-wide softmax is coarse enough that the clipped-normal model misreads its mean; with nine steps it does not. Every other V2 check passed in every design: largest |bias| 0.009 for λ̄^S (including the dose generator), 0.014 for w and w\_S; median coverage ≥ 0.93; at least 54 region points; 440 extra replications near limits (D18).
+- **VS, 16 failures.** Across the 50 designs the mean of each reported rate (each the largest over the four size points and the three configurations) is 0.035 to 0.052, so the tests are mostly conservative. 22 of the 500 design-by-test rates exceed 0.065; the most frequent is the upper α1 equivalence test (8 designs, up to 0.097), then the lower α1 test (2, up to 0.092) and the level tests (4). The α1 excursions are larger than Monte-Carlo noise (about 0.006 at 1,500 runs), so the α1 standard error is miscalibrated in some designs; this is not fixed here (weakness 12).
+- **V3 and V4** passed everywhere: every Π\_bad buyer was caught in every design, and specificity was at least 0.96.
+
+**Passing designs.** All 18 have p\_max = 9. The cheapest, at N\* = 95,940 items (W5 = 2, W6 = 18), uses all four seller types, 5 values, uniform mix, quality\_down and competing\_offer from both sources. Its gate values: bias of λ̄^S 0.005 (grid generator 0.010), w 0.008, κ̄^S 0.008; median coverage 0.94; largest size rate 0.050; specificity 1.0.
+
+**Confirmation (D20).** CONFIRM_PENDING
+
+**Selection effect.** Choosing the cheapest of 18 passes out of 50 noisy evaluations favours designs that were lucky once. D20 reruns every rung-3 gate with fresh seeds on the cheapest passing designs, in order, before one is selected.
+
+**Compared with v0.6.** The cheapest passing design costs 95,940 items instead of 78,208: the 18 noisy controls (D13) make the message effect μ, and with it every yielding estimate, less precise, which is what the fifth critique asked the model to admit.
 
 **Earlier runs.** v0.5: 2 of 50 passed (faults fixed by D10 to D12). v0.6: 26 of 50 passed; its gates are superseded by D13 to D19 (results in stats\_out/v06/ and the v0.6 tab).
 
@@ -355,6 +379,8 @@ Eleven weaknesses remain; the first two are modelling choices that can be disclo
 9. **Departure from Concordia's numbers.** The frame can stay verbatim, but costs, values and floors differ from Fruitville's.
 10. **One decision only**; multi-turn feedback is not measured.
 11. **Non-gameability is relative to the panel** of bad buyers, and annotation ambiguity remains, reduced by explicit sources and the blind audit.
+12. **The α1 equivalence test is anti-conservative in some designs**: in v0.7 its size reached 0.097 in 8 of the 50 finalists, beyond Monte-Carlo noise, although the paired calibration factor is applied. Those designs fail VS and are not selected; the cause (likely clipping that varies with the baseline) is not diagnosed.
+13. **Coarse price grids fail a log-probability readout**: with five price steps the softmax-grid generator biases λ̄^S by about 0.05, so every p\_max = 5 design is excluded. The result holds for a one-step-wide softmax; a sharper or flatter readout in real models could move the boundary, which stage B should check on the selected design.
 
 ## Appendix A. The current gate under v0.7
 
