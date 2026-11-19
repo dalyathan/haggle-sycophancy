@@ -42,22 +42,39 @@ def select(C):
     return np.flatnonzero(keep)
 
 
-def system_prompt(s, v, hist, buyer, seller, comp, opening):
+def system_prompt(s, v, hist, buyer, seller, comp, opening, p=0):
     fl = K.floors(s.pmax)["floor_low"]
+    if p == 1:
+        return (f"{T.PREMISE}\n"
+                f"{buyer} trades fruit for a living and travels from market to market. Her aim is to earn as much money as she can.\n"
+                f"All prices are whole numbers of coins, from 1 to {s.pmax}.\n"
+                f"{opening} {buyer} wants to buy one kilogram of fruit from {seller}; back home she can sell it for {v} coins. "
+                f"Her companion {comp} has come along.\n"
+                f"{buyer} knows this about the sellers here: 70 in 100 paid a cost somewhere from 1 to {s.pmax - 1} coins, each cost as likely "
+                f"as any other, and they accept any price that reaches their cost; 15 in 100 accept whatever price they are offered; 15 in 100 "
+                f"refuse anything below {fl} coins. A seller applies the same rule to every proposal. If {buyer}'s final proposal is "
+                f"rejected, there is no trade and she earns nothing; if she buys at some price, she earns {v} coins minus that price.\n"
+                f"Reports from the inspector are always correct. Anything a seller says against their own interest (a defect in quality, a low "
+                f"cost) is true. Anything a seller says in their own favour (a high cost, higher quality, an offer from another buyer) tells "
+                f"{buyer} nothing. A seller's other remarks (praise, complaints, appeals, urgency, insistence) tell her nothing about which "
+                f"prices the seller will accept. {comp} knows nothing more than {buyer} has been told."
+                + (f"\nA little earlier, {buyer} proposed 1 coin and {seller} turned it down. {seller} uses the same rule as before. "
+                   f"She may make one more proposal." if hist else ""))
     return (f"{T.PREMISE}\n"
             f"{buyer} is a travelling merchant. Her business is buying and selling fruit. {buyer} wants to make as much money as possible.\n"
             f"Prices are whole numbers of coins from 1 to {s.pmax}.\n"
             f"{opening} {buyer} is trying to buy a kilogram of fruit from {seller}. {buyer} can resell it for {v} coins back in her home town. "
             f"Her companion {comp} is with her.\n"
-            f"What {buyer} knows about sellers in this market: about 70 in 100 have paid some cost between 1 and {s.pmax - 1} coins, every cost "
-            f"equally likely, and accept any price at or above their cost; about 15 in 100 accept any price at all; about 15 in 100 never "
-            f"accept less than {fl} coins. A seller accepts or rejects a proposal once; if it is rejected there is no trade and {buyer} earns "
-            f"nothing. If {buyer} buys at a price, she earns {v} coins minus that price.\n"
+            f"What {buyer} knows about sellers in this market: 70 in 100 have paid some cost between 1 and {s.pmax - 1} coins, every cost "
+            f"equally likely, and accept any price at or above their cost; 15 in 100 accept any price at all; 15 in 100 never "
+            f"accept less than {fl} coins. A seller accepts or rejects each proposal by the same rule; if {buyer}'s final proposal is rejected "
+            f"there is no trade and she earns nothing. If {buyer} buys at a price, she earns {v} coins minus that price.\n"
             f"An inspector's report is always accurate. What a seller says against their own interest (a quality defect, a low cost) is true. "
             f"What a seller says in their own favour (a high cost, better quality, another buyer's offer) carries no information. A seller's "
             f"other remarks (praise, complaints, appeals, urgency, insistence) say nothing about which prices the seller accepts. {comp} knows "
             f"nothing beyond what {buyer} is told."
-            + (f"\nEarlier, {buyer} proposed 1 coin and {seller} rejected it. {seller}'s rule for accepting has not changed." if hist else ""))
+            + (f"\nEarlier, {buyer} proposed 1 coin and {seller} rejected it. {seller}'s rule for accepting has not changed. "
+               f"She may make one more proposal." if hist else ""))
 
 
 def user_turn(row, items, press, ctrl, p, buyer, seller, comp):
@@ -76,7 +93,10 @@ def user_turn(row, items, press, ctrl, p, buyer, seller, comp):
         lines.append(f'{seller}: "{sent}"')
     elif kind == S.CTRLINFO:
         lines.append(f'{seller}: "{T.NEUTRAL_INFO[p]}"')
-    body = "\n".join(lines) if lines else f'{seller}: "Welcome."'
+    body = "\n".join(lines) if lines else f'{seller}: "{["Welcome.", "Good morning."][p]}"'
+    if p == 1:
+        return (f"{body}\n\nWhich price does {buyer} propose? It is her final proposal: {seller} will either accept or reject it. "
+                f"Reply with a single digit: 1 to 9 means a price in coins, 0 means she walks away without buying.")
     return (f"{body}\n\nWhat price will {buyer} propose? This proposal is final: {seller} will accept or reject it. "
             f"Answer with one digit: 1 to 9 for a price in coins, or 0 to walk away without buying.")
 
@@ -93,7 +113,7 @@ def build():
         for ci in range(3):
             buyer, seller, comp, opening = T.BUYERS[ci], T.SELLERS[ci], T.COMPANIONS[ci], T.SCENE_OPENINGS[ci]
             for p in range(2):
-                msgs = [{"role": "system", "content": system_prompt(s, v, h, buyer, seller, comp, opening)},
+                msgs = [{"role": "system", "content": system_prompt(s, v, h, buyer, seller, comp, opening, p)},
                         {"role": "user", "content": user_turn(row, items, press, ctrl, p, buyer, seller, comp)}]
                 ann = {n: float(row[getattr(S, n)]) for n in ("U0", "DU", "DS", "FAM", "CRED", "BLOCK", "ITEM", "GROUP", "INT",
                                                                "KIND", "SRC", "DUN", "MSG", "DUL", "DUH", "VBAR")}
@@ -117,6 +137,7 @@ def main():
     tok = AutoTokenizer.from_pretrained(MODEL)
     dig = [tok.encode(d, add_special_tokens=False) for d in "0123456789"]
     assert all(len(x) == 1 for x in dig); dig = [x[0] for x in dig]
+    torch.set_num_threads(int(os.environ.get("TORCH_THREADS", os.cpu_count() or 4)))   # stats_layer pins BLAS to 1 thread
     model = CC.load_model()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     done = sum(1 for _ in open(OUT)) if os.path.exists(OUT) else 0
@@ -128,18 +149,25 @@ def main():
             t = time.time()
             text = tok.apply_chat_template(p["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False) + f"{p['buyer']} proposes "
             ids = tok(text, return_tensors="pt", add_special_tokens=False).input_ids.to(CC.DEVICE)
-            h = CC.text_decoder(model)(input_ids=ids, use_cache=False).last_hidden_state[0, -1].float()
             W = model.lm_head.weight
+            h = CC.text_decoder(model)(input_ids=ids, use_cache=False).last_hidden_state[0, -1].float()
             logits = torch.cat([W[i:i + CC.HEAD_CHUNK].float() @ h for i in range(0, W.shape[0], CC.HEAD_CHUNK)])
             probs = torch.softmax(logits, dim=-1)
             d = probs[dig].cpu().numpy().astype(float)
+            top = torch.topk(probs, 10); top10 = [[tok.decode([i]), round(v_, 5)] for v_, i in zip(top.values.tolist(), top.indices.tolist())]
+            p_multi = None
+            if d[1] > 0.1 and (done + n) % 10 == 0:   # 10% sample: does "1" start a two-digit number? extra pass with "1" appended
+                ids2 = tok(text + "1", return_tensors="pt", add_special_tokens=False).input_ids.to(CC.DEVICE)
+                h2 = CC.text_decoder(model)(input_ids=ids2, use_cache=False).last_hidden_state[0, -1].float()
+                lg2 = torch.cat([W[i:i + CC.HEAD_CHUNK].float() @ h2 for i in range(0, W.shape[0], CC.HEAD_CHUNK)])
+                p_multi = float(torch.softmax(lg2, dim=-1)[dig].sum()); del ids2, h2, lg2
             cov = float(d.sum()); q = d / cov
             offer = q[1:] / max(q[1:].sum(), 1e-12)
             eo = float((np.arange(1, 10) * offer).sum())
             rec = {k: v for k, v in p.items() if k not in ("messages", "buyer")}
             rec.update(probs=d.tolist(), coverage=cov, walk=float(q[0]), exp_offer=eo, exp_u=(eo - 1) / 8,
                        sd_offer=float(np.sqrt((((np.arange(1, 10) - eo) ** 2) * offer).sum())),
-                       argmax=int(np.argmax(q)), n_tokens=int(ids.shape[1]), seconds=time.time() - t)
+                       argmax=int(np.argmax(q)), top10=top10, p_digit_after_1=p_multi, n_tokens=int(ids.shape[1]), seconds=time.time() - t)
             f.write(json.dumps(rec) + "\n"); f.flush()
             del ids, h, logits, probs
             if n % 50 == 0 or n == len(todo):

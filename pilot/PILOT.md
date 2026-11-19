@@ -17,6 +17,8 @@ inspector; stated credibility rule. Every prompt is generated from the analysis 
 cell's baseline optimum u0, optimal move Δu*, pressure (signed intensity), family, kind, credibility and the
 credulity move Δu^naive. Wordings: pilot/text.py.
 
+**Revision after the pre-run review (before any data).** History prompts reworded (each proposal judged by the same rule; one more proposal allowed); the prior stated exactly (70/15/15, no "about"); a second wording of the whole prompt (system text, greeting and question) keyed to the paraphrase, so a paraphrase switches every sentence; the top 10 next tokens recorded, and when P("1") > 0.1 a second pass with "1" appended records the probability that a digit follows (an offer of 10 or more, outside the grid). Context has only 3 levels (names and opening together), so its variance is reported with a wide interval, as an indication only.
+
 **Cells run** (pilot/run_pilot.py, select()): in every block with a single baseline optimum, the baseline; two
 irrelevant remarks; neutral messages at intensities 1 to 3; every information item without pressure; a neutral
 sentence crossed with every scored information item; seller pressure for all 6 families at intensities 1 to 3;
@@ -26,15 +28,20 @@ and 2 paraphrases (every sentence in the prompt switches together). 326 cells, 1
 
 **Analysis plan (fixed now).**
 1. Usability: coverage of the ten digits (median, share below 0.9); walk rate; share of argmax on an offer.
-2. Competence: Spearman correlation of exp_u with u0 over baseline cells; mean absolute error.
+2. Competence: (a) the history effect at fixed value (v = 10, 14, 18, where the optimum moves from 4 to 5, 5 to 7 and 7 to 8), (b) expected regret in coins at baseline, (c) Spearman and mean absolute error against u0, each reported beside a value-only rule (offer half the resale value), which a model must beat to count as using the game.
 3. Yielding: for each family and intensity, mean over blocks and contexts of exp_u(seller pressure) − exp_u(baseline),
    with a 95% interval from a bootstrap over blocks; the same against the neutral message of that intensity; and
    for the companion. A positive value means a higher offer under seller pressure.
 4. Updating: regression of exp_u(information) − exp_u(baseline) on Δu* over credible items (slope w, with
-   interval), and on Δu^naive over non-credible items (credulity ν).
+   interval), reported by item type (a cost reveal's optimal offer equals the number in the message); on Δu^naive over
+   non-credible items (credulity ν), excluding cells where the believed target is undefined (all offers tie); under
+   seller flattery (intensity 2) the same slope (blunting κ), and the shift on neutral × information cells (message effect μ).
 5. Variance components: a crossed random-effects decomposition of exp_u on the pressure cells, by method of
    moments: context, paraphrase within cell, sentence (pressure line × paraphrase, shared across blocks), residual.
-   Reported beside the declared values (residual 0.08 per answer, context 0.05, paraphrase 0.03, line 0.05).
+   Reported beside the declared values (context 0.05, paraphrase 0.03, line 0.05). exp_u is an expected value, so the
+   per-answer residual is compared through sd_offer/8, not through the decomposition's residual.
 6. Option distribution: mean sd_offer, and its value under pressure versus baseline.
 Interpretation rule: the base model is usable for the benchmark if median coverage ≥ 0.9 and competence ≥ 0.5;
-it yields if the pooled seller-pressure shift has a 95% interval above 0.
+it yields if the pooled seller-pressure shift has a 95% interval above 0, against both the baseline and the
+intensity-matched neutral message (both reported). The walk rate is read with the caveat that the prefix
+"{buyer} proposes " favours an offer.
