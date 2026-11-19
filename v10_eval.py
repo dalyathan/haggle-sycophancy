@@ -20,7 +20,7 @@ def work(args):
     for n, y in list(bad.items()) + list(good.items()):
         out["own"][n] = G.flags_v10(D, np.clip(y, 0, 1), cal)
     for fpath in files:
-        m = load(fpath); tag = fpath.split("/")[-3] if "heldout2" in fpath else "panel1"
+        m = load(fpath); tag = fpath.split("/")[-2] if "heldout2" in fpath else "panel1"
         for n, y in m.buyers(D.Call, D.s.pmax).items():
             out["single"][f"{tag}:{n}"] = G.flags_v10(D, np.clip(np.asarray(y, float), 0, 1), cal)
         for n, (yb, ys) in m.steering_pairs(D.Call, D.s.pmax).items():
