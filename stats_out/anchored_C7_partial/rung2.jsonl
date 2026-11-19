@@ -1,0 +1,98 @@
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 0.99}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 0.97}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_low\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"uniform\", [\"quality_down\", \"quality_up\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 0.99, "p2": 1.0}
+{"id": "[[[\"rational\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"gullible\", \"floor_low\", \"floor_high\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\"], 5, 5, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 5, true, true, \"uniform\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"gullible\", \"floor_high\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"quality_up\", \"competing_offer\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"verified only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}
+{"id": "[[[\"rational\", \"floor_low\"], 5, 9, true, true, \"rational_heavy\", [\"quality_down\", \"cost_reveal\"], \"seller only\", true, true], [1, 2, 3], [1, -1]]", "p1": 1.0, "p2": 1.0}

@@ -1,0 +1,55 @@
+required coverage: 885 of 25,024 stated designs have it
+rung 1: 25,024 stated designs; 885 reach both power targets (0s)
+  N*: min 13,092, median 38,472, max 105,768; lattice points used: [(2, 6)]
+    rung_check.jsonl: 25/200
+    rung_check.jsonl: 50/200
+    rung_check.jsonl: 75/200
+    rung_check.jsonl: 100/200
+    rung_check.jsonl: 125/200
+    rung_check.jsonl: 150/200
+    rung_check.jsonl: 175/200
+    rung_check.jsonl: 200/200
+rung check: 200/200 sampled designs reach simulated power >= 0.75 at the rung-1 N* (81s)
+    rung2.jsonl: 25/885
+    rung2.jsonl: 50/885
+    rung2.jsonl: 75/885
+    rung2.jsonl: 100/885
+    rung2.jsonl: 125/885
+    rung2.jsonl: 150/885
+    rung2.jsonl: 175/885
+    rung2.jsonl: 200/885
+    rung2.jsonl: 225/885
+    rung2.jsonl: 250/885
+    rung2.jsonl: 275/885
+    rung2.jsonl: 300/885
+    rung2.jsonl: 325/885
+    rung2.jsonl: 350/885
+    rung2.jsonl: 375/885
+    rung2.jsonl: 400/885
+    rung2.jsonl: 425/885
+    rung2.jsonl: 450/885
+    rung2.jsonl: 475/885
+    rung2.jsonl: 500/885
+    rung2.jsonl: 525/885
+    rung2.jsonl: 550/885
+    rung2.jsonl: 575/885
+    rung2.jsonl: 600/885
+    rung2.jsonl: 625/885
+    rung2.jsonl: 650/885
+    rung2.jsonl: 675/885
+    rung2.jsonl: 700/885
+    rung2.jsonl: 725/885
+    rung2.jsonl: 750/885
+    rung2.jsonl: 775/885
+    rung2.jsonl: 800/885
+    rung2.jsonl: 825/885
+    rung2.jsonl: 850/885
+    rung2.jsonl: 875/885
+    rung2.jsonl: 885/885
+rung 2: 883/885 of the best 1,000 keep power >= 0.8 under misspecification (477s)
+    rung3.jsonl: 25/50
+    rung3.jsonl: 50/50
+rung 3: 0/50 pass V2, V3 and V4 (1525s)
+  V2 pass rate 0/50
+  V3 pass rate 48/50
+  V4 pass rate 47/50

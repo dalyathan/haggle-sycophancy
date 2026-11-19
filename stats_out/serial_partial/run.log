@@ -1,0 +1,4 @@
+required coverage: 885 of 25,024 stated designs have it
+rung 1: 25,024 stated designs; 885 reach both power targets (0s)
+  N*: min 13,092, median 38,472, max 105,768; lattice points used: [(2, 6)]
+rung check: 200/200 sampled designs reach simulated power >= 0.75 at the rung-1 N* (327s)
