@@ -1,0 +1,7 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  36%|███▌      | 257/723 [00:00<00:00, 2563.60it/s]Loading weights:  71%|███████   | 514/723 [00:00<00:00, 2350.29it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 2990.34it/s]
+reasoning ladder 2: 65 prompts, 0 done, max 512 new tokens
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+  third p0 L2 v=6 c=5 target=[5] written=5 tokens=246 81s
