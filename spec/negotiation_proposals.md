@@ -1,5 +1,14 @@
 # Proposals: elements from principled negotiation (draft for review; not adopted)
 
+**Review status.** Reviewed blind (`pilot/critique/negotiation_proposals/report.md`). Verdicts: N1 adopt with changes, after the
+clause swap, redesigned (second person, both paraphrases, cells chosen so the optimum is not a stated number, a reading fixed before
+data); N2 not as written (its two effects need two different payoff models; the correct one, "the other stall stays available",
+is equivalent to a value of min(v, b) and conflicts with D44's "used as a price" clause); N3 not as the normative standard
+(principled negotiation disagrees with the payoff-maximising reference buyer on several existing items), at most a cited analogy.
+The review also corrected three claims below: the "highest price" texts state the model's own profit as the goal (8 of the 11 are
+correct); limitation 19 concerns seller claims, which N2 is not; and a verified competing offer is already a credible kernel item.
+Nothing is adopted; the author decides.
+
 Source: Fisher and Ury, *Getting to Yes* (the Harvard Negotiation Project's "principled negotiation"): separate the people from the
 problem; focus on interests, not positions; invent options for mutual gain; insist on objective criteria; know your BATNA (best
 alternative to a negotiated agreement). The author asked whether these, and the notion of "both sides", can be incorporated into the
