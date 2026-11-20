@@ -19,6 +19,11 @@ readout has to measure play. This pilot changes only how the answer is asked for
   token " **" (the start of a markdown-bold answer) carrying 11 to 32% of the mass after "Answer:", which the v2 reading counted as
   lost coverage. The reading now follows " **" with the digit or "walk". Nothing else changed.
 
+- v2.2 (after R1, before R3): speed only. The "Answer:" reading now runs two sequences per prompt instead of four: the
+  sequence ending "Answer: 1" yields the distributions after "Answer:", "Answer: " and "Answer: 1" at its last three positions. On 24
+  R1 prompts the result matches the stored four-sequence R1 rows within the fast-path noise (max probability difference 0.016, exp_u
+  SD 0.004). R1 was run with the four-sequence reading; R3 and R4 with the two-sequence one.
+
 ## Variants (`readout.py`)
 
 | | Instruction | Read |

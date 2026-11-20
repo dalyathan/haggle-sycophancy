@@ -156,16 +156,18 @@ def build():
 def read_answer(rd, texts_res, k, p, ids):
     """Option distribution [walk, 1..9] for prompt k from its batch results. ids: token-id table."""
     if VARIANT == "R0":
-        pr = texts_res[k][0]
+        pr = texts_res[k][0][-1]
         return pr[ids["dig"]].cpu().numpy().astype(float), {}
     if VARIANT == "R2":
-        lp = texts_res[k][0][ids["letters"]].cpu().numpy().astype(float)
+        lp = texts_res[k][0][-1][ids["letters"]].cpu().numpy().astype(float)
         _, opts = options_text(p["para"], 9)
         q = np.zeros(10)
         for j, o in enumerate(opts):
             q[0 if o.startswith("walk") else int(o.split()[0])] += lp[j]
         return q, {}
-    p1, p2, p3, p4 = (texts_res[k * 4 + j][0] for j in range(4))  # after "Answer:", "Answer: ", "Answer: 1", "Answer: **"
+    # two sequences per prompt: "...Answer: 1" gives the distributions after "Answer:", "Answer: " and "Answer: 1";
+    # "...Answer: **" gives the one after "Answer: **"
+    (p1, p2, p3), p4 = texts_res[k * 2][0], texts_res[k * 2 + 1][0][-1]
     ps = float(p1[ids["space"]]); pb = float(p1[ids["bold"]])
     walk = float(p1[ids["walk_sp"]].sum()) + ps * float(p2[ids["walk_ns"]].sum()) + pb * float(p4[ids["walk_ns"]].sum())
     two = float(p3[ids["dig"]].sum())                              # "1" followed by another digit: 10 to 19
@@ -250,22 +252,28 @@ def main():
             texts = []
             for g, p in enumerate(group):
                 base = rd.chat(p["messages"], (gen[g]["used"] if gen[g] else "") + frame(p))
-                texts += [base] if VARIANT in ("R0", "R2") else [base, base + " ", base + " 1", base + " **"]
+                if VARIANT in ("R0", "R2"):
+                    texts += [base]
+                else:
+                    b = enc(base)
+                    assert enc(base + " 1") == b + [ids["space"], ids["dig"][1]] and enc(base + " **") == b + [ids["bold"]]
+                    texts += [base + " 1", base + " **"]
+            kpos = 1 if VARIANT in ("R0", "R2") else 3
             if VARIANT == "R4":
-                res = [rd.last_probs(t, None, use_cache=False) for t in texts]
+                res = rd.multi(texts, None, kpos)
             else:
-                res = rd.last_probs_batch(texts, pre)
+                res = rd.multi(texts, pre, kpos)
                 if not checked:                                       # self-check: batched cache path vs full passes
-                    full = [rd.last_probs(t, None, use_cache=False) for t in texts]
+                    full = rd.multi(texts, None, kpos)
                     opt = ids["dig"] + ids["letters"] + [ids["space"], ids["bold"]] + ids["walk_sp"] + ids["walk_ns"]
-                    dmax = max(float((a[0][opt] - b[0][opt]).abs().max()) for a, b in zip(res, full))
+                    dmax = max(float((x[opt] - y[opt]).abs().max()) for a, b in zip(res, full) for x, y in zip(a[0], b[0]))
                     print(f"self-check on {len(texts)} texts: max abs option-probability difference, batched cache vs full pass: {dmax:.4f}", flush=True)
                     if dmax > 0.03:
                         sys.exit("self-check failed: fast path disagrees with full forward passes")
                     checked = True
-            step = 1 if VARIANT in ("R0", "R2") else 4
+            step = 1 if VARIANT in ("R0", "R2") else 2
             for g, p in enumerate(group):
-                pr, ntok = res[g * step]
+                pr, ntok = res[g * step][0][0], res[g * step][1]
                 q, extra = read_answer(rd, res, g, p, ids)
                 top = torch.topk(pr, 10); top10 = [[tok.decode([k]), round(x, 5)] for x, k in zip(top.values.tolist(), top.indices.tolist())]
                 cov = float(q.sum()); qn = q / cov

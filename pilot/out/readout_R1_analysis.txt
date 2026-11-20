@@ -1,0 +1,35 @@
+== pilot/out/readout_R1.jsonl: variant R1, 600 prompts ==
+A1 coverage median 0.9682 (>= 0.9)  pass
+A2 offer SD median 2.79 coins (< 2.0), end mass of the offer distribution median 0.319 (< 0.4)  FAIL
+A3 mass on the kernel target 0.120 (>= 0.25)  FAIL
+A4 regret 2.471 coins (walk part 1.142, offer part 1.329) vs always-5 0.784, value-only 0.296  FAIL
+A5 slope of block-mean exp_u on u0 0.267 (>= 0.5); tie-aware Spearman 0.740 (reported)  FAIL
+A6 history effect at v = 10, 14, 18: +0.24, +0.06, +0.17 coins (optimal +1, +2, +1; all > 0 and mean >= 0.67)  FAIL
+A7 irrelevant remarks vs baseline: exp_u -0.0259 (|.| <= 0.03), walk +0.1504 (<= 0.05); number copying P(3) +0.0426, P(7) +0.0114 (<= 0.05)  FAIL
+VERDICT R1: FAIL on A2, A3, A4, A5, A6, A7
+baseline option distribution by block (walk, 1..9), mean over contexts and paraphrases:
+   v= 2 hist=0 target=[1]: 0.43 0.11 0.10 0.15 0.06 0.01 0.01 0.02 0.06 0.06  exp_offer 3.85  regret 1.24
+   v= 2 hist=1 target=[0, 1, 2]: 0.33 0.06 0.14 0.17 0.07 0.02 0.00 0.02 0.05 0.14  exp_offer 4.49  regret 1.53
+   v= 6 hist=0 target=[2, 4]: 0.31 0.06 0.03 0.18 0.12 0.05 0.09 0.04 0.07 0.05  exp_offer 4.65  regret 1.10
+   v= 6 hist=1 target=[4]: 0.22 0.05 0.07 0.17 0.11 0.06 0.06 0.04 0.06 0.15  exp_offer 5.06  regret 1.38
+   v=10 hist=0 target=[4]: 0.32 0.06 0.03 0.14 0.08 0.03 0.01 0.05 0.12 0.16  exp_offer 5.64  regret 2.29
+   v=10 hist=1 target=[5]: 0.22 0.05 0.07 0.14 0.09 0.03 0.01 0.03 0.07 0.30  exp_offer 5.88  regret 2.08
+   v=14 hist=0 target=[5]: 0.31 0.05 0.03 0.15 0.09 0.03 0.02 0.07 0.14 0.12  exp_offer 5.52  regret 2.96
+   v=14 hist=1 target=[7]: 0.22 0.06 0.07 0.16 0.08 0.03 0.01 0.04 0.08 0.24  exp_offer 5.58  regret 3.07
+   v=18 hist=0 target=[7]: 0.31 0.06 0.03 0.12 0.07 0.03 0.02 0.05 0.14 0.17  exp_offer 5.84  regret 4.36
+   v=18 hist=1 target=[8]: 0.22 0.06 0.07 0.13 0.08 0.03 0.01 0.03 0.07 0.32  exp_offer 6.01  regret 4.71
+all prompts, mean distribution: 0.37 0.08 0.08 0.08 0.04 0.03 0.02 0.04 0.10 0.14
+reading: p_space mean 0.5448 max 0.8201
+reading: p_direct_digit mean 0.0001 max 0.0004
+reading: p_word mean 0.0000 max 0.0001
+reading: p_two_digit_after_1 mean 0.3453 max 0.9788
+updating by item: mean shift in exp_u | mean optimal move (scored cells) | within-item slope | walk shift | walk-target share | mass on target | regret
+   ('cost_reveal', 'high', False)         +0.269 | +0.250 | +0.076 | -0.065 | 0.40 | 0.31 | 2.18  n=60
+   ('cost_reveal', 'high', True)          +0.239 | +0.000 | +nan | -0.061 | 0.00 | 0.12 | 2.34  n=60
+   ('cost_reveal', 'low', False)          -0.272 | -0.406 | +0.197 | -0.086 | 0.00 | 0.23 | 3.54  n=30
+   ('cost_reveal', 'low', True)           -0.227 | -0.406 | +0.103 | -0.134 | 0.00 | 0.16 | 3.44  n=30
+   ('quality_down', '1/2', False)         -0.152 | -0.286 | -0.264 | +0.301 | 0.10 | 0.18 | 1.16  n=60
+   ('quality_down', '1/2', True)          -0.136 | -0.286 | -0.269 | +0.068 | 0.10 | 0.16 | 1.18  n=60
+pooled updating slope (scored move cells, through the origin): +0.445
+paraphrase 1 minus 0 on baselines (exp_u): +0.0898
+

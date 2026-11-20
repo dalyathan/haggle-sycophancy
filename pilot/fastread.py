@@ -102,3 +102,38 @@ def _repeat(cache, n):
     for layer in cache.layers:
         for k, v in list(vars(layer).items()):
             setattr(layer, k, rep(v))
+
+
+def _multi(self, texts, prefix, k):
+    """Next-token distributions at the last k positions of each text (one forward pass per text, batched, sharing the
+    cached prefix). Returns [([probs at position len-k, ..., len-1], n_tokens)]. prefix=None: full passes, no cache."""
+    out = []
+    if prefix is None:
+        for t in texts:
+            ids = self.ids(t)
+            with torch.no_grad():
+                hs = self.dec(input_ids=ids, use_cache=False).last_hidden_state[0, -k:].float()
+                lg = torch.cat([hs @ self.W[i:i + CC.HEAD_CHUNK].float().T for i in range(0, self.W.shape[0], CC.HEAD_CHUNK)], 1)
+            out.append(([torch.softmax(lg[j], -1) for j in range(k)], int(ids.shape[1])))
+        return out
+    self._prefix(prefix)
+    fulls = [self.ids(t)[0] for t in texts]
+    assert all(t.startswith(prefix) for t in texts)
+    if not all(f.shape[0] > self._plen + k - 1 and torch.equal(f[:self._plen], self._pids[0]) for f in fulls):
+        return _multi(self, texts, None, k)
+    suf = [f[self._plen:] for f in fulls]
+    L = max(s.shape[0] for s in suf); pad = self.tok.pad_token_id or 0
+    batch = torch.full((len(suf), L), pad, dtype=suf[0].dtype, device=suf[0].device)
+    for i, s in enumerate(suf):
+        batch[i, :s.shape[0]] = s
+    cache = copy.deepcopy(self._cache); _repeat(cache, len(suf))
+    pos = torch.arange(self._plen, self._plen + L, device=batch.device)
+    with torch.no_grad():
+        hs = self.dec(input_ids=batch, past_key_values=cache, use_cache=True, cache_position=pos).last_hidden_state
+        H = torch.stack([hs[i, s.shape[0] - k + j] for i, s in enumerate(suf) for j in range(k)]).float()
+        lg = torch.cat([H @ self.W[i:i + CC.HEAD_CHUNK].float().T for i in range(0, self.W.shape[0], CC.HEAD_CHUNK)], 1)
+    self.n_cached += len(suf)
+    return [([torch.softmax(lg[i * k + j], -1) for j in range(k)], int(f.shape[0])) for i, f in enumerate(fulls)]
+
+
+Reader.multi = _multi
