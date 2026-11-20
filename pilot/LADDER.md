@@ -293,3 +293,10 @@ Sampling noise at the passing wording is small: 95% of sampled answers are corre
 The majority answer equals the greedy answer wherever both are parsed, except one second-person prompt. But one draw in the third
 person fails the RL2 rule, on the walk cells alone. At n = 20 a single greedy pass/fail sits within sampling noise when it is near
 the bar.
+
+### Environment rebuilt (container restart)
+
+The container restart removed the model weights and the Python environment (they live outside the repository). They were
+reinstalled: `.venv` from `requirements.txt` (torch 2.15.0, the PyPI build; the CPU-only index is blocked by the network policy) and
+`models/Qwen3.5-4B` from Hugging Face. `repro_check.py` rerun in the new environment (`out/repro_check_newenv.jsonl`): all 6 stored
+RL/RL2 generations are reproduced byte for byte. Results from the rebuilt environment are comparable with earlier ones.
