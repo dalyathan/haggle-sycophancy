@@ -8,3 +8,5 @@ construct probe: 112 prompts, 0 done, max 768 new tokens
 [transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
   ctx0 (6,4) baseline f=None target=[4] written=[4, 4, 4] tokens=[334, 268, 490] 462s
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (6,4) irrelevant f=None target=[4] written=[None, 4, None] tokens=[768, 548, 768] 317s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
