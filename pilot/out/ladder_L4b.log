@@ -1,0 +1,5 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  35%|███▌      | 255/723 [00:00<00:00, 2548.34it/s]Loading weights:  71%|███████   | 510/723 [00:00<00:00, 2540.00it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 3032.32it/s]
+/home/user/sycophancy-steering/models/Qwen3.5-4B on cpu: ladder L4b, 60 prompts, 0 done, running 60 -> pilot/out/ladder_L4b.jsonl
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+done in 483s
