@@ -200,3 +200,7 @@ recommended settings for non-thinking use; fixed seed) for the 40 (W0, C0) promp
 the share of prompts on which all 3 samples agree, how often the samples' majority answer equals the greedy answer, tokens and
 cut-offs. This is the first measure of per-answer noise under the reasoning readout. Part B runs after Part A. Scored by
 `score_reasoning.py`.
+
+CS run note: Part A was started (`run_queue4.sh`) at the same time as the blind pre-run review (`critique/clause_swap_prerun/`), to use
+the CPU while the review runs. No CS row is read until the review is back; if it requires a change to Part A, the rows written so far
+are discarded and Part A is rerun.
