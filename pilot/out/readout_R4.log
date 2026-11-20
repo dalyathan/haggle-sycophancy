@@ -1,0 +1,7 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  32%|███▏      | 232/723 [00:00<00:00, 2301.98it/s]Loading weights:  69%|██████▉   | 499/723 [00:00<00:00, 2515.67it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 3214.49it/s]
+number words read: True
+/home/user/sycophancy-steering/models/Qwen3.5-4B on cpu: variant R4, 60 prompts, 0 done, running 60 -> pilot/out/readout_R4.jsonl
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
