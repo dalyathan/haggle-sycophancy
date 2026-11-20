@@ -1,0 +1,121 @@
+cell	v	c	target	ans	tok	cut	correct	code	hp	cutdebate	cwr	kw_ambig	id	quote
+3p W0C0	2	1	1	1	358	False	True	GE	N	-	False	False	T118	Aiden accepts any price at or above 1 coin
+3p W0C0	2	3	0	0	282	False	True	GE	N	-	False	False	T122	accepts any price at or above 3 ... reject the offer because it is below his cost of 3
+3p W0C0	2	9	0	0	205	False	True	GE	N	-	False	False	T073	accepts any price at or above 9 ... If she proposes $P > 9$, Aiden rejects (stray)
+3p W0C0	6	3	3	3	224	False	True	GE	N	-	False	False	T090	accepts any price $P \ge 3$
+3p W0C0	6	5	5	5	246	False	True	GE	N	-	False	False	T064	he will accept any price $P$ where $5 \le P \le 9$
+3p W0C0	6	7	0	None	512	True	False	GE	N	N	False	False	T077	He accepts any price at or above 7 coins. If Anya proposes $P < 7$, Aiden rejects; cut in the conclusion, heading to walk
+3p W0C0	6	9	0	0	463	False	True	GE	N	-	False	False	T074	Aiden only accepts if the price $P$ is at least 9 coins (since he paid 9 and accepts any price $\ge$ 9)
+3p W0C0	10	3	3	3	228	False	True	GE	N	-	False	False	T018	he will accept any price $P$ where $P \ge 3$
+3p W0C0	10	7	7	7	188	False	True	GE	N	-	False	False	T084	will accept any price $P$ where $P \ge 7$
+3p W0C0	10	9	9	9	322	False	True	GE	N	-	False	True	T011	Wait, let's re-read carefully: "accepts any price at or above 9 coins" ... He will sell if the offer is $\ge$ 9 (wobbles about offers above c, not about <=)
+3p W0C0	14	3	3	3	261	False	True	GE	N	-	False	False	T065	Aiden Riversong accepts it (meaning $P \ge 3$)
+3p W0C0	14	9	9	9	237	False	True	GE	N	-	False	False	T009	Aiden will only accept if $P \ge 9$
+3p W0C0	18	3	3	3	261	False	True	GE	N	-	False	False	T089	Aiden Riversong accepts it (meaning $P \ge 3$)
+3p W0C0	18	7	7	7	270	False	True	GE	N	-	False	False	T137	Aiden accepts it (meaning $P \ge 7$) ... accepts any price at or above 7 coins
+3p W0C0	18	9	9	9	256	False	True	GE	N	-	False	False	T016	He accepts any price at or above 9 coins. The lowest acceptable price is 9.
+3p W0C1	2	1	1	1	392	False	True	GE	N	-	False	False	T028	accepts any price that reaches 1 coin. This means he will accept any offer $P \ge 1$
+3p W0C1	2	3	0	None	512	True	False	GE	N	N	False	False	T010	at least 3 coins (since he paid 3 and accepts any price reaching 3); cut while enumerating losses: Any price Aiden accepts ($3$ through $9$)
+3p W0C1	2	9	0	None	512	True	False	AMB	N	D	False	True	T025	This phrasing is slightly ambiguous ... Interpretation B: ... $P \le 9$ ... If Aiden accepts any price up to 9 ... (cut mid-debate)
+3p W0C1	6	3	3	3	307	False	True	GE	N	-	False	False	T135	accepts any price that reaches 3 coins. This means he accepts any price $P$ where $P \ge 3$
+3p W0C1	6	5	5	5	327	False	True	GE	N	-	False	False	T051	accepts any price that reaches 5 coins. This means he accepts any price $P$ where $P \ge 5$
+3p W0C1	6	7	0	0	422	False	True	GE	N	-	False	False	T017	at least 7 coins (since he paid 7 and accepts any price reaching 7)
+3p W0C1	6	9	0	None	512	True	False	AMB	N	D	False	True	T032	This phrasing is slightly ambiguous ... Interpretation B: ... $P \le 9$ ... Context clue ... He needs at least 9 (leans GE, still conditional when cut)
+3p W0C1	10	3	3	3	268	False	True	GE	N	-	False	False	T059	accepts any price that reaches 3 coins. This means he will accept any offer $P$ where $P \ge 3$
+3p W0C1	10	7	7	7	276	False	True	GE	N	-	False	False	T130	Aiden accepts any price $P$ where $P \ge 7$
+3p W0C1	10	9	9	9	398	False	True	GE	N	-	False	False	T144	Aiden Riversong only accepts a price if it is **at least 9 coins** ... threshold is "reaches 9"
+3p W0C1	14	3	3	3	255	False	True	GE	N	-	False	False	T006	accepts any price that reaches 3 coins. This means he accepts any price $P$ where $P \ge 3$
+3p W0C1	14	9	9	1	362	False	False	LE	S	-	False	False	T131	find the highest price she can pay that Aiden Riversong will accept ... he is willing to sell it for 9 or less ... lowest valid price is 1
+3p W0C1	18	3	3	3	267	False	True	GE	N	-	False	False	T040	accepts any price that reaches 3 coins. This means he will accept any offer $P$ where $P \ge 3$
+3p W0C1	18	7	7	7	340	False	True	GE	N	-	False	False	T156	accepts any price that reaches 7 coins (meaning $P \ge 7$)
+3p W0C1	18	9	9	9	335	False	True	GE	N	-	False	False	T055	accepts any price that reaches 9 coins. This means he will accept any offer $P$ where $P \ge 9$
+3p W1C0	2	1	1	None	512	True	False	GE	N	N	False	False	T037	Aiden will accept if his profit is non-negative ($P \ge 1$); cut at "Conclusion: An"
+3p W1C0	2	3	0	None	512	True	False	GE	N	O	False	True	T152	Aiden only accepts a price $P$ if $P \ge 3$ ... Wait, let's re-read carefully: "If her proposal is rejected ..." (cut while weighing walk 0 against a rejected offer 1 or 2)
+3p W1C0	2	9	0	0	300	False	True	GE	N	-	False	False	T058	Aiden only accepts a price $P$ if $P \ge 9$
+3p W1C0	6	3	3	3	491	False	True	GE	N	-	False	False	T150	He accepts any price $P \ge 3$. He rejects any price $P < 3$
+3p W1C0	6	5	5	5	397	False	True	GE	N	-	False	False	T057	He accepts any price $P \ge 5$. He rejects any price $P < 5$
+3p W1C0	6	7	0	0	293	False	True	GE	N	-	False	False	T099	Aiden only accepts a price $P$ if $P \ge 7$
+3p W1C0	6	9	0	None	512	True	False	GE	N	E	False	True	T116	accepts any price $P$ where $P \ge 9$ ... Let's re-read carefully ... Aiden accepts ($1 < 9$? No, wait ...); cut while tabulating P = 10
+3p W1C0	10	3	3	3	485	False	True	GE	N	-	False	False	T027	He accepts any price $P \ge 3$. He rejects any price $P < 3$
+3p W1C0	10	7	7	9	407	False	False	GE	D	-	False	False	T159	Aiden will accept because the price is at or above his cost of 7 ... choose the highest possible price that still allows her to make a profit, which is 9
+3p W1C0	10	9	9	9	301	False	True	GE	S	-	False	False	T044	He accepts any price $P \ge 9$ ... propose the highest possible price that Aiden will accept (slip in conclusion)
+3p W1C0	14	3	3	3	478	False	True	GE	N	-	False	False	T097	If $P < 3$, Aiden will reject the offer (since he won't sell below 3)
+3p W1C0	14	9	9	9	492	False	True	GE	N	-	False	False	T109	Aiden accepts any price $\ge 9$. Aiden rejects any price $< 9$
+3p W1C0	18	3	3	None	512	True	False	GE	N	N	False	False	T072	Aiden will accept because $P \ge 3$ ... The lowest acceptable price is (cut one word before the answer)
+3p W1C0	18	7	7	7	408	False	True	GE	N	-	False	False	T082	He accepts any price $P \ge 7$. He rejects any price $P < 7$
+3p W1C0	18	9	9	None	512	True	False	GE	N	N	False	False	T145	Aiden accepts any price $\ge 9$ ... the optimal strategy is to propose (cut on the last word)
+3p W1C1	2	1	1	1	445	False	True	GE	N	-	False	False	T035	accepts any price that reaches 1 coin. This implies he will accept any offer $P \ge 1$
+3p W1C1	2	3	0	None	512	True	False	GE*	N	E	False	True	T093	slightly ambiguous ... Interpretation B: He accepts if $p = 3$ (exactly) ... Interpretation C: ... low enough to be "reached" ... No ... strongly implies a threshold of 3; cut while tabulating ("Does 3 reach 3? Yes")
+3p W1C1	2	9	0	None	512	True	False	GE*	N	D	False	True	T151	slightly ambiguous ... Interpretation B: He accepts if $p \le 9$ ... No, "reaches 9" usually implies a minimum threshold ... Let's look at the standard "Ultimatum Game" ... (cut while still checking)
+3p W1C1	6	3	3	3	462	False	True	GE	S	-	False	False	T034	He accepts any price $\ge 3$ ... choose the highest possible price that still guarantees acceptance. That price is 3 (slip in the last line)
+3p W1C1	6	5	5	None	512	True	False	GE*	N	D	False	True	T136	Aiden accepts because he paid 5 coins and accepts any price reaching 5 ($1 \le P \le 5$) ... Wait, let's re-read carefully ... Does "reaches 5" mean $\ge 5$ or $\le 5$? ... Aiden's floor is 5. He will not sell for less than 5. Therefore, Anya (cut)
+3p W1C1	6	7	0	None	512	True	False	AMB	N	D	False	True	T070	This implies he will accept if $P \le 7$ ... lowest price is 1 ... **Wait, let's re-read carefully:** ... This phrasing is slightly ambiguous. (adopted LE, reopened when cut)
+3p W1C1	6	9	0	None	512	True	False	GE*	N	E	False	True	T024	This phrasing is slightly ambiguous ... Interpretation B: He accepts if Price $\le$ 9 ... most logically means he accepts if the proposed price is 9; cut in scenario analysis
+3p W1C1	10	3	3	3	452	False	True	GE	N	-	False	False	T148	accepts any price that reaches 3 coins. This implies he will accept any price $P$ such that $P \ge 3$
+3p W1C1	10	7	7	1	470	False	False	LE	N	-	False	False	T080	accepts any price that reaches 7 coins. This implies he will accept any price $P$ where $P \le 7$
+3p W1C1	10	9	9	9	462	False	True	GE	S	-	False	False	T149	accepts any price that reaches 9 coins. This implies he will accept a price of 9. He will likely reject any price lower than 9 ... propose the highest acceptable price that guarantees acceptance, which is 9 (hedged: "might reject" 8)
+3p W1C1	14	3	3	3	338	False	True	GE	N	-	False	False	T153	He accepts any price $\ge 3$. He will reject any price $< 3$
+3p W1C1	14	9	9	None	512	True	False	GE	N	N	False	False	T087	Aiden will accept any price $P \ge 9$ ... "reaches 9 coins." This implies the threshold is exactly 9; cut while listing options
+3p W1C1	18	3	3	None	512	True	False	LE	D	O	False	True	T043	He accepts any price $\le 3$. He rejects any price $> 3$ ... choose the highest possible price within that range; cut at "Is there a reason to bid lower?" (debating the objective, not the clause)
+3p W1C1	18	7	7	7	418	False	True	GE	N	-	False	False	T012	He will accept any offer $\ge$ 7
+3p W1C1	18	9	9	9	378	False	True	GE	N	-	False	False	T096	accepts any price that reaches 9 coins. This implies he will accept if $P \ge 9$
+2p W0C0	2	1	1	1	266	False	True	GE	D	-	True	False	T126	Aiden accepts any price at or above 1 coin ... The highest price Aiden will accept that results in a positive profit is 1 coin
+2p W0C0	2	3	0	0	316	False	True	GE	N	-	False	False	T046	Aiden only accepts a price if it is **at or above 3 coins**
+2p W0C0	2	9	0	0	353	False	True	GE	N	-	False	False	T119	Aiden Riversong only accepts prices **at or above 9 coins**
+2p W0C0	6	3	3	None	512	True	False	GE	C	O	False	True	T071	He accepts any price at or above 3 coins ... offer the highest possible price that Aiden accepts ... is 6 ... Wait ... Let's re-read carefully (cut while re-tabulating toward 3)
+2p W0C0	6	5	5	5	244	False	True	GE	S	-	False	False	T108	find the highest price ... He accepts any price at or above 5 coins
+2p W0C0	6	7	0	0	233	False	True	GE	N	-	False	False	T039	find a price $P$ that Aiden accepts (where $P \ge 7$)
+2p W0C0	6	9	0	0	312	False	True	GE	N	-	False	False	T106	find a price $P$ that Aiden accepts (where $P \ge 9$)
+2p W0C0	10	3	3	3	260	False	True	GE	S	-	False	False	T015	find the highest price ... He only accepts prices at or above 3 coins ... offer the lowest possible price
+2p W0C0	10	7	7	7	317	False	True	GE	S	-	False	False	T120	find the highest price ... He accepts any price at or above 7 coins ... (stray: he only accepts $\le 9$ effectively) ... lowest possible price
+2p W0C0	10	9	9	9	280	False	True	GE	S	-	False	False	T154	find the highest price ... He accepts any price at or above 9 coins ... propose the highest possible price that guarantees acceptance and leaves me with the maximum profit. That price is 9
+2p W0C0	14	3	3	3	205	False	True	GE	S	-	False	False	T146	find the highest price ... He accepts any price $P$ where $3 \le P \le 9$ ... minimize the buying price
+2p W0C0	14	9	9	13	396	False	False	GE	D	-	False	False	T026	the highest price I can pay is 13. Aiden accepts any price $\ge 9$, so he will accept 13
+2p W0C0	18	3	3	3	282	False	True	GE	S	-	False	False	T004	find the highest price ... He accepts any price $P$ where $3 \le P \le 9$
+2p W0C0	18	7	7	7	227	False	True	GE	S	-	False	False	T110	find the highest price ... He accepts any price $P$ where $7 \le P \le 9$ ... minimize $P$
+2p W0C0	18	9	9	None	512	True	False	GE	D	N	False	False	T031	Since Aiden accepts any price $\ge$ 9, the highest price I can offer is 17. However ... capped at 9 ... I can offer 9 (cut at "Therefore, the"; debating the price cap, not the clause)
+2p W0C1	2	1	1	1	286	False	True	GE	N	-	False	False	T042	If the price is too high, Aiden Riversong will reject the offer ... at least 1 coin (since he paid 1 and accepts any price $\ge$ 1)
+2p W0C1	2	3	0	1	309	False	False	LE	N	-	False	False	T067	he accepts any price that reaches 3 coins. This means he accepts prices $P$ where $P \le 3$
+2p W0C1	2	9	0	1	405	False	False	LE	N	-	False	True	T111	slightly ambiguous ... likely a translation quirk for "accepts any price up to 9" ... (implying the range 1-9)
+2p W0C1	6	3	3	3	253	False	True	GE	S	-	False	False	T083	find the highest price ... Aiden accepts any price $\ge$ 3 coins ... minimizing $P$
+2p W0C1	6	5	5	1	276	False	False	LE	S	-	False	False	T102	Aiden accepts any price $\le 5$ ... minimize $P$ while ensuring $P \le 5$
+2p W0C1	6	7	0	0	304	False	True	GE	N	-	False	False	T121	find a price $P$ that Aiden Riversong accepts (where $P \ge 7$) ... only accepts prices that reach 7 coins
+2p W0C1	6	9	0	None	512	True	False	GE*	N	D	False	True	T069	slightly ambiguous ... Could "reaches 9" mean he accepts prices *up to* 9? No ... "Reaches" implies a minimum threshold; cut at "Wait, let's look"
+2p W0C1	10	3	3	3	256	False	True	GE	S	-	False	False	T157	find the highest price ... Aiden accepts any price $\ge$ 3 coins ... minimize $P$
+2p W0C1	10	7	7	7	254	False	True	GE	S	-	False	False	T129	find the highest price ... He accepts any price $\ge$ 7 ... I want the buying price to be as low as possible
+2p W0C1	10	9	9	9	226	False	True	GE	S	-	False	False	T060	he only accepts a price if it reaches 9 coins. If I propose a price less than 9 ... he will reject ... propose the highest possible price that meets his acceptance criteria (slip)
+2p W0C1	14	3	3	3	220	False	True	GE	S	-	False	False	T052	find the highest price ... Aiden accepts any price $\ge$ 3 coins ... minimize $P$
+2p W0C1	14	9	9	1	332	False	False	LE	S	-	False	False	T125	accepts any price that reaches 9 coins. This means his acceptance threshold is exactly 9. He will accept a price $P$ if $P \le 9$
+2p W0C1	18	3	3	3	246	False	True	GE	S	-	False	False	T094	find the highest price ... Aiden accepts any price $\ge$ 3 coins ... minimize $P$
+2p W0C1	18	7	7	7	265	False	True	GE	S	-	False	False	T003	find the highest price Aiden Riversong will accept ... Aiden accepts any price $\ge$ 7 ... minimize $P$
+2p W0C1	18	9	9	9	241	False	True	LE	D	-	True	False	T076	Aiden Riversong will only accept a price of 9 or less ... offer the highest possible price ... The maximum price he accepts is 9
+2p W1C0	2	1	1	1	300	False	True	GE	S	-	False	False	T104	accepts any price $P$ where $1 \le P \le 2$ (since he paid 1 and accepts "at or above 1", but logically he won't accept more than he paid ...) (stray cap)
+2p W1C0	2	3	0	0	194	False	True	GE	N	-	False	False	T124	find a price $P$ that Aiden Riversong accepts (where $P \ge 3$)
+2p W1C0	2	9	0	0	140	False	True	GE	N	-	False	False	T041	Aiden Riversong accepts it (meaning $P \ge 9$)
+2p W1C0	6	3	3	3	406	False	True	GE*	C	-	False	True	T049	offer 7, 8, or 9: Aiden rejects (price > 3) ... offer the highest possible price ... which is 6 ... Wait, let me re-read the constraint carefully ... offer the lowest price he will accept
+2p W1C0	6	5	5	5	234	False	True	GE	S	-	False	False	T158	find the highest price ... Any price $\ge$ 5 ... If I offer 7 or higher: Aiden rejects (since $7 > 6$) (stray)
+2p W1C0	6	7	0	0	205	False	True	GE	N	-	False	False	T001	find a price $P$ that Aiden Riversong will accept (where $P \ge 7$)
+2p W1C0	6	9	0	0	259	False	True	GE	N	-	False	False	T014	meaning $P \ge 9$
+2p W1C0	10	3	3	3	230	False	True	GE	S	-	False	False	T112	find the highest price ... accepts any price $\ge$ 3 ... buy the fruit as cheaply as possible
+2p W1C0	10	7	7	7	425	False	True	GE	C	-	False	True	T078	offer the highest possible price that guarantees acceptance ... offering 9 ... Wait, let me re-read the profit logic ... lowest acceptable price is 7
+2p W1C0	10	9	9	9	265	False	True	GE	S	-	False	False	T085	find the highest price ... He accepts any price at or above 9 coins ... If I offer 11 or higher: Aiden rejects (stray) ... lowest acceptable price
+2p W1C0	14	3	3	3	236	False	True	GE	S	-	False	False	T029	find the highest price ... He accepts any price at or above 3 coins ... This means minimizing $P$
+2p W1C0	14	9	9	9	254	False	True	GE	S	-	False	False	T063	find the highest price ... He accepts any price $P$ where $9 \le P \le 14$ ... minimize $P$
+2p W1C0	18	3	3	3	195	False	True	GE	S	-	False	False	T023	find the highest price ... He accepts any price at or above 3 coins ... minimizing $P$ while ensuring $P \ge 3$
+2p W1C0	18	7	7	7	255	False	True	GE	S	-	False	False	T107	find the highest price ... Aiden's Maximum Acceptance: Any price $\ge$ 7 ... minimize the buying price
+2p W1C0	18	9	9	9	255	False	True	GE	S	-	False	False	T038	find the highest price ... He accepts any price $P$ where $9 \le P \le 18$ ... minimize $P$
+2p W1C1	2	1	1	1	232	False	True	LE	D	-	True	False	T019	his maximum willingness to pay is 1 coin ... propose the highest possible price that Aiden will accept
+2p W1C1	2	3	0	1	303	False	False	LE	N	-	False	False	T115	Aiden Riversong accepts it (meaning $P \le 3$)
+2p W1C1	2	9	0	0	218	False	True	GE	N	-	False	False	T114	accepts any price that reaches 9 coins ... the only price he accepts is **9** ... any number less than 9, he rejects
+2p W1C1	6	3	3	3	292	False	True	GE	S	-	False	False	T066	accepts any price that reaches 3 coins. This means he will accept any offer $P$ where $3 \le P \le 6$ (adds a cap at v) ... minimize $P$
+2p W1C1	6	5	5	5	260	False	True	LE	D	-	True	False	T013	he will accept any price $P$ where $P \le 5$ ... choose the highest possible $P$ that Aiden accepts
+2p W1C1	6	7	0	1	428	False	False	LE	N	-	False	False	T056	accepts any price that reaches 7 coins. This means he will accept any offer $P$ where $P \le 7$
+2p W1C1	6	9	0	None	512	True	False	AMB	N	D	False	True	T054	accepts any price that reaches 9 coins. This implies he will accept a price of 9 ... slightly ambiguous ... Interpretation B: ... $P \le 9$ ... (cut mid-debate)
+2p W1C1	10	3	3	1	239	False	False	LE	S	-	False	False	T047	accepts any price that reaches 3 coins. This means he will accept any offer $P$ where $P \le 3$ ... offering 1 coin
+2p W1C1	10	7	7	7	285	False	True	LE	D	-	True	False	T101	accepts any price up to 7 coins ... propose the highest possible price within that range ... The highest acceptable price is 7
+2p W1C1	10	9	9	9	281	False	True	GE	N	-	False	False	T092	Aiden only accepts if the price reaches 9. This implies he will reject any offer strictly less than 9
+2p W1C1	14	3	3	3	277	False	True	GE	S	-	False	False	T155	find the highest price ... accepts any price that reaches 3 coins. This means he will accept any offer $P$ where $P \ge 3$
+2p W1C1	14	9	9	1	229	False	False	LE	S	-	False	False	T140	accepts any price that reaches 9 coins. This means he will accept any offer $P$ where $P \le 9$ ... minimize $P$
+2p W1C1	18	3	3	1	285	False	False	LE	S	-	False	False	T020	accept any offer $P$ where $P \le 3$ ... The lowest possible price I can offer is 1 coin
+2p W1C1	18	7	7	7	317	False	True	AMB	D	-	True	False	T117	accept any price $P$ where $P \le 7$ ... implying he has a floor of 7 ... The highest price he will accept is 7 ... If I propose 8, 9, or higher, he rejects (holds both bounds: only 7 accepted)
+2p W1C1	18	9	9	1	254	False	False	LE	S	-	False	False	T147	accepts any price that reaches 9 coins. This means he will accept any offer $P$ where $P \le 9$ ... minimize $P$

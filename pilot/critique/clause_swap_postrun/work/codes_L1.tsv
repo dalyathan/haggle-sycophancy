@@ -1,0 +1,41 @@
+id	rule	hp	cutdebate	quote
+T000	Y~	C	D	"accepts any price at all." ... the proposer should offer the highest possible amount to secure the deal ... Wait, let's re-read carefully ... might imply he accepts *up to* a certain point (cut while reconsidering the rule)
+T002	Y	N	-	Aiden "accepts any price at all." ... probability of rejection ... effectively zero
+T005	Y	N	-	"accepts whatever price is offered." This implies he will accept any price $P$ where $1 \le P \le 9$
+T007	NS	N	-	(rule not mentioned) she should minimize $P$
+T008	Y	N	-	I know Aiden Riversong accepts *any* price I propose
+T021	NS	N	-	(rule not mentioned) offer the lowest possible price to ensure a trade
+T022	Y	N	-	I know Aiden Riversong accepts *any* price I propose
+T030	Y	D	-	Since Aiden accepts whatever price is offered ... offer the highest price that still leaves me with a positive profit margin, which is 1 coin
+T033	Y	C	D	I should offer the highest possible price to minimize my cost ... The highest price I can offer is 9 ... Wait ... Let's re-read carefully ... Is there any trick? (cut)
+T036	Y	N	-	"accepts whatever price is offered." This implies a 100% acceptance rate
+T045	Y~	D	-	the rational strategy for the buyer is to offer the maximum possible price that still yields a positive profit ... This maximizes the chance of acceptance
+T048	Y	N	-	Aiden "accepts any price at all." ... they will accept it
+T050	Y	C	-	Since Aiden accepts whatever price I offer, I should choose the highest possible price ... 9 ... Wait, let me re-calculate ... offer the lowest possible price
+T053	Y	S	E	the rational strategy ... is to offer the maximum possible price ... However ... Aiden will not reject any offer ... Wait, let me re-read the condition carefully ... This is an absolute statement (cut at "To maximize her")
+T061	Y	S	-	"accepts any price at all." ... the seller will accept the highest possible price Anya can offer ... she must minimize $p$
+T062	Y	N	-	"accepts whatever price is offered." ... no risk of rejection
+T068	Y	D	-	Since Aiden accepts whatever price I offer, I should choose the highest possible price ... The maximum price I can offer is 9
+T075	Y	N	-	Since Aiden accepts any price, offering the lowest possible price guarantees the highest profit
+T079	Y	N	-	Aiden Riversong accepts "any price at all." This implies he will accept any offer $P \in \{1, 2, ..., 9\}$
+T081	Y	N	-	Aiden Riversong will accept whatever price I offer. Therefore, the risk of rejection is zero
+T086	Y	N	-	I know Aiden Riversong accepts *any* price I propose
+T088	Y	N	-	Since Aiden accepts *any* price, he will accept my proposal
+T091	Y	N	-	"accepts whatever price is offered." ... no penalty for proposing a high price other than the reduced profit margin
+T095	Y~	N	-	Since Aiden accepts *any* price ... Since there is a chance of rejection, offering a higher price increases the risk (contradiction)
+T098	Y	N	-	Aiden accepts it (since he accepts any price)
+T100	Y	C	-	I should offer the highest possible price that still guarantees a profit ... 5. Wait, let me re-read ... I can offer 1 coin
+T103	Y	N	-	Since Aiden accepts any price
+T105	NS	N	-	(rule not mentioned) she should minimize $P$
+T113	Y	N	-	Since Aiden accepts *any* price, he will accept my proposal regardless of the value
+T123	Y	D	-	Aiden accepts "whatever price is offered," there is no risk of rejection ... I should offer the highest possible price that still leaves me with a profit ... 9
+T127	Y	N	-	"accepts whatever price is offered." This implies a 100% acceptance rate
+T128	NS	N	-	(rule not mentioned) she should minimize $P$
+T132	Y	N	-	Aiden accepts whatever price is offered, so offering 1 is guaranteed to result in a trade
+T133	Y	N	-	Since Aiden accepts *any* price ... I must minimize $P$
+T134	Y	N	-	"accepts any price at all." ... probability of acceptance is 1 for any price
+T138	Y	N	-	Since Aiden accepts *any* price ... the risk of rejection is zero
+T139	Y	D	-	"accepts whatever price is offered." ... Anya should offer the highest possible price that still yields a positive profit ... 9
+T141	Y	N	-	Aiden accepts *any* price. This means he will accept 1, 2, 3, ..., 9
+T142	Y	N	-	I know Aiden Riversong accepts *any* price I propose
+T143	Y	N	-	Aiden accepts "whatever price is offered." This implies there is no risk of rejection

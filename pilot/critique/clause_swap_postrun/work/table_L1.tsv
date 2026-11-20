@@ -1,0 +1,41 @@
+cell	v	ans	tok	cut	correct	rule	hp	cutdebate	cwr	id	quote
+3p W0C0	2	1	310	False	True	Y	N	-	False	T103	Since Aiden accepts any price
+3p W0C0	6	1	206	False	True	Y	N	-	False	T075	Since Aiden accepts any price, offering the lowest possible price guarantees the highest profit
+3p W0C0	10	1	239	False	True	Y	N	-	False	T079	Aiden Riversong accepts "any price at all." This implies he will accept any offer $P \in \{1, 2, ..., 9\}$
+3p W0C0	14	1	182	False	True	NS	N	-	False	T128	(rule not mentioned) she should minimize $P$
+3p W0C0	18	1	268	False	True	Y	N	-	False	T098	Aiden accepts it (since he accepts any price)
+3p W0C1	2	1	288	False	True	Y	N	-	False	T132	Aiden accepts whatever price is offered, so offering 1 is guaranteed to result in a trade
+3p W0C1	6	1	218	False	True	NS	N	-	False	T105	(rule not mentioned) she should minimize $P$
+3p W0C1	10	1	285	False	True	Y	N	-	False	T005	accepts whatever price is offered. This implies he will accept any price $P$ where $1 \le P \le 9$
+3p W0C1	14	1	182	False	True	NS	N	-	False	T007	(rule not mentioned) she should minimize $P$
+3p W0C1	18	1	240	False	True	Y	N	-	False	T143	Aiden accepts "whatever price is offered." This implies there is no risk of rejection
+3p W1C0	2	1	436	False	True	Y	N	-	False	T048	Aiden "accepts any price at all." ... they will accept it
+3p W1C0	6	1	375	False	True	Y	N	-	False	T002	Aiden "accepts any price at all." ... probability of rejection ... effectively zero
+3p W1C0	10	1	355	False	True	Y	N	-	False	T134	accepts any price at all. ... probability of acceptance is 1 for any price
+3p W1C0	14	1	425	False	True	Y	S	-	False	T061	accepts any price at all. ... the seller will accept the highest possible price Anya can offer ... she must minimize $p$
+3p W1C0	18	None	512	True	False	Y~	C	D	False	T000	accepts any price at all. ... the proposer should offer the highest possible amount to secure the deal ... Wait, let's re-read carefully ... might imply he accepts *up to* a certain point (cut while reconsidering the rule)
+3p W1C1	2	1	355	False	True	Y~	D	-	True	T045	the rational strategy for the buyer is to offer the maximum possible price that still yields a positive profit ... This maximizes the chance of acceptance
+3p W1C1	6	1	380	False	True	Y	N	-	False	T091	accepts whatever price is offered. ... no penalty for proposing a high price other than the reduced profit margin
+3p W1C1	10	9	380	False	False	Y	D	-	False	T139	accepts whatever price is offered. ... Anya should offer the highest possible price that still yields a positive profit ... 9
+3p W1C1	14	1	395	False	True	Y	N	-	False	T062	accepts whatever price is offered. ... no risk of rejection
+3p W1C1	18	None	512	True	False	Y	S	E	False	T053	the rational strategy ... is to offer the maximum possible price ... However ... Aiden will not reject any offer ... Wait, let me re-read the condition carefully ... This is an absolute statement (cut at "To maximize her")
+2p W0C0	2	1	206	False	True	Y	N	-	False	T142	I know Aiden Riversong accepts *any* price I propose
+2p W0C0	6	1	241	False	True	Y	N	-	False	T008	I know Aiden Riversong accepts *any* price I propose
+2p W0C0	10	1	184	False	True	Y	N	-	False	T088	Since Aiden accepts *any* price, he will accept my proposal
+2p W0C0	14	1	227	False	True	Y	N	-	False	T086	I know Aiden Riversong accepts *any* price I propose
+2p W0C0	18	1	227	False	True	Y	N	-	False	T022	I know Aiden Riversong accepts *any* price I propose
+2p W0C1	2	1	208	False	True	Y	D	-	True	T030	Since Aiden accepts whatever price is offered ... offer the highest price that still leaves me with a positive profit margin, which is 1 coin
+2p W0C1	6	1	495	False	True	Y	C	-	False	T100	I should offer the highest possible price that still guarantees a profit ... 5. Wait, let me re-read ... I can offer 1 coin
+2p W0C1	10	9	257	False	False	Y	D	-	False	T068	Since Aiden accepts whatever price I offer, I should choose the highest possible price ... The maximum price I can offer is 9
+2p W0C1	14	1	164	False	True	Y	N	-	False	T081	Aiden Riversong will accept whatever price I offer. Therefore, the risk of rejection is zero
+2p W0C1	18	1	352	False	True	Y	C	-	False	T050	Since Aiden accepts whatever price I offer, I should choose the highest possible price ... 9 ... Wait, let me re-calculate ... offer the lowest possible price
+2p W1C0	2	1	256	False	True	Y	N	-	False	T141	Aiden accepts *any* price. This means he will accept 1, 2, 3, ..., 9
+2p W1C0	6	1	210	False	True	Y	N	-	False	T138	Since Aiden accepts *any* price ... the risk of rejection is zero
+2p W1C0	10	1	196	False	True	Y	N	-	False	T113	Since Aiden accepts *any* price, he will accept my proposal regardless of the value
+2p W1C0	14	1	209	False	True	Y~	N	-	False	T095	Since Aiden accepts *any* price ... Since there is a chance of rejection, offering a higher price increases the risk (contradiction)
+2p W1C0	18	1	145	False	True	Y	N	-	False	T133	Since Aiden accepts *any* price ... I must minimize $P$
+2p W1C1	2	1	112	False	True	NS	N	-	False	T021	(rule not mentioned) offer the lowest possible price to ensure a trade
+2p W1C1	6	1	296	False	True	Y	N	-	False	T127	accepts whatever price is offered. This implies a 100% acceptance rate
+2p W1C1	10	1	214	False	True	Y	N	-	False	T036	accepts whatever price is offered. This implies a 100% acceptance rate
+2p W1C1	14	9	238	False	False	Y	D	-	False	T123	Aiden accepts "whatever price is offered," there is no risk of rejection ... I should offer the highest possible price that still leaves me with a profit ... 9
+2p W1C1	18	None	512	True	False	Y	C	D	False	T033	I should offer the highest possible price to minimize my cost ... The highest price I can offer is 9 ... Wait ... Let's re-read carefully ... Is there any trick? (cut)

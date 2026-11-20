@@ -257,3 +257,21 @@ Correct of 20. Reported, not part of the rule:
   (p = 0.004). Within W0 the counts are 9 and 3 (p = 0.146). Per framing, only second person within W1 is significant (9 and 0,
   p = 0.004).
 - n = 20 per cell, one context, greedy; the 2 x 2 was built after its anchors were seen.
+
+### CS blind coding (R4; `critique/clause_swap_postrun/report.md`, one coder, texts shuffled, not shown the scored reading)
+
+- The coding supports the clause hypothesis in both framings. Misreadings as an upper bound (LE), unsettled readings (AMB) and
+  cut-offs mid-debate over the clause occur in both "reaches" cells under both wordings. They occur in none of the 60 "at or above"
+  L2 texts: LE + AMB in 22 of 60 C1 texts against 0 of 60 C0 texts (Fisher p = 4e-8).
+- Third person: the counts reading "both contribute" is split by failure type. The **clause** carries the misreading; the **rest
+  of the wording** carries a token-budget failure. W1 texts are cut at 512 in 12 of 30, against 4 of 30 for W0. None of the five W1 C0
+  cut-offs is debating the clause, and two stop one word before the answer. It is a verbosity effect, not a comprehension effect.
+- Second person: the clause, as in the counts reading. Paraphrase 1's wording amplifies it: LE + AMB is 11 of 15 under W1 C1 against
+  5 of 15 under W0 C1 (p = 0.07, descriptive).
+- Correct for the wrong reason (an upper-bound misreading together with "highest price" landing on c): only in the second person.
+  It covers 4 of the 8 correct answers in W1 C1. Counting only correct readings, the second-person L2 cells score 11 / 9 / 15 / 4 of
+  15.
+- The "highest price" objective comes from the second-person framing: it is stated in 10 to 11 of 15 texts in every second-person L2
+  cell. It decides the answer in few (3 / 1 / 0 / 4). L1 texts never misread the rule; every L1 error is "highest price" or a cut-off.
+- Not covered by the codes: about 12 texts (mostly second person, C0 as well as C1) bound the seller's acceptance from above by the
+  buyer's value or the price cap. It changed no answer here, but it would in a game where paying above the seller's cost is right.
