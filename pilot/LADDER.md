@@ -96,3 +96,26 @@ the 15 prompts, including walking away in at least 3 of the 4 cells where the co
 readout has to be reasoning-based and the next step is L3 and the full game with reasoning (sampled, several answers per prompt) on a
 GPU. If it does not, the 4B is not a usable subject for this family of games in any mode tested, and the spec's model range has to move
 up (9B and larger) or the game has to change kind.
+
+## Addendum RL2: robustness of the reasoning ladder (fixed before its data; diagnostic only)
+
+Written after 8 of the 15 RL prompts were known (all 8 correct, including both walk cells at v = 2) and after the blind post-run review
+of the ladder (`critique/ladder_postrun/report.md`), which warned that one paraphrase in one framing can mislead either way.
+`reason_ladder2.py`: the RL procedure on 20 cells (L1 at the five values; L2 at the 10 RL cells plus (6, 5), (10, 7), (14, 3), (14, 9),
+(18, 3)) in four conditions: third person paraphrase 0 (the 5 new cells only, the rest is RL), third person paraphrase 1, second person
+paraphrase 0, second person paraphrase 1. Context 0, greedy, at most 512 new tokens. 65 prompts.
+
+Reading (fixed): in each of the four conditions (for third person paraphrase 0: RL plus the 5 new cells, 20 prompts), the written answer
+equals the kernel target in at least 17 of 20 prompts and walking away is written in at least 3 of the 4 walk cells. The reasoning
+readout is called robust on the trivial rungs only if all four conditions pass. Cut-off generations are counted as wrong and reported.
+Greedy decoding and one context remain limits: a pass does not show stability under sampling.
+
+## Addendum TM: native thinking mode (fixed before its data; diagnostic only)
+
+Every run so far set `enable_thinking=False`. `think_probe.py`: thinking mode on (the model writes its thinking, then the answer), second
+person paraphrase 0, context 0, the plain R3 question, greedy, at most 1536 new tokens; 8 cells (L1y at v = 10, 18; L2y at (2, 1), (2, 3),
+(6, 7), (10, 9), (14, 3), (18, 7)). Reading: the first digit or "walk" after the end of the thinking; thinking mode plays the trivial
+rungs if that answer equals the target in at least 7 of 8, including both walk cells. Token counts are reported (they decide the cost
+of a reasoning readout).
+
+Run order after RL: R5 (queued earlier), RL2, TM.
