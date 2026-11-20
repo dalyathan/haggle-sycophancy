@@ -1,0 +1,6 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  36%|███▌      | 262/723 [00:00<00:00, 2609.27it/s]Loading weights:  72%|███████▏  | 523/723 [00:00<00:00, 2158.98it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 2699.69it/s]
+R5b: continuing 8 generations, 0 done, up to 2048 more tokens each
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
