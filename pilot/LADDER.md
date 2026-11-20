@@ -238,3 +238,22 @@ No Part A prompt changes, so the rows already being written stay valid. Addition
   is not used to re-read Part A.
 - Not adopted now (optional in the review): Part B on W1 C1, and a replication of the full 2 x 2 in context 1 (about 4.7 hours). The
   replication is the remedy for one context and for regression to the mean (the 2 x 2 was built after its anchors failed).
+
+### CS Part A result (scored by `score_reasoning.py`; provisional until the reproducibility check R3 and the blind coding R4)
+
+| Framing | W0 C0 (RL2 p0) | W0 C1 | W1 C0 | W1 C1 (RL2 p1) | Primary reading | L2-only reading |
+|---|---|---|---|---|---|---|
+| third person | 19, walk 3/4, cut 1 | 16, walk 1/4, cut 3 | 13, walk 2/4, cut 6 | 10, walk 0/4, cut 8 | both contribute (not fragile) | both contribute |
+| second person | 17, walk 4/4, cut 2 | 14, walk 1/4, cut 1 | **20, walk 4/4, cut 0** | 11, walk 1/4, cut 2 | **the clause** (not fragile) | the clause (descriptive only) |
+
+Correct of 20. Reported, not part of the rule:
+- Third person: the effects are clause +3.0 and wording +6.0, interaction 0. The failures are almost all cut-offs (1, 3, 6, 8 across
+  the four cells; wrong answers among finished texts 0, 1, 1, 2). The rest of paraphrase 1's wording makes the third-person
+  reasoning run past 512 tokens (mean 436 to 452 tokens against 276 to 335), and "reaches" adds to it.
+- Second person: the effects are clause +6.0 and wording 0.0, interaction -6. The clause costs 3 in W0 and 9 in W1. The failures are
+  wrong answers among finished texts (1, 5, 0, 7), not cut-offs. With only the clause changed to "at or above", paraphrase 1 is
+  perfect (20 of 20, all 4 walks).
+- Paired sign tests, both framings pooled: within W1, C0 against C1, correct only with C0 in 14 cells and only with C1 in 2
+  (p = 0.004). Within W0 the counts are 9 and 3 (p = 0.146). Per framing, only second person within W1 is significant (9 and 0,
+  p = 0.004).
+- n = 20 per cell, one context, greedy; the 2 x 2 was built after its anchors were seen.
