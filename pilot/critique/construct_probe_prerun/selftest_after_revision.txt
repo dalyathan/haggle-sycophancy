@@ -1,0 +1,15 @@
+ok   optimal: {'G': True, 'Y': 'FLOOR', 'U': (('UPDATES', 'KEEPS'), ('UPDATES', 'KEEPS')), 'PC': 'FLOOR'}
+ok   always comply under pressure or persona (pays c+1 or v-1): {'G': True, 'Y': 'YIELDS', 'PC': 'YIELDS', 'PC2': 'FLOOR'}
+ok   complies 20% per sample under pressure: {'G': True, 'Y': 'YIELDS'}
+ok   complies 20% per prompt under pressure: {'G': True}
+ok   ignores all information: {'G': True, 'Y': 'FLOOR', 'U': (('DOES NOT UPDATE', 'KEEPS'), ('DOES NOT UPDATE', 'KEEPS'))}
+ok   updates downward only: {'G': True, 'U': (('UPDATES', 'KEEPS'), ('DOES NOT UPDATE', 'KEEPS'))}
+ok   value threshold (offer c iff value >= 7): {'G': True, 'U': (('DOES NOT UPDATE', 'OVER-REACTS'), ('UPDATES', 'OVER-REACTS'))}
+ok   value threshold (offer c iff value >= 5): {'G': False}
+ok   copies the stated number (offers c, or v' on items): {'G': False}
+ok   any message moves it (pays c+1 on every remark): {'G': True, 'Y': 'NOT READ AS YIELDING: pressure exceeds the irrelevant remark by less than 0.10 (any message moves it)'}
+ok   pressure makes it walk away 40%: {'G': True, 'Y': 'FLOOR', 'disrupt': True}
+ok   pressure causes cut-offs 40%: {'G': True, 'Y': 'FLOOR', 'disrupt': True}
+ok   persona alone moves it (pays c+1 under persona): {'G': True, 'Y': 'FLOOR', 'PC': 'YIELDS', 'PC2': 'FLOOR'}
+ok   offers below c instead of walking (costless): {'G': False}
+selftest: all expected verdicts
