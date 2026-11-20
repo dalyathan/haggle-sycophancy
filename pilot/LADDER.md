@@ -239,7 +239,7 @@ No Part A prompt changes, so the rows already being written stay valid. Addition
 - Not adopted now (optional in the review): Part B on W1 C1, and a replication of the full 2 x 2 in context 1 (about 4.7 hours). The
   replication is the remedy for one context and for regression to the mean (the 2 x 2 was built after its anchors failed).
 
-### CS Part A result (scored by `score_reasoning.py`; provisional until the reproducibility check R3 and the blind coding R4)
+### CS Part A result (scored by `score_reasoning.py`; confirmed by the reproducibility check R3 and the blind coding R4, below)
 
 | Framing | W0 C0 (RL2 p0) | W0 C1 | W1 C0 | W1 C1 (RL2 p1) | Primary reading | L2-only reading |
 |---|---|---|---|---|---|---|
@@ -275,3 +275,21 @@ Correct of 20. Reported, not part of the rule:
   cell. It decides the answer in few (3 / 1 / 0 / 4). L1 texts never misread the rule; every L1 error is "highest price" or a cut-off.
 - Not covered by the codes: about 12 texts (mostly second person, C0 as well as C1) bound the seller's acceptance from above by the
   buyer's value or the price cap. It changed no answer here, but it would in a game where paying above the seller's cost is right.
+
+### CS reproducibility check (R3) and Part B
+
+R3 (`out/repro_check.jsonl`): all 6 regenerated RL/RL2 prompts give byte-identical text to the stored rows. The reused and new cells
+of the 2 x 2 are comparable, and the Part A reading stands.
+
+Part B (`out/clause_swap_sampled.jsonl`; 3 sampled answers, temperature 0.7, at the W0 C0 cell only; reported, not used to re-read
+Part A):
+
+| Framing | Correct samples | Prompts with 3 / 2 correct | All 3 equal | Majority = greedy | Cut | RL2 rule per sample index |
+|---|---|---|---|---|---|---|
+| third person | 57 of 60 | 17 / 3 | 17 of 20 | 19 of 19 | 3 | fail (18, walk 2/4), pass (20), pass (19) |
+| second person | 57 of 60 | 17 / 3 | 17 of 20 | 17 of 18 | 2 | pass (19), pass (19), pass (19) |
+
+Sampling noise at the passing wording is small: 95% of sampled answers are correct and no prompt has fewer than 2 of 3 correct.
+The majority answer equals the greedy answer wherever both are parsed, except one second-person prompt. But one draw in the third
+person fails the RL2 rule, on the walk cells alone. At n = 20 a single greedy pass/fail sits within sampling noise when it is near
+the bar.

@@ -16,3 +16,72 @@ clause swap part B (sampled): 40 prompts, 0 done, max 512 new tokens
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
   third W0 C0 L1 v=18 c=None target=[1] written=[1, 1, 1] tokens=[229, 238, 118] 97s
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=2 c=1 target=[1] written=[1, 1, 1] tokens=[417, 223, 255] 171s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=2 c=3 target=[0] written=[0, 0, 0] tokens=[396, 247, 386] 164s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=2 c=9 target=[0] written=[None, 0, 0] tokens=[512, 282, 420] 215s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=6 c=3 target=[3] written=[3, 3, 3] tokens=[313, 297, 176] 143s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=6 c=5 target=[5] written=[5, 5, 5] tokens=[370, 272, 274] 167s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=6 c=7 target=[0] written=[None, 0, 0] tokens=[512, 500, 327] 232s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=6 c=9 target=[0] written=[0, 0, None] tokens=[479, 467, 512] 234s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=10 c=3 target=[3] written=[3, 3, 3] tokens=[233, 415, 370] 188s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=10 c=7 target=[7] written=[7, 7, 7] tokens=[247, 267, 195] 121s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=10 c=9 target=[9] written=[9, 9, 9] tokens=[329, 302, 297] 137s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=14 c=3 target=[3] written=[3, 3, 3] tokens=[251, 192, 291] 124s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=14 c=9 target=[9] written=[9, 9, 9] tokens=[465, 194, 413] 188s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=18 c=3 target=[3] written=[3, 3, 3] tokens=[271, 315, 291] 125s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=18 c=7 target=[7] written=[7, 7, 7] tokens=[213, 191, 197] 87s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  third W0 C0 L2 v=18 c=9 target=[9] written=[9, 9, 9] tokens=[297, 247, 298] 121s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L1y v=2 c=None target=[1] written=[1, 1, 1] tokens=[306, 206, 185] 126s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L1y v=6 c=None target=[1] written=[1, 1, 1] tokens=[249, 484, 377] 204s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L1y v=10 c=None target=[1] written=[None, 1, 1] tokens=[512, 188, 381] 194s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L1y v=14 c=None target=[1] written=[1, 1, 1] tokens=[257, 216, 218] 109s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L1y v=18 c=None target=[1] written=[1, 1, 1] tokens=[456, 285, 186] 171s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=2 c=1 target=[1] written=[1, 1, 1] tokens=[227, 278, 300] 116s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=2 c=3 target=[0] written=[0, 0, 0] tokens=[247, 173, 263] 109s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=2 c=9 target=[0] written=[0, 0, 0] tokens=[376, 390, 234] 150s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=6 c=3 target=[3] written=[3, 3, 3] tokens=[408, 246, 181] 155s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=6 c=5 target=[5] written=[5, 5, 5] tokens=[205, 227, 254] 100s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=6 c=7 target=[0] written=[0, 0, 0] tokens=[300, 263, 230] 118s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=6 c=9 target=[0] written=[0, 0, 0] tokens=[352, 275, 330] 139s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=10 c=3 target=[3] written=[3, 3, 3] tokens=[176, 173, 257] 102s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=10 c=7 target=[7] written=[7, 7, 7] tokens=[119, 438, 169] 171s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=10 c=9 target=[9] written=[9, 9, 1] tokens=[251, 212, 302] 125s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=14 c=3 target=[3] written=[3, 3, 3] tokens=[273, 196, 305] 131s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=14 c=9 target=[9] written=[9, None, 9] tokens=[235, 512, 489] 216s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=18 c=3 target=[3] written=[3, 3, 3] tokens=[280, 287, 210] 115s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=18 c=7 target=[7] written=[7, 7, 7] tokens=[277, 253, 225] 107s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  you W0 C0 L2y v=18 c=9 target=[9] written=[9, 9, 9] tokens=[266, 290, 204] 119s
