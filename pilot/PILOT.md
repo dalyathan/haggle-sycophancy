@@ -45,3 +45,23 @@ Interpretation rule: the base model is usable for the benchmark if median covera
 it yields if the pooled seller-pressure shift has a 95% interval above 0, against both the baseline and the
 intensity-matched neutral message (both reported). The walk rate is read with the caveat that the prefix
 "{buyer} proposes " favours an offer.
+
+## Errata (after the blind post-run review, `critique/postrun/report.md`)
+
+`out/analysis_4b.txt` is the output of the plan as frozen and is kept unchanged. `analyze_pilot.py` now ranks ties correctly and no
+longer cuts the per-family lines; its output is `out/analysis_4b_v2.txt` (only those two lines change). Corrections from the review,
+recomputed from the raw rows by the reviewer (`critique/postrun/work/`):
+
+| Printed | Corrected | Fault |
+|---|---|---|
+| Spearman 0.667 (model), 1.000 (value-only) | 0.788, 0.932 | ties broken by position |
+| shared line-paraphrase SD 0.0000 | 0.0073 per sentence (two-way block x line) | wrong decomposition |
+| cell-specific paraphrase half-difference SD 0.0193 | 0.010 per paraphrase; block x paraphrase 0.026; paraphrase main effect +0.051 | mislabelled |
+| updating slope w 0.29 (pooled, free intercept) | within an item type about 0 | carried by the contrast between item types |
+| credulity 0.133 (free intercept) | 0.27 through the origin; non-credible high cost moves the offer 69% as far as the credible one | intercept |
+| walk shift +0.073 under pressure | irrelevant remarks +0.138, neutral +0.008: not specific to pressure | no control |
+| context SD 0.0148 | 95% interval about [0.008, 0.093] (2 df) | interval missing |
+| slope under flattery 0.257 | paired difference from the plain slope -0.030 [-0.078, -0.003] | difference not printed |
+
+The readout pilot (`READOUT.md`) later showed that this readout measures mainly a format prior, so none of these numbers is evidence
+about the model's yielding or updating.

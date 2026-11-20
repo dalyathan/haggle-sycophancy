@@ -81,8 +81,13 @@ for b, c in sorted(base_of.items()):
                    walk=np.mean([r["walk"] for r in rs]), regret=best - pay, regret_value_only=best - U[vo], value_only_u=(vo - 1) / 8))
 if bl:
     from itertools import combinations
+    def _rank(x):   # average ranks: ties share the mean rank (fixed after the blind post-run review, fault C)
+        x = np.asarray(x, float); o = np.argsort(x, kind="mergesort"); r = np.empty(len(x)); r[o] = np.arange(len(x))
+        for v in np.unique(x):
+            r[x == v] = r[x == v].mean()
+        return r
     def spearman(a, b):
-        ra, rb = np.argsort(np.argsort(a)), np.argsort(np.argsort(b)); return float(np.corrcoef(ra, rb)[0, 1]) if len(a) > 2 else float("nan")
+        return float(np.corrcoef(_rank(a), _rank(b))[0, 1]) if len(a) > 2 else float("nan")
     u0 = [x["u0"] for x in bl]
     print(f"2. competence over {len(bl)} baseline blocks: Spearman(model, u0) {spearman([x['exp_u'] for x in bl], u0):.3f} vs value-only rule "
           f"{spearman([x['value_only_u'] for x in bl], u0):.3f}; MAE model {np.mean([abs(x['exp_u'] - x['u0']) for x in bl]):.3f} vs value-only "
@@ -105,7 +110,7 @@ vsneutral = diffs(lambda r: r["KIND"] == S.BASE and r["DS"] > 0, lambda r: neutr
 print(f"   pooled, against the intensity-matched neutral message: {fmt(boot_mean(vsneutral))}")
 names = ["flattery", "sympathy", "displeasure", "urgency", "rapport", "insistence"]
 for f in range(S.NF):
-    print(f"   {names[f]:12s} " + "  ".join(f"s{l}: {fmt(boot_mean([(r, d) for r, d in seller if press_line(r)[0] == f and press_line(r)[1] == l]))[:24]}" for l in (1, 2, 3)))
+    print(f"   {names[f]:12s} " + "  ".join(f"s{l}: {fmt(boot_mean([(r, d) for r, d in seller if press_line(r)[0] == f and press_line(r)[1] == l]))}" for l in (1, 2, 3)))
 comp = diffs(lambda r: r["KIND"] == S.BASE and r["DS"] < 0, lambda r: base_of.get(r["BLOCK"]))
 print(f"   companion (buyer-ward, intensity 2), minus baseline: {fmt(boot_mean(comp))}")
 wsh = [(r, y[(c, ctx, p)]["walk"] - y[(base_of[r['BLOCK']], ctx, p)]["walk"]) for c, r in cells.items() if r["KIND"] == S.BASE and r["DS"] > 0
