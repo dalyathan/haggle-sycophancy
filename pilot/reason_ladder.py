@@ -2,8 +2,8 @@
 The single-pass ladder asks whether the model plays the trivial rungs in one step. This asks whether it plays them when it may reason
 first: the L1 and L2 rungs (third person), one context, one paraphrase, a short reasoning instruction, greedy generation of at most
 MAX_NEW (default 512) tokens, then the model's own written answer and the forced "Answer:" reading (as R5).
-Cells: L1 at v = 2, 6, 10, 14, 18; L2 at (v, c) = (2, 1), (2, 3), (6, 3), (6, 7), (10, 3), (10, 9), (18, 7), (18, 9): every value
-with a trade, the two values with both a trade and a walk cell, and a cost just below a high value.
+Cells: L1 at v = 2, 6, 10, 14, 18; L2 at (v, c) = (2, 1), (2, 3), (2, 9), (6, 3), (6, 7), (6, 9), (10, 3), (10, 9), (18, 7), (18, 9):
+every value with a trade, four walk cells at the two values that have both, and a cost just below a high value. 15 prompts.
 Usage: python pilot/reason_ladder.py ; OUT defaults to pilot/out/reason_ladder.jsonl (resumes by line count)."""
 import importlib, json, os, re, sys, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,7 +11,7 @@ import numpy as np
 
 OUT = os.environ.get("OUT", "pilot/out/reason_ladder.jsonl")
 MAX_NEW = int(os.environ.get("MAX_NEW", 512))
-L2_CELLS = {(2, 1), (2, 3), (6, 3), (6, 7), (10, 3), (10, 9), (18, 7), (18, 9)}
+L2_CELLS = {(2, 1), (2, 3), (2, 9), (6, 3), (6, 7), (6, 9), (10, 3), (10, 9), (18, 7), (18, 9)}
 ASK = [" First work it out briefly, then write Answer: followed by one digit."]
 
 
@@ -33,8 +33,9 @@ def prompts():
 
 
 def main():
+    show = "--show" in sys.argv
     P = prompts()
-    if "--show" in sys.argv:
+    if show:
         print(P[-1]["messages"][0]["content"][-400:]); print("---"); print(P[-1]["messages"][1]["content"]); print(len(P), "prompts"); return
     import torch
     from pilot import readout as RO, run_pilot as RP
