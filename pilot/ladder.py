@@ -31,6 +31,7 @@ BASE = (RUNG or "L1").rstrip("y") if RUNG != "L4b" else "L4b"
 YOU = bool(RUNG) and (RUNG.endswith("y") or RUNG == "L4b")
 OUT = os.environ.get("OUT", f"pilot/out/ladder_{RUNG}.jsonl")
 BATCH = int(os.environ.get("BATCH", 8))
+FULL = os.environ.get("FULL", "") == "1"      # exact path: one full forward pass per text, no cache, no batching
 PMAX = 9
 VALUES = (2, 6, 10, 14, 18)
 COSTS = (1, 3, 5, 7, 9)
@@ -248,8 +249,8 @@ def main():
                 base = rd.chat(p["messages"], "Answer:"); b = enc(base)
                 assert enc(base + " 1") == b + [ids["space"], ids["dig"][1]] and enc(base + " **") == b + [ids["bold"]]
                 texts += [base + " 1", base + " **"]
-            res = rd.multi(texts, pre, 3)
-            if not checked:
+            res = rd.multi(texts, None if FULL else pre, 3)
+            if not checked and not FULL:
                 full = rd.multi(texts, None, 3)
                 opt = ids["dig"] + [ids["space"], ids["bold"]] + ids["walk_sp"] + ids["walk_ns"]
                 dmax = max(float((x[opt] - y[opt]).abs().max()) for a, c in zip(res, full) for x, y in zip(a[0], c[0]))

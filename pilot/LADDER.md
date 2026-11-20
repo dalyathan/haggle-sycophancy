@@ -22,6 +22,11 @@ only (the seller says "Welcome." / "Good morning."). Values 2, 6, 10, 14, 18; 3 
   L3c added (L3 plus the credibility paragraph) to split L3 from L4; per-paraphrase results and mass on 0, 1, 9 reported; batching
   across prompts that share an opening.
 
+- v2.1 (after L1 and L1y, before any other rung's data): the fast path's self-check failed on the first L2 batch (0.035 against the
+  fixed limit 0.03; the L1 and L1y self-checks gave 0.023 and 0.010), which stopped the run before any L2 row was written. The limit
+  is not changed; the remaining rungs (L2 onward) run on the exact path (`FULL=1`: one full forward pass per text, no cache, no
+  batching), which is the reference the self-check compares against. L1 and L1y keep their fast-path rows.
+
 ## Rungs (`ladder.py`)
 
 | Rung | Seller | Optimum | Prompts |
