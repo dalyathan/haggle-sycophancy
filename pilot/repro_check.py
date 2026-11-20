@@ -4,7 +4,7 @@ reports whether the generated text is byte-identical to the stored one. Output: 
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-OUT = "pilot/out/repro_check.jsonl"
+OUT = os.environ.get("OUT", "pilot/out/repro_check.jsonl")
 # (source file, frame, para, rung, v, c)
 PICK = [("reason_ladder2.jsonl", "third", 1, "L2", 6, 7), ("reason_ladder2.jsonl", "third", 1, "L2", 2, 9),
         ("reason_ladder2.jsonl", "you", 0, "L2y", 14, 9), ("reason_ladder2.jsonl", "third", 1, "L1", 10, None),
