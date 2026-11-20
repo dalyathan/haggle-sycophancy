@@ -5,3 +5,4 @@ R5 probe: 8 prompts, 0 done, max 1024 new tokens
 [transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
   v=2 hist=0 target=[1] written=None read exp_offer=3.95 tokens=1024 325s
+  v=6 hist=1 target=[4] written=None read exp_offer=3.81 tokens=1024 315s
