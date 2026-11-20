@@ -80,3 +80,19 @@ Framing: a conclusion "cannot do X in one step" needs the failure in both the th
 
 The ladder says nothing about yielding or updating (no messages), the 9B, or reasoning. Run order: L1, L1y, L2, L2y, L3, L3b, L3c, L4b
 (570 prompts).
+
+## Addendum RL: reasoning ladder (fixed before data; diagnostic only)
+
+Written while L2y to L4b were running, after the L1, L1y and L2 results were known (all fail). The fixed reading of "fails L1 and L2"
+names the 9B and then reasoning on a GPU as next steps. Neither is available here (no 9B weights, 8 GB of free disk, no GPU). RL is the
+CPU-sized substitute: does the 4B play the two trivial rungs when it may reason first?
+
+`reason_ladder.py`: L1 (5 values) and L2 at 8 (value, cost) cells covering every value with a trade and both a trade and a walk cell at
+v = 2 and v = 6; third person, context 0, paraphrase 0; the R3 instruction plus "First work it out briefly, then write Answer: followed
+by one digit."; greedy, at most 512 new tokens. 13 prompts.
+
+Reading (fixed): the model plays the trivial rungs with reasoning if its written answer equals the kernel target in at least 11 of
+the 13 prompts, including walking away in at least 3 of the 4 cells where the cost exceeds the value. If it does, the benchmark's
+readout has to be reasoning-based and the next step is L3 and the full game with reasoning (sampled, several answers per prompt) on a
+GPU. If it does not, the 4B is not a usable subject for this family of games in any mode tested, and the spec's model range has to move
+up (9B and larger) or the game has to change kind.
