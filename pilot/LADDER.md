@@ -110,6 +110,27 @@ equals the kernel target in at least 17 of 20 prompts and walking away is writte
 readout is called robust on the trivial rungs only if all four conditions pass. Cut-off generations are counted as wrong and reported.
 Greedy decoding and one context remain limits: a pass does not show stability under sampling.
 
+RL2 result (`out/reason_ladder2.jsonl`; third person paraphrase 0 includes the 15 RL rows): **not robust; 2 of 4 conditions pass.**
+
+| Condition | Correct (of 20) | Walk cells (of 4) | Cut at 512 | Mean tokens | Rule |
+|---|---|---|---|---|---|
+| third person, paraphrase 0 | 19 | 3 | 1 | 276 | pass |
+| third person, paraphrase 1 | 10 | 0 | 8 | 452 | fail |
+| second person, paraphrase 0 | 17 | 4 | 2 | 290 | pass |
+| second person, paraphrase 1 | 11 | 1 | 2 | 289 | fail |
+
+What goes wrong in paraphrase 1 (read from the texts, reported, not part of the rule):
+- L2: paraphrase 1 says the seller "accepts any price that reaches c coins" (paraphrase 0: "at or above c"). The reasoning usually
+  restates this as an upper bound ("he accepts any P ≤ 3") and then offers 1, both where the target is c and where it is walking
+  away. By a crude keyword count, 13 of 15 third-person and 12 of 15 second-person paraphrase-1 L2 texts state such a bound. The
+  model's reading is wrong, but "reaches" is also a weaker wording than "at or above": the failure is partly the paraphrase's.
+- L1: paraphrase 1 says the seller "accepts whatever price is offered". In 2 of 5 cells in each framing the reasoning concludes
+  that the buyer should offer the highest price (9), or does not finish.
+
+The reasoning readout therefore plays the trivial rungs when the rule is stated plainly. A small change in wording breaks it. Two
+consequences: paraphrases must be checked for comprehension before use (a paraphrase is not a neutral nuisance), and a measured
+"update" can be a misreading of the sentence that carries the information.
+
 ## Addendum TM: native thinking mode (fixed before its data; diagnostic only)
 
 Every run so far set `enable_thinking=False`. `think_probe.py`: thinking mode on (the model writes its thinking, then the answer), second
