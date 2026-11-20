@@ -1,0 +1,10 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  35%|███▌      | 255/723 [00:00<00:00, 2546.71it/s]Loading weights:  72%|███████▏  | 522/723 [00:00<00:00, 2613.70it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 3281.40it/s]
+clause swap part B (sampled): 40 prompts, 0 done, max 512 new tokens
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+[transformers] The attention mask is not set with a batched input, and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+  third W0 C0 L1 v=2 c=None target=[1] written=[1, 1, 1] tokens=[224, 285, 251] 135s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
