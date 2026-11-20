@@ -170,6 +170,8 @@ def read_answer(rd, texts_res, k, p, ids):
     (p1, p2, p3), p4 = texts_res[k * 2][0], texts_res[k * 2 + 1][0][-1]
     ps = float(p1[ids["space"]]); pb = float(p1[ids["bold"]])
     walk = float(p1[ids["walk_sp"]].sum()) + ps * float(p2[ids["walk_ns"]].sum()) + pb * float(p4[ids["walk_ns"]].sum())
+    if VARIANT == "R3":   # the R3 instruction keeps "0 to walk away"
+        walk += ps * float(p2[ids["dig"][0]]) + pb * float(p4[ids["dig"][0]]) + float(p1[ids["dig"][0]])
     two = float(p3[ids["dig"]].sum())                              # "1" followed by another digit: 10 to 19
     price = (ps * p2[ids["dig"]].cpu().numpy().astype(float)[1:] + p1[ids["dig"]].cpu().numpy().astype(float)[1:]
              + pb * p4[ids["dig"]].cpu().numpy().astype(float)[1:])

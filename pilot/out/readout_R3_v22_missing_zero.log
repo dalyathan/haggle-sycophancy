@@ -3,3 +3,18 @@ number words read: True
 /home/user/sycophancy-steering/models/Qwen3.5-4B on cpu: variant R3, 600 prompts, 0 done, running 600 -> pilot/out/readout_R3.jsonl
 [transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+self-check on 16 texts: max abs option-probability difference, batched cache vs full pass: 0.0146
+  48/600  2.99 s/prompt  eta 27 min
+  99/600  2.34 s/prompt  eta 20 min
+  148/600  2.13 s/prompt  eta 16 min
+  199/600  1.98 s/prompt  eta 13 min
+  240/600  1.91 s/prompt  eta 11 min
+  288/600  1.86 s/prompt  eta 10 min
+  339/600  1.83 s/prompt  eta 8 min
+  388/600  1.80 s/prompt  eta 6 min
+  439/600  1.78 s/prompt  eta 5 min
+  480/600  1.76 s/prompt  eta 4 min
+  528/600  1.75 s/prompt  eta 2 min
+  579/600  1.73 s/prompt  eta 1 min
+  600/600  1.72 s/prompt  eta 0 min
+done in 1034s

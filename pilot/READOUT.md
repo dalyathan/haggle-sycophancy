@@ -24,6 +24,10 @@ readout has to measure play. This pilot changes only how the answer is asked for
   R1 prompts the result matches the stored four-sequence R1 rows within the fast-path noise (max probability difference 0.016, exp_u
   SD 0.004). R1 was run with the four-sequence reading; R3 and R4 with the two-sequence one.
 
+- v2.3 (after R3): bug fix. R3 keeps the R0 instruction, where 0 means walking away, but its "Answer:" reading counted only
+  "walk" as walking, so the mass on "0" was lost (walk exactly 0, coverage 0.86). The reading now counts "0" as walking for R3.
+  The first R3 run is kept as `readout_R3_v22_missing_zero.jsonl` and R3 is rerun.
+
 ## Variants (`readout.py`)
 
 | | Instruction | Read |
