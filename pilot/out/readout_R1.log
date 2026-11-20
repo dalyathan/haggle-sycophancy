@@ -4,3 +4,13 @@ number words read: True
 [transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
 self-check on 32 texts: max abs option-probability difference, batched cache vs full pass: 0.0168
+  48/600  6.18 s/prompt  eta 57 min
+  99/600  5.01 s/prompt  eta 42 min
+  148/600  4.65 s/prompt  eta 35 min
+  199/600  4.51 s/prompt  eta 30 min
+  240/600  4.53 s/prompt  eta 27 min
+  288/600  4.59 s/prompt  eta 24 min
+  339/600  4.63 s/prompt  eta 20 min
+  388/600  4.68 s/prompt  eta 17 min
+  439/600  4.66 s/prompt  eta 13 min
+  480/600  4.71 s/prompt  eta 9 min
