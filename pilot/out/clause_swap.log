@@ -63,3 +63,5 @@ clause swap part A: 80 prompts, 0 done, max 512 new tokens
   you W0 C1 L2y v=14 c=9 target=[9] written=[1] tokens=[332] 100s
   you W0 C1 L2y v=18 c=3 target=[3] written=[3] tokens=[246] 73s
   you W0 C1 L2y v=18 c=7 target=[7] written=[7] tokens=[265] 76s
+  you W0 C1 L2y v=18 c=9 target=[9] written=[9] tokens=[241] 67s
+  you W1 C0 L1y v=2 c=None target=[1] written=[1] tokens=[256] 74s
