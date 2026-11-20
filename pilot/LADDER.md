@@ -97,6 +97,10 @@ readout has to be reasoning-based and the next step is L3 and the full game with
 GPU. If it does not, the 4B is not a usable subject for this family of games in any mode tested, and the spec's model range has to move
 up (9B and larger) or the game has to change kind.
 
+RL result (`out/reason_ladder.jsonl`): the written answer equals the target in 14 of 15 prompts and walking away is written in 3 of 4
+walk cells (pass by the rule above); mean 288 generated tokens; the one miss, (6, 7), was cut off at 512. One context, one paraphrase,
+third person, greedy.
+
 ## Addendum RL2: robustness of the reasoning ladder (fixed before its data; diagnostic only)
 
 Written after 8 of the 15 RL prompts were known (all 8 correct, including both walk cells at v = 2) and after the blind post-run review
@@ -119,17 +123,28 @@ RL2 result (`out/reason_ladder2.jsonl`; third person paraphrase 0 includes the 1
 | second person, paraphrase 0 | 17 | 4 | 2 | 290 | pass |
 | second person, paraphrase 1 | 11 | 1 | 2 | 289 | fail |
 
-What goes wrong in paraphrase 1 (read from the texts, reported, not part of the rule):
-- L2: paraphrase 1 says the seller "accepts any price that reaches c coins" (paraphrase 0: "at or above c"). The reasoning usually
-  restates this as an upper bound ("he accepts any P ≤ 3") and then offers 1, both where the target is c and where it is walking
-  away. By a crude keyword count, 13 of 15 third-person and 12 of 15 second-person paraphrase-1 L2 texts state such a bound. The
-  model's reading is wrong, but "reaches" is also a weaker wording than "at or above": the failure is partly the paraphrase's.
-- L1: paraphrase 1 says the seller "accepts whatever price is offered". In 2 of 5 cells in each framing the reasoning concludes
-  that the buyer should offer the highest price (9), or does not finish.
+Correction (after the blind post-run review, `critique/reasoning_postrun/report.md`). The first version of this section blamed
+paraphrase 1's "reaches c" wording and said the readout "plays the trivial rungs when the rule is stated plainly". It rested on an
+unsaved keyword count that the review could not reproduce, and it softened a pre-registered failure after the fact. The review hand-coded
+every text. What the texts show:
+- Paraphrase matters and framing does not. Pooled, paraphrase 0 scores 36 of 40 and paraphrase 1 21 of 40 (Fisher p = 0.0004); third
+  and second person score 29 and 28 of 40. Paraphrase 1 is a whole-prompt paraphrase (persona, aim, price line, payoff sentence,
+  question and instruction all change), so no single sentence has been shown to cause the drop.
+- Three failure modes, not one:
+  - Misreading the rule as an upper bound ("accepts any P ≤ c"). This happens in 9 of 15 second-person and 3 of 15 third-person
+    paraphrase-1 L2 texts, and in none in paraphrase 0. In 3 second-person cells it cancels against the next error and scores as correct.
+  - Running out of tokens: 8 of 20 third-person paraphrase-1 generations are cut at 512, against 1 in paraphrase 0; 7 of the 8 are
+    still debating whether "reaches" is ambiguous. Most third-person texts that finish read the rule correctly.
+  - A wrong objective: "offer the highest price" the seller accepts. It appears in 11 of 15 second-person paraphrase-0 L2 texts and
+    causes all 3 of that condition's failures. It also causes all four L1 paraphrase-1 failures, where the rule ("accepts whatever
+    price is offered") is restated correctly.
+- Walk-cell misses cost nothing (a certainly rejected offer pays what walking pays); the costly errors are offering 1 below the cost.
+- n = 20 per condition with one context, greedy: 19 of 20 has a 95% interval of 0.76 to 0.99.
 
-The reasoning readout therefore plays the trivial rungs when the rule is stated plainly. A small change in wording breaks it. Two
-consequences: paraphrases must be checked for comprehension before use (a paraphrase is not a neutral nuisance), and a measured
-"update" can be a misreading of the sentence that carries the information.
+The pre-registered reading stands without qualification: the reasoning readout is not robust on the trivial rungs. The same "reaches
+their cost" idiom is in paraphrase 1 of the selected game (`run_pilot.py`), used in stage B, R0 to R4 and L3, L3c, L4b; part of the
+paraphrase effects measured there may be this sentence. The isolating test (swap only the acceptance clause between paraphrases),
+more paraphrases and sampled answers are not yet run. The review's scoring scripts are in `critique/reasoning_postrun/work/`.
 
 ## Addendum TM: native thinking mode (fixed before its data; diagnostic only)
 

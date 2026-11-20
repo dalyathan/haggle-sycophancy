@@ -123,12 +123,16 @@ is within 0.3 coins of the best expected payoff in at least 6 of the 8 blocks. T
 history effect (the post-run review found the history effect flips sign with the paraphrase in R1 to R3).
 
 R5 result: all 8 generations reached the 1,024-token limit without writing an answer (no written answer in any block, so not
-encouraging by the rule above). In 7 of 8 the text was still tabulating the seller's acceptance probability price by price, correctly
-(for example 0.7 x 4/8 + 0.15 + 0.15 = 0.65 for an offer of 4).
+encouraging by the rule above). 7 of 8 were still tabulating the seller's acceptance probability price by price, having covered 0 to 4
+of the 9 prices. Corrected after the blind review (`critique/reasoning_postrun/report.md`; the first version said "correctly" in 7 of 8):
+the probabilities are right for the cell in 3 of 8 (the three no-history cells at v = 10, 14, 18). One drops the 0.7 weight (v = 2),
+one never starts the table (v = 6 with history), and **none of the four history texts mentions the rejected offer**: they tabulate the
+prior, not the posterior. The model did not use the information the benchmark is about.
 
 ## Addendum R5b: continuing R5 past the cut (fixed before its data; diagnostic only)
 
-Greedy decoding is deterministic, so `r5_continue.py` continues each R5 generation from its stored text for up to 2,048 more tokens
+Greedy decoding is deterministic, so `r5_continue.py` continues each R5 generation from its stored (decoded and re-tokenised) text for up to 2,048 more tokens
 (3,072 in all). Same reading rule as R5: encouraging only if the written answer is within 0.3 coins of the best expected payoff in at
-least 6 of the 8 blocks. The total token count per answer is reported: it is the per-item cost of a reasoning readout on the full game.
+least 6 of the 8 blocks. The result is a continuation, close to but not guaranteed identical to one uninterrupted greedy run. The total token count per answer is reported: it is the per-item cost of a reasoning readout on the full game. Also reported (added after the review, before any R5b data): whether
+each of the four history texts uses the rejected offer of 1.
 Runs after RL2 and TM.
