@@ -136,3 +136,16 @@ Greedy decoding is deterministic, so `r5_continue.py` continues each R5 generati
 least 6 of the 8 blocks. The result is a continuation, close to but not guaranteed identical to one uninterrupted greedy run. The total token count per answer is reported: it is the per-item cost of a reasoning readout on the full game. Also reported (added after the review, before any R5b data): whether
 each of the four history texts uses the rejected offer of 1.
 Runs after RL2 and TM.
+
+R5b result (`out/reason_probe_R5b.jsonl`, scored by `score_reasoning.py`): **4 of 8 within 0.3 coins of the best; not encouraging by
+the rule.** The split is by history:
+- Without the history, all 4 answers are optimal (v = 2, 10, 14, 18 write 1, 4, 5, 7) after 2,017 to 2,521 tokens in all.
+- With the history, all 4 reach 3,072 tokens without an answer. Read from the texts: at v = 10, 14 and 18 the continuation does take
+  up the rejected offer of 1 after finishing the prior table. It removes the sellers who accept any price, and at v = 10 it computes the
+  correct posterior weights (0.803 and 0.197). It is then recomputing the acceptance probabilities when cut, with at least one error
+  (at v = 10 it keeps 6/8 for the cost sellers where 5/7 is right). At v = 6 it never leaves the question of whether the seller groups
+  overlap; the scorer's keyword hit there is a false positive.
+
+So R5's "none mentions the rejected offer" holds only within 1,024 tokens. The model does use the history, but late: after the
+prior calculation and beyond 3,072 tokens. On this CPU a full-game item costs 5 to 10 minutes without history and more than 10 with
+it. A reasoning readout of the full game needs more than 3,000 tokens per history item.

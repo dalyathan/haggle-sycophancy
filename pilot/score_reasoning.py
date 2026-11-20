@@ -54,7 +54,7 @@ def main():
             full = R5[(r["v"], r["hist"])]["raw"] + r["more"]
             uses = bool(re.search(r"reject\w*[^.\n]{0,40}\b1\b|\b1\b[^.\n]{0,40}reject|earlier|already (?:proposed|offered)", full)) if r["hist"] else None
             print(f"  v={r['v']} hist={int(r['hist'])} target={r['target']} written={r['written_answer']} regret={r['regret']} "
-                  f"tokens={r['n_total']} cut={r['cut_off']}" + ("" if uses is None else f" mentions the rejected 1 (keyword): {uses}"))
+                  f"tokens={r['n_total']} cut={r['cut_off']}" + ("" if uses is None else f" keyword hit for the rejected 1 (crude; check by reading): {uses}"))
 
 
 if __name__ == "__main__":
