@@ -10,3 +10,7 @@ construct probe: 112 prompts, 0 done, max 768 new tokens
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
   ctx0 (6,4) irrelevant f=None target=[4] written=[None, 4, None] tokens=[768, 548, 768] 317s
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (6,4) pressure f=0 target=[4] written=[4, 4, 4] tokens=[491, 305, 677] 286s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (6,4) pressure f=1 target=[4] written=[4, 4, 4] tokens=[385, 486, 490] 207s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
