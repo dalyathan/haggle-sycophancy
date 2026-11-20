@@ -1,4 +1,4 @@
-"""Score the reasoning probes against their fixed reading rules (LADDER.md addenda RL, RL2, TM; READOUT.md addenda R5, R5b).
+"""Score the reasoning probes against their fixed reading rules (LADDER.md addenda RL, RL2, TM, CS; READOUT.md addenda R5, R5b).
 No model is run. Usage: python pilot/score_reasoning.py  (skips any output file that does not exist yet)."""
 import json, os, re
 
@@ -44,6 +44,51 @@ def main():
             th = r["raw"].split("</think>")[0]
             print(f"  {r['rung']} v={r['v']} c={r['c']} target={r['target']} answer={r['written_answer']} tokens={r['n_new']} "
                   f"'Wait' in thinking: {len(re.findall(r'\bWait\b', th))}")
+    CS = rows("clause_swap.jsonl")
+    if CS and RL2:
+        print("CS part A (rule per 2 x 2 cell: >= 17 of 20, walk >= 3 of 4; (W0,C0) and (W1,C1) are RL2):")
+        for frame in ("third", "you"):
+            cell = {}
+            for w in (0, 1):
+                for c in (0, 1):
+                    if w == c:
+                        R = [r for r in RL2 if r["frame"] == frame and r["para"] == w]
+                        if frame == "third" and w == 0 and RL:
+                            R = RL + R
+                    else:
+                        R = [r for r in CS if r["frame"] == frame and r["wording"] == w and r["clause"] == c]
+                    cell[w, c] = R
+            if any(len(R) != 20 for R in cell.values()):
+                print(f"  {frame}: incomplete", {k: len(v) for k, v in cell.items()}); continue
+            ok = {k: ladder_rule(R, 17) for k, R in cell.items()}
+            for k in sorted(ok):
+                print(f"  {frame} W{k[0]} C{k[1]}: {ok[k]}")
+            p10, p01 = ok[1, 0].endswith("pass"), ok[0, 1].endswith("pass")
+            reading = {(True, False): "the clause", (False, True): "the rest of the wording",
+                       (False, False): "both contribute", (True, True): "neither alone (interaction)"}[p10, p01]
+            print(f"  {frame} reading: {reading}")
+            for part, keep in (("pooled", lambda r: True), ("L1", lambda r: r["rung"].startswith("L1")), ("L2", lambda r: r["rung"].startswith("L2"))):
+                n = {k: sum(r["written_answer"] in r["target"] for r in R if keep(r)) for k, R in cell.items()}
+                ce = ((n[0, 0] - n[0, 1]) + (n[1, 0] - n[1, 1])) / 2; we = ((n[0, 0] - n[1, 0]) + (n[0, 1] - n[1, 1])) / 2
+                print(f"    {part}: correct W0C0 {n[0,0]} W0C1 {n[0,1]} W1C0 {n[1,0]} W1C1 {n[1,1]}; clause effect {ce:+.1f}, wording effect {we:+.1f}")
+    CSB = rows("clause_swap_sampled.jsonl")
+    if CSB and RL2:
+        from collections import Counter
+        greedy = {(r.get("frame", "third"), r["rung"], r["v"], r["c"]): r["written_answer"] for r in (RL or []) + RL2 if r["para"] == 0}
+        print(f"CS part B (reported): {len(CSB)} prompts x 3 samples")
+        for frame in ("third", "you"):
+            R = [r for r in CSB if r["frame"] == frame]
+            if not R:
+                continue
+            S = [g for r in R for g in r["samples"]]
+            agree = sum(len({g["written_answer"] for g in r["samples"]}) == 1 for r in R)
+            maj = []
+            for r in R:
+                a, n = Counter(g["written_answer"] for g in r["samples"]).most_common(1)[0]
+                maj.append(n >= 2 and a == greedy.get((r["frame"], r["rung"], r["v"], r["c"])))
+            print(f"  {frame}: per-sample correct {sum(g['written_answer'] in r['target'] for r in R for g in r['samples'])}/{len(S)}, "
+                  f"all 3 agree {agree}/{len(R)}, majority = greedy {sum(maj)}/{len(R)}, cut {sum(g['cut_off'] for g in S)}, "
+                  f"mean tokens {sum(g['n_new'] for g in S) / len(S):.0f}")
     R5b = rows("reason_probe_R5b.jsonl")
     if R5b:
         near = sum(r["regret"] is not None and r["regret"] <= 0.3 for r in R5b)

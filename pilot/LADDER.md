@@ -163,3 +163,40 @@ part of the rule: in some cells the thinking states the target before the cut (f
 answer is written, so the rule scores it as missing. Thinking mode, greedy, is not a usable readout on this CPU: on the simplest rungs it
 costs more than 1,536 tokens per item, against about 290 for the instructed reasoning in RL. Forcing the thinking to close at a budget
 was not tested.
+
+## Addendum CS: clause-swap test (fixed before its data; diagnostic only)
+
+Why: RL2 passes paraphrase 0 and fails paraphrase 1 in both framings, but paraphrase 1 rewrites every sentence. The blind review
+(`critique/reasoning_postrun/report.md`) found three failure modes: misreading the acceptance rule as an upper bound, running out of
+tokens, and the objective "offer the highest price". The first two may come from the acceptance clause ("reaches c"), the third from
+the rest of the wording. This test separates the two.
+
+Part A (`clause_swap.py`): the same 20 cells as RL2 (L1 at v = 2, 6, 10, 14, 18; L2 at the 15 RL2 cells), context 0, both framings,
+the RL2 procedure (reason first, greedy, at most 512 new tokens, the written answer). Only the seller's acceptance clause is swapped
+between the two wordings:
+
+| | Clause C0 | Clause C1 |
+|---|---|---|
+| L1 | "accepts any price at all." | "accepts whatever price is offered." |
+| L2 | "accepts any price at or above c coins." | "accepts any price that reaches c coins." |
+
+With W the rest of the wording, (W0, C0) and (W1, C1) are RL2's paraphrases 0 and 1 (third person W0 C0 includes the RL rows, as in
+RL2). Part A runs (W0, C1) and (W1, C0): 2 framings x 2 x 20 = 80 prompts. The prompt hash now covers the final messages,
+instruction included.
+
+Reading (fixed), per framing, each 2 x 2 cell scored by the RL2 rule (written answer equals the target in at least 17 of 20, walking
+away written in at least 3 of the 4 walk cells):
+- (W1, C0) passes and (W0, C1) fails: **the clause** carries the paraphrase-1 failure.
+- (W1, C0) fails and (W0, C1) passes: **the rest of the wording** carries it.
+- Both fail: both contribute. Both pass: neither alone; the failure needs both (an interaction).
+
+Reported, not part of the rule: correct counts for all four cells, with the clause effect (mean over W of C0 minus C1) and the wording
+effect (mean over C of W0 minus W1), pooled and for L1 and L2 separately; cut-offs and mean tokens. After the run, a blind reviewer
+codes every L2 text by how it states the acceptance condition and flags the "highest price" objective, with the codes of the previous
+review.
+
+Part B (`clause_swap.py` with `SAMPLE=1`), reported only: k = 3 sampled answers (temperature 0.7, top_p 0.8, top_k 20, the model's
+recommended settings for non-thinking use; fixed seed) for the 40 (W0, C0) prompts, both framings. Reported: correct rate per sample,
+the share of prompts on which all 3 samples agree, how often the samples' majority answer equals the greedy answer, tokens and
+cut-offs. This is the first measure of per-answer noise under the reasoning readout. Part B runs after Part A. Scored by
+`score_reasoning.py`.
