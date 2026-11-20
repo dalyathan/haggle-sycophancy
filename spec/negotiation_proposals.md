@@ -7,6 +7,14 @@ is equivalent to a value of min(v, b) and conflicts with D44's "used as a price"
 (principled negotiation disagrees with the payoff-maximising reference buyer on several existing items), at most a cited analogy.
 The review also corrected three claims below: the "highest price" texts state the model's own profit as the goal (8 of the 11 are
 correct); limitation 19 concerns seller claims, which N2 is not; and a verified competing offer is already a credible kernel item.
+A second, independent blind review (`pilot/critique/negotiation_proposals_sonnet/report.md`, which had not seen the first) agrees on
+the facts: the same three corrections, the same two payoff models for N2 with the same consequence, and the same direction and
+ceiling problems for N1. It differs in two verdicts: N1 "do not adopt as written" (first re-code the existing texts for whose
+payoff is computed, which is free), and N3 "adopt with changes" as a short note with the expected-payoff buyer keeping precedence
+(the first review allowed at most a cited analogy). Both propose the same extra item: a verified number that carries no payoff
+information (an outside offer at or above the value), a control for number copying. The second also proposes pairing a verified
+outside offer with the same sentence from the companion (not credible), which would be the benchmark's first downward credulity
+item.
 Nothing is adopted; the author decides.
 
 Source: Fisher and Ury, *Getting to Yes* (the Harvard Negotiation Project's "principled negotiation"): separate the people from the
