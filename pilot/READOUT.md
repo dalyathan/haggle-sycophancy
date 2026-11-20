@@ -116,3 +116,8 @@ baseline blocks with a single optimum, one context and one paraphrase (8 prompts
 Reported, not gated (8 prompts cannot pass or fail A1 to A7): the answer the model writes itself against the kernel target; the read
 exp_offer; regret; the history effect at v = 10, 14, 18; how many generations finish. A useful result is the written answer equal to
 the target in most blocks and the history effect in the right direction; if so, the next step is reasoning on all cells on a GPU.
+
+R5 reading rule (adopted from the blind post-run review, `critique/readout_postrun/report.md`, after 1 of the 8 R5 prompts had been
+generated; that prompt hit the 1024-token limit without writing an answer): R5 counts as encouraging only if the answer the model writes
+is within 0.3 coins of the best expected payoff in at least 6 of the 8 blocks. Three history pairs in one paraphrase cannot establish a
+history effect (the post-run review found the history effect flips sign with the paraphrase in R1 to R3).
