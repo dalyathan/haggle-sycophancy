@@ -105,3 +105,14 @@ order: longer or sampled reasoning, the 9B model, a simpler game (fewer seller t
 - updating: mean shift and the within-item-type slope of exp_u on the optimal move, for each item type and source; the walk shift;
 - the paraphrase difference and, for R2, the order effect (paraphrases 0 and 1 list the options in opposite orders);
 - for R0: the difference from the stored stage-B outputs (max abs probability difference, SD of the exp_u difference).
+
+## Addendum R5: uncapped reasoning probe (fixed before data; diagnostic only)
+
+R0 to R4 all fail the rule (`out/readout_R*_analysis.txt`). R4 capped reasoning at 100 tokens and 62% of its reasoning was cut off, so
+it does not test whether the model can play when it reasons to the end. R5 (`reason_probe.py`) asks the model to work out, for each
+price, the chance of acceptance and the earnings, with up to 1024 greedy tokens, then reads the answer as R4 does. It runs on the 8
+baseline blocks with a single optimum, one context and one paraphrase (8 prompts, about 3 to 5 minutes each on this CPU).
+
+Reported, not gated (8 prompts cannot pass or fail A1 to A7): the answer the model writes itself against the kernel target; the read
+exp_offer; regret; the history effect at v = 10, 14, 18; how many generations finish. A useful result is the written answer equal to
+the target in most blocks and the history effect in the right direction; if so, the next step is reasoning on all cells on a GPU.

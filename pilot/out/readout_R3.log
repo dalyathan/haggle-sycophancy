@@ -8,3 +8,13 @@ self-check on 16 texts: max abs option-probability difference, batched cache vs 
   99/600  2.69 s/prompt  eta 22 min
   148/600  2.46 s/prompt  eta 18 min
   199/600  2.34 s/prompt  eta 16 min
+  240/600  2.28 s/prompt  eta 14 min
+  288/600  2.21 s/prompt  eta 12 min
+  339/600  2.17 s/prompt  eta 9 min
+  388/600  2.14 s/prompt  eta 8 min
+  439/600  2.11 s/prompt  eta 6 min
+  480/600  2.10 s/prompt  eta 4 min
+  528/600  2.10 s/prompt  eta 3 min
+  579/600  2.08 s/prompt  eta 1 min
+  600/600  2.07 s/prompt  eta 0 min
+done in 1243s
