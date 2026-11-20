@@ -8,3 +8,36 @@ clause swap part A: 80 prompts, 0 done, max 512 new tokens
   third W0 C1 L1 v=6 c=None target=[1] written=[1] tokens=[218] 65s
   third W0 C1 L1 v=10 c=None target=[1] written=[1] tokens=[285] 84s
   third W0 C1 L1 v=14 c=None target=[1] written=[1] tokens=[182] 54s
+  third W0 C1 L1 v=18 c=None target=[1] written=[1] tokens=[240] 71s
+  third W0 C1 L2 v=2 c=1 target=[1] written=[1] tokens=[392] 108s
+  third W0 C1 L2 v=2 c=3 target=[0] written=[None] tokens=[512] 138s
+  third W0 C1 L2 v=2 c=9 target=[0] written=[None] tokens=[512] 138s
+  third W0 C1 L2 v=6 c=3 target=[3] written=[3] tokens=[307] 95s
+  third W0 C1 L2 v=6 c=5 target=[5] written=[5] tokens=[327] 94s
+  third W0 C1 L2 v=6 c=7 target=[0] written=[0] tokens=[422] 116s
+  third W0 C1 L2 v=6 c=9 target=[0] written=[None] tokens=[512] 150s
+  third W0 C1 L2 v=10 c=3 target=[3] written=[3] tokens=[268] 78s
+  third W0 C1 L2 v=10 c=7 target=[7] written=[7] tokens=[276] 74s
+  third W0 C1 L2 v=10 c=9 target=[9] written=[9] tokens=[398] 108s
+  third W0 C1 L2 v=14 c=3 target=[3] written=[3] tokens=[255] 67s
+  third W0 C1 L2 v=14 c=9 target=[9] written=[1] tokens=[362] 94s
+  third W0 C1 L2 v=18 c=3 target=[3] written=[3] tokens=[267] 67s
+  third W0 C1 L2 v=18 c=7 target=[7] written=[7] tokens=[340] 84s
+  third W0 C1 L2 v=18 c=9 target=[9] written=[9] tokens=[335] 88s
+  third W1 C0 L1 v=2 c=None target=[1] written=[1] tokens=[436] 119s
+  third W1 C0 L1 v=6 c=None target=[1] written=[1] tokens=[375] 104s
+  third W1 C0 L1 v=10 c=None target=[1] written=[1] tokens=[355] 102s
+  third W1 C0 L1 v=14 c=None target=[1] written=[1] tokens=[425] 113s
+  third W1 C0 L1 v=18 c=None target=[1] written=[None] tokens=[512] 148s
+  third W1 C0 L2 v=2 c=1 target=[1] written=[None] tokens=[512] 148s
+  third W1 C0 L2 v=2 c=3 target=[0] written=[None] tokens=[512] 145s
+  third W1 C0 L2 v=2 c=9 target=[0] written=[0] tokens=[300] 86s
+  third W1 C0 L2 v=6 c=3 target=[3] written=[3] tokens=[491] 151s
+  third W1 C0 L2 v=6 c=5 target=[5] written=[5] tokens=[397] 120s
+  third W1 C0 L2 v=6 c=7 target=[0] written=[0] tokens=[293] 81s
+  third W1 C0 L2 v=6 c=9 target=[0] written=[None] tokens=[512] 161s
+  third W1 C0 L2 v=10 c=3 target=[3] written=[3] tokens=[485] 149s
+  third W1 C0 L2 v=10 c=7 target=[7] written=[9] tokens=[407] 113s
+  third W1 C0 L2 v=10 c=9 target=[9] written=[9] tokens=[301] 86s
+  third W1 C0 L2 v=14 c=3 target=[3] written=[3] tokens=[478] 131s
+  third W1 C0 L2 v=14 c=9 target=[9] written=[9] tokens=[492] 134s
