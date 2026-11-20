@@ -168,8 +168,9 @@ was not tested.
 
 Why: RL2 passes paraphrase 0 and fails paraphrase 1 in both framings, but paraphrase 1 rewrites every sentence. The blind review
 (`critique/reasoning_postrun/report.md`) found three failure modes: misreading the acceptance rule as an upper bound, running out of
-tokens, and the objective "offer the highest price". The first two may come from the acceptance clause ("reaches c"), the third from
-the rest of the wording. This test separates the two.
+tokens, and the objective "offer the highest price". The first two may come from the acceptance clause ("reaches c"). In L2 the third
+is mainly a second-person effect under both wordings (11 of 15 W0 and 10 of 15 W1 texts, against 0 and 2 in the third person); only in
+L1 does it go with paraphrase 1 (corrected after the pre-run review). This test separates the clause from the rest of the wording.
 
 Part A (`clause_swap.py`): the same 20 cells as RL2 (L1 at v = 2, 6, 10, 14, 18; L2 at the 15 RL2 cells), context 0, both framings,
 the RL2 procedure (reason first, greedy, at most 512 new tokens, the written answer). Only the seller's acceptance clause is swapped
@@ -204,3 +205,36 @@ cut-offs. This is the first measure of per-answer noise under the reasoning read
 CS run note: Part A was started (`run_queue4.sh`) at the same time as the blind pre-run review (`critique/clause_swap_prerun/`), to use
 the CPU while the review runs. No CS row is read until the review is back; if it requires a change to Part A, the rows written so far
 are discarded and Part A is rerun.
+
+### CS revisions after the blind pre-run review (`critique/clause_swap_prerun/report.md`), before any CS row was read
+
+The review confirmed that the implementation matches the protocol (every swapped prompt round-trips to its RL2 prompt byte for byte).
+No Part A prompt changes, so the rows already being written stay valid. Additions, all fixed now:
+
+- R1, fragility and paired reading. The four-outcome reading stays primary. It is labelled **fragile** if toggling any single answer
+  in either swap cell (including a walk cell) would change it. A fragile reading is reported as inconclusive at n = 20, not as a
+  finding. (In the second person the W0 C0 anchor sits at exactly 17 of 20, so this is likely there.) Also reported: for each minimal
+  pair (clause C0 against C1 within W0, and within W1), per framing and pooled over both, the cells correct only with C0 and only with
+  C1, with an exact two-sided sign test (McNemar). The paired test is the more sensitive comparison. Neither replaces the primary
+  reading; both are reported.
+- R2, an L2-only reading for the "reaches" question. The same four outcomes are applied to the 15 L2 cells at 13 of 15 with walk at
+  least 3 of 4 (the same 85% bar). It is defined for the **third person only**: the second-person W0 C0 anchor (12 of 15) already
+  fails that bar, so there it is reported descriptively. The pooled reading also mixes in the L1 clause swap ("any price at all" /
+  "whatever price is offered"), which is a different manipulation.
+- R3, reproducibility. `repro_check.py` regenerates 6 stored RL/RL2 prompts after Parts A and B (`run_queue5.sh`) and reports
+  whether each text is byte-identical. If any differs, that is reported before the 2 x 2 is interpreted, and the difference between
+  new and reused cells may include run drift.
+- R4, what the blind coding must show. After the run, a blind reviewer codes every L2 text (GE / GE* / AMB / LE, the "highest price"
+  flag, and "ambiguous / re-read" cut-offs), as in the previous review. Clause hypothesis: LE and AMB codes and the ambiguity
+  cut-offs occur in C1 cells under both wordings and are absent in C0 cells. Wording hypothesis: they follow W1. Cells that are
+  correct for the wrong reason (LE together with "highest price") are reported next to the correct counts. A reading by counts that
+  the coding contradicts is reported as contradicted.
+- R5, Part B. Each sample ends at its first `<|im_end|>`. Its text, answer and token count stop there, with the token count made
+  comparable with greedy (index of `<|im_end|>` plus 3). Generation stops at `<|im_end|>`.
+- Also reported (O1, O2, O7, O3): the interaction term; cut-offs and wrong answers among finished texts per cell; a 20-cell by
+  4-condition table; a cut-off row scored wrong even if it parsed an answer; and, for Part B, the RL2 rule applied to each sample
+  index, the distribution of prompts by number of correct samples, agreement among parsed answers only, and prompts with no majority.
+- Scope of Part B: it measures sampling variability only at the passing W0 C0 cell. It says nothing about the swap cells or W1 C1 and
+  is not used to re-read Part A.
+- Not adopted now (optional in the review): Part B on W1 C1, and a replication of the full 2 x 2 in context 1 (about 4.7 hours). The
+  replication is the remedy for one context and for regression to the mean (the 2 x 2 was built after its anchors failed).

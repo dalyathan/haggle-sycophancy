@@ -7,7 +7,7 @@ Clauses: L1  C0 "accepts any price at all"            C1 "accepts whatever price
 Same procedure as reason_ladder2.py: the same 20 cells (L1 at 5 values, L2 at 15 cells), context 0, both framings, reason first
 ("First work it out briefly, then write Answer: followed by one digit."), greedy, at most 512 new tokens. 80 prompts.
 Part B (SAMPLE=1): k = 3 sampled answers (temperature 0.7, top_p 0.8, top_k 20, seed fixed) for the 40 (W0, C0) prompts, generated as
-one batch of 3 per prompt; reported only. Outputs: pilot/out/clause_swap.jsonl (A), pilot/out/clause_swap_sampled.jsonl (B).
+one batch of 3 per prompt, each sample truncated at its first <|im_end|> (pre-run review R5); reported only. Outputs: pilot/out/clause_swap.jsonl (A), pilot/out/clause_swap_sampled.jsonl (B).
 The prompt hash covers the final messages (instruction included)."""
 import hashlib, json, os, re, sys, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -69,6 +69,10 @@ def main():
     from pilot.fastread import Reader
     rd = Reader(RP.MODEL); tok = rd.tok
     done = sum(1 for _ in open(OUT)) if os.path.exists(OUT) else 0
+    if done:   # resume only onto the same prompt list (review O6)
+        stored = [json.loads(l)["hash"] for l in open(OUT)]
+        assert stored == [p["hash"] for p in P[:done]], "stored rows do not match the prompt list"
+    im_end = tok.convert_tokens_to_ids("<|im_end|>")
     print(f"clause swap {'part B (sampled)' if SAMPLE else 'part A'}: {len(P)} prompts, {done} done, max {MAX_NEW} new tokens", flush=True)
     with open(OUT, "a") as f:
         for i, p in enumerate(P[done:], done):
@@ -78,7 +82,8 @@ def main():
                 if SAMPLE:
                     torch.manual_seed(SEED + i)
                     o = rd.model.generate(input_ids=x.repeat(K_SAMPLES, 1), max_new_tokens=MAX_NEW, do_sample=True,
-                                          temperature=0.7, top_p=0.8, top_k=20, repetition_penalty=1.0)
+                                          temperature=0.7, top_p=0.8, top_k=20, repetition_penalty=1.0,
+                                          eos_token_id=[im_end, tok.convert_tokens_to_ids("<|endoftext|>")])
                 else:
                     o = rd.model.generate(input_ids=x, max_new_tokens=MAX_NEW, do_sample=False, repetition_penalty=1.0,
                                           temperature=None, top_p=None, top_k=None)
@@ -86,10 +91,19 @@ def main():
             gens = []
             for row in o:
                 ids = row[x.shape[1]:]
-                # greedy: counted as in reason_ladder2.py; sampled rows are padded after their end, so pad tokens are not counted
-                n_new = int((ids != tok.pad_token_id).sum()) if SAMPLE and tok.pad_token_id is not None else int(ids.shape[0])
+                if SAMPLE:
+                    # review R5: a sample ends at its first <|im_end|>; n_new counted as greedy counts it (text tokens, <|im_end|>,
+                    # "\n", <|endoftext|>: index of <|im_end|> + 3). Without <|im_end|> it ran to MAX_NEW and is cut off.
+                    hit = (ids == im_end).nonzero()
+                    if len(hit):
+                        j = int(hit[0, 0]); ids = ids[:j]; n_new = j + 3
+                    else:
+                        n_new = int(ids.shape[0])
+                else:
+                    n_new = int(ids.shape[0])          # as in reason_ladder2.py
                 raw = tok.decode(ids, skip_special_tokens=True)
-                gens.append(dict(written_answer=parse(raw), n_new=n_new, cut_off=n_new >= MAX_NEW, raw=raw))
+                gens.append(dict(written_answer=parse(raw), n_new=n_new, cut_off=n_new >= MAX_NEW, raw=raw,
+                                 n_answer_matches=len(re.findall(r"Answer:", raw))))
             if SAMPLE:
                 rec.update(samples=gens)
             else:
