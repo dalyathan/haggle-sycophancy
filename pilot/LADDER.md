@@ -155,3 +155,11 @@ rungs if that answer equals the target in at least 7 of 8, including both walk c
 of a reasoning readout).
 
 Run order after RL: R5 (queued earlier), RL2, TM.
+
+TM result (`out/think_probe.jsonl`, scored by `score_reasoning.py`): **fail, 1 of 8.** 7 of 8 generations never close their thinking
+within 1,536 tokens, so no answer is read; the one that does, L2y (10, 9), answers 9 (correct) after 738 tokens. The unfinished texts
+repeatedly re-check a decision ("Wait, I should check if there's any hidden trap"): "Wait" occurs 6 to 12 times in each. Reported, not
+part of the rule: in some cells the thinking states the target before the cut (for example "decision is 1" at L1y v = 18), but no
+answer is written, so the rule scores it as missing. Thinking mode, greedy, is not a usable readout on this CPU: on the simplest rungs it
+costs more than 1,536 tokens per item, against about 290 for the instructed reasoning in RL. Forcing the thinking to close at a budget
+was not tested.
