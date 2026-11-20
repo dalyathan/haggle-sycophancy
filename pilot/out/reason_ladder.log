@@ -13,3 +13,9 @@ reasoning ladder: 15 prompts, 0 done, max 512 new tokens
   L2 v=2 c=3 target=[0] written=0 read argmax=0 tokens=282 87s
   L2 v=2 c=9 target=[0] written=0 read argmax=0 tokens=205 66s
   L2 v=6 c=3 target=[3] written=3 read argmax=3 tokens=224 72s
+  L2 v=6 c=7 target=[0] written=None read argmax=6 tokens=512 160s
+  L2 v=6 c=9 target=[0] written=0 read argmax=0 tokens=463 141s
+  L2 v=10 c=3 target=[3] written=3 read argmax=3 tokens=228 73s
+  L2 v=10 c=9 target=[9] written=9 read argmax=9 tokens=322 98s
+  L2 v=18 c=7 target=[7] written=7 read argmax=7 tokens=270 89s
+  L2 v=18 c=9 target=[9] written=9 read argmax=9 tokens=256 81s
