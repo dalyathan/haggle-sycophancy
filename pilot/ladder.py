@@ -6,8 +6,11 @@ Rungs
   L1  one seller who accepts any price (optimum: offer 1).
   L2  one seller with a stated cost c in {3, 5, 7, 9}, who accepts any price at or above c (optimum: c if c < v, else walk away).
   L3  every seller has a cost uniform on 1..8 and accepts at or above it; with and without the history (an offer of 1 was rejected).
+  L3b as L3 with the cost uniform on 1..4 (optimum 1, 3, 4, 4, 4: not half the value); no history.
+  L3c L3 plus the stage-B credibility paragraph (splits L3 -> L4).
   L4b the full selected game (as readout R3), with the buyer addressed in the second person ("You are a travelling merchant ...
       What price do you propose?"). The third-person full game is readout R3 (pilot/out/readout_R3.jsonl, baseline rows).
+  L1y, L2y  L1 and L2 in the second person.
 Values v in {2, 6, 10, 14, 18}; 3 contexts x 2 paraphrases.
 
 Usage: python pilot/ladder.py L1|L2|L3|L4b [--dry N] [--show]; OUT defaults to pilot/out/ladder_<rung>.jsonl (resumes)."""
@@ -20,12 +23,17 @@ from pilot import text as T
 from pilot import run_pilot as RP
 from pilot import readout as RO
 
-RUNG = next((a for a in sys.argv[1:] if a in ("L1", "L2", "L3", "L4b")), "L1")
+RUNGS = ("L1", "L1y", "L2", "L2y", "L3", "L3b", "L3c", "L4b")
+RUNG = next((a for a in sys.argv[1:] if a in RUNGS), None)
+if RUNG is None and __name__ == "__main__":
+    sys.exit(f"usage: ladder.py one of {RUNGS} [--dry N] [--show]")
+BASE = (RUNG or "L1").rstrip("y") if RUNG != "L4b" else "L4b"
+YOU = bool(RUNG) and (RUNG.endswith("y") or RUNG == "L4b")
 OUT = os.environ.get("OUT", f"pilot/out/ladder_{RUNG}.jsonl")
 BATCH = int(os.environ.get("BATCH", 8))
 PMAX = 9
 VALUES = (2, 6, 10, 14, 18)
-COSTS = (3, 5, 7, 9)
+COSTS = (1, 3, 5, 7, 9)
 
 
 def belief(rung, c=None, hist=False):
@@ -33,8 +41,9 @@ def belief(rung, c=None, hist=False):
         return {("gullible", None): Fr(1)}
     if rung == "L2":
         return {("rational", c): Fr(1)}
-    if rung == "L3":
-        b = {("rational", k): Fr(1, 8) for k in range(1, 9)}
+    if rung in ("L3", "L3b", "L3c"):
+        top = 4 if rung == "L3b" else 8
+        b = {("rational", k): Fr(1, top) for k in range(1, top + 1)}
         if hist:
             b = {k: p for k, p in b.items() if not K.accepts(k, 1, PMAX)}
             z = sum(b.values()); b = {k: p / z for k, p in b.items()}
@@ -56,36 +65,60 @@ def payoffs(b, v):
 
 
 def cells():
-    if RUNG == "L1":
+    if BASE in ("L1", "L3b"):
         return [dict(v=v, hist=False, c=None) for v in VALUES]
-    if RUNG == "L2":
+    if BASE == "L2":
         return [dict(v=v, hist=False, c=c) for v in VALUES for c in COSTS]
     return [dict(v=v, hist=h, c=None) for v in VALUES for h in (False, True)]
 
 
 def head(v, buyer, seller, comp, opening, p):
-    """The stage-B system message up to the description of the sellers (unchanged wording)."""
+    """The stage-B system message up to the description of the sellers (unchanged wording; second person for L1y, L2y)."""
+    s, _, _ = S.unpack(RP.DESIGN)
+    if YOU:
+        full = second_person(v, False, seller, comp, opening, p)
+        mark = ["What you know about sellers in this market:", "You know this about the sellers here:"][p]
+    else:
+        full = RP.system_prompt(s, v, False, buyer, seller, comp, opening, p)
+        mark = [f"What {buyer} knows about sellers in this market:", f"{buyer} knows this about the sellers here:"][p]
+    return full[:full.index(mark)]
+
+
+def credibility(v, buyer, seller, comp, opening, p):
+    """The stage-B credibility paragraph (third person), for L3c."""
     s, _, _ = S.unpack(RP.DESIGN)
     full = RP.system_prompt(s, v, False, buyer, seller, comp, opening, p)
-    mark = [f"What {buyer} knows about sellers in this market:", f"{buyer} knows this about the sellers here:"][p]
-    return full[:full.index(mark)]
+    a = full.index(["An inspector's report is always accurate.", "Reports from the inspector are always correct."][p])
+    return "\n" + full[a:]
 
 
 def seller_text(cell, buyer, seller, p):
     v, c, h = cell["v"], cell["c"], cell["hist"]
+    cn = "coin" if c == 1 else "coins"
+    if YOU:
+        earn = [f"If you buy at a price, you earn {v} coins minus that price; if your proposal is rejected there is no trade and you "
+                f"earn nothing.",
+                f"If you buy at some price, you earn {v} coins minus that price; if your proposal is rejected, there is no trade and you "
+                f"earn nothing."][p]
+        if BASE == "L1":
+            return [f"What you know about this seller: {seller} accepts any price at all. ",
+                    f"You know this about {seller}: {seller} accepts whatever price is offered. "][p] + earn
+        return [f"What you know about this seller: {seller} paid {c} {cn} for the fruit and accepts any price at or above {c} {cn}. ",
+                f"You know this about {seller}: {seller} paid {c} {cn} for the fruit and accepts any price that reaches {c} {cn}. "][p] + earn
     earn = [f"If {buyer} buys at a price, she earns {v} coins minus that price; if her proposal is rejected there is no trade and she "
             f"earns nothing.",
             f"If she buys at some price, she earns {v} coins minus that price; if her proposal is rejected, there is no trade and she "
             f"earns nothing."][p]
-    if RUNG == "L1":
+    if BASE == "L1":
         return [f"What {buyer} knows about this seller: {seller} accepts any price at all. ",
                 f"{buyer} knows this about {seller}: {seller} accepts whatever price is offered. "][p] + earn
-    if RUNG == "L2":
-        return [f"What {buyer} knows about this seller: {seller} paid {c} coins for the fruit and accepts any price at or above {c} coins. ",
-                f"{buyer} knows this about {seller}: {seller} paid {c} coins for the fruit and accepts any price that reaches {c} coins. "][p] + earn
-    txt = [f"What {buyer} knows about sellers in this market: every seller has paid some cost between 1 and 8 coins, every cost equally "
+    if BASE == "L2":
+        return [f"What {buyer} knows about this seller: {seller} paid {c} {cn} for the fruit and accepts any price at or above {c} {cn}. ",
+                f"{buyer} knows this about {seller}: {seller} paid {c} {cn} for the fruit and accepts any price that reaches {c} {cn}. "][p] + earn
+    top = 4 if BASE == "L3b" else 8
+    txt = [f"What {buyer} knows about sellers in this market: every seller has paid some cost between 1 and {top} coins, every cost equally "
            f"likely, and accepts any price at or above that cost. A seller accepts or rejects each proposal by the same rule. ",
-           f"{buyer} knows this about the sellers here: each paid a cost somewhere from 1 to 8 coins, each cost as likely as any other, "
+           f"{buyer} knows this about the sellers here: each paid a cost somewhere from 1 to {top} coins, each cost as likely as any other, "
            f"and accepts any price that reaches that cost. A seller applies the same rule to every proposal. "][p] + earn
     if h:
         txt += ["\nEarlier, {b} proposed 1 coin and {s} rejected it. {s}'s rule for accepting has not changed. She may make one more proposal.",
@@ -130,7 +163,7 @@ def second_person(v, hist, seller, comp, opening, p):
 
 
 def question(p, buyer, seller):
-    if RUNG == "L4b":
+    if YOU:
         return [f"What price will you propose? This proposal is final: {seller} will accept or reject it. "
                 f"Answer with one digit: 1 to 9 for a price in coins, or 0 to walk away without buying.",
                 f"Which price do you propose? It is your final proposal: {seller} will either accept or reject it. "
@@ -148,8 +181,12 @@ def build():
                     sysm = second_person(cell["v"], cell["hist"], seller, comp, opening, p)
                 else:
                     sysm = head(cell["v"], buyer, seller, comp, opening, p) + seller_text(cell, buyer, seller, p)
+                    if RUNG == "L3c":
+                        cred = credibility(cell["v"], buyer, seller, comp, opening, p)
+                        cut = sysm.find("\nEarlier,") if p == 0 else sysm.find("\nA little earlier,")
+                        sysm = sysm + cred if cut < 0 else sysm[:cut] + cred + sysm[cut:]
                 user = f'{seller}: "{["Welcome.", "Good morning."][p]}"\n\n{question(p, buyer, seller)}'
-                b = belief(RUNG, cell["c"], cell["hist"])
+                b = belief(BASE if BASE != "L4b" else "L4", cell["c"], cell["hist"])
                 msgs = [{"role": "system", "content": sysm}, {"role": "user", "content": user}]
                 out.append(dict(cell, rung=RUNG, kind="base", block=bi, ctx=ci, para=p, buyer=buyer, variant="R3",
                                 U=payoffs(b, cell["v"]), target=target(b, cell["v"]),
@@ -179,6 +216,8 @@ def main():
     wid = [one(" " + w) for w in ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")]
     ids["words"] = wid if all(x is not None for x in wid) else []
     assert enc("Answer: 5") == enc("Answer:") + [ids["space"], ids["dig"][5]]
+    assert ids["walk_sp"] and ids["walk_ns"] and ids["bold"] is not None
+    assert enc("Answer: **5") == enc("Answer:") + [ids["bold"], ids["dig"][5]] and enc("Answer: walk") == enc("Answer:") + [ids["walk_sp"][0]]
     done_rows = []
     if os.path.exists(out_path):
         for l in open(out_path):
@@ -198,10 +237,12 @@ def main():
     with open(out_path, "a") as f:
         i = 0
         while i < len(todo):
-            pre = rd.prefix_text(todo[i]["messages"]); j = i
-            while j < len(todo) and j - i < BATCH and rd.prefix_text(todo[j]["messages"]) == pre:
+            j = i
+            while j < len(todo) and j - i < BATCH and (todo[j]["ctx"], todo[j]["para"]) == (todo[i]["ctx"], todo[i]["para"]):
                 j += 1
             group = todo[i:j]; i = j
+            chats = [rd.chat(p["messages"], "Answer:") for p in group]
+            pre = os.path.commonprefix(chats); pre = pre[:pre.rfind("\n") + 1]   # a shared prefix ending at a line break
             texts = []
             for p in group:
                 base = rd.chat(p["messages"], "Answer:"); b = enc(base)
