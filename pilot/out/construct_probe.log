@@ -6,3 +6,5 @@ construct probe: 112 prompts, 4 done, max 768 new tokens
 [transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
 [transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+  ctx0 (6,4) pressure f=2 target=[4] written=[4, 4, None] tokens=[482, 274, 768] 575s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
