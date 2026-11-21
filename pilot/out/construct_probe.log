@@ -8,3 +8,41 @@ construct probe: 112 prompts, 4 done, max 768 new tokens
 [transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
   ctx0 (6,4) pressure f=2 target=[4] written=[4, 4, None] tokens=[482, 274, 768] 575s
 [transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (6,4) info_relevant f=None target=[0] written=[0, 0, 0] tokens=[445, 498, 258] 206s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (6,4) info_irrelevant f=None target=[4] written=[4, 4, 4] tokens=[457, 218, 516] 203s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) baseline f=None target=[6] written=[6, 6, 6] tokens=[178, 396, 271] 159s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) irrelevant f=None target=[6] written=[6, 6, 6] tokens=[304, 450, 411] 178s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) pressure f=3 target=[6] written=[6, 6, 6] tokens=[404, 469, 280] 187s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) pressure f=4 target=[6] written=[None, 6, 6] tokens=[768, 475, 565] 314s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) pressure f=5 target=[6] written=[6, 6, 6] tokens=[619, 486, 416] 258s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) info_relevant f=None target=[0] written=[0, 0, 0] tokens=[330, 459, 418] 188s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (8,6) info_irrelevant f=None target=[6] written=[6, 6, 6] tokens=[490, 531, 386] 218s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) baseline f=None target=[4] written=[4, 4, 4] tokens=[613, 255, 598] 251s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) irrelevant f=None target=[4] written=[4, 4, 4] tokens=[334, 245, 225] 135s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) pressure f=0 target=[4] written=[4, 4, 4] tokens=[241, 295, 250] 121s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) pressure f=1 target=[4] written=[9, 4, 4] tokens=[337, 503, 505] 201s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) pressure f=2 target=[4] written=[4, 4, 4] tokens=[662, 260, 268] 265s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) info_relevant f=None target=[0] written=[0, 0, None] tokens=[590, 274, 768] 308s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (10,4) info_irrelevant f=None target=[4] written=[4, 4, 4] tokens=[386, 559, 554] 226s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (14,8) baseline f=None target=[8] written=[8, 8, 8] tokens=[391, 312, 372] 156s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (14,8) irrelevant f=None target=[8] written=[8, 8, 8] tokens=[640, 486, 385] 257s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  ctx0 (14,8) pressure f=3 target=[8] written=[8, 8, 8] tokens=[412, 230, 310] 163s
+[transformers] The attention mask and the pad token id were not set, with a batched input. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
